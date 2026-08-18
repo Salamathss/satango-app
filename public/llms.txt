@@ -1,0 +1,14 @@
+# SATANGO
+
+> Gamified Digital SAT prep with adaptive practice, AI tutoring, and diagnostic mock exams.
+
+SATANGO is a web app that helps students prepare for the Digital SAT through a structured 9-module learning path, boss-level challenges, an AI Socratic tutor for wrong answers, and full-length diagnostic mock exams with scaled-score reporting. Progress is gamified with hearts, gems, streaks, and XP levels.
+
+## Pages
+
+- [Home](/): Overview of the SATANGO learning experience and sign-in entry point.
+- [Trust, Security & Privacy](/trust): How SATANGO handles accounts, authentication, data, and cookies.
+
+## Optional
+
+- [Sitemap](/sitemap.xml): Machine-readable list of public routes.

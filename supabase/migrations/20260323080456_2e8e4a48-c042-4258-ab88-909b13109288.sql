@@ -1,0 +1,2 @@
+ALTER TABLE public.user_progress ADD COLUMN IF NOT EXISTS current_streak integer NOT NULL DEFAULT 0;
+ALTER TABLE public.user_progress ADD COLUMN IF NOT EXISTS difficulty_anchor integer NOT NULL DEFAULT 1;

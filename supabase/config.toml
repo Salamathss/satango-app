@@ -1,0 +1,7 @@
+project_id = "nvwjdtgjnjhxaxufjbzr"
+
+[functions.ai-tutor]
+verify_jwt = false
+
+[functions.mock-exam-score]
+verify_jwt = false

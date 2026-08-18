@@ -1,0 +1,1 @@
+ALTER TABLE public.topic_progress ADD COLUMN IF NOT EXISTS current_difficulty text NOT NULL DEFAULT 'medium';

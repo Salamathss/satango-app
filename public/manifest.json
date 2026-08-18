@@ -1,0 +1,25 @@
+{
+  "name": "SATANGO — Digital SAT Mastery",
+  "short_name": "SATANGO",
+  "description": "Gamified Digital SAT prep with adaptive practice, AI tutoring, and a premium diagnostic mock dashboard.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FAF8F4",
+  "theme_color": "#FAF8F4",
+  "icons": [
+    {
+      "src": "/placeholder.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/placeholder.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

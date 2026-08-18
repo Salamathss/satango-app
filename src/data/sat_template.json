@@ -1,0 +1,40 @@
+[
+  {
+    "category": "Math",
+    "topic": "Algebra",
+    "difficulty": "Medium",
+    "passage": null,
+    "question_text": "If 3x - y = 12 and y = 3, what is the value of x?",
+    "choices": ["3", "4", "5", "6"],
+    "correct_answer": "5",
+    "explanation": "Substitute y = 3 into the first equation: 3x - 3 = 12. Add 3 to both sides to get 3x = 15. Divide by 3 to get x = 5.",
+    "ai_tutor_prompt": "Help the student understand substitution and solving linear equations."
+  },
+  {
+    "category": "Reading and Writing",
+    "topic": "Information and Ideas",
+    "difficulty": "Hard",
+    "passage": "In 1928, Alexander Fleming discovered penicillin by accident when he left a petri dish of staphylococcus bacteria uncovered. A mold spore fell into the dish and began to grow, producing a substance that killed the surrounding bacteria.",
+    "question_text": "Which choice best states the main idea of the text?",
+    "choices": [
+      "Penicillin was the first antibiotic ever discovered.",
+      "Fleming's accidental discovery of penicillin revolutionized medicine.",
+      "A chance event led Fleming to discover the antibacterial properties of a specific mold.",
+      "Staphylococcus bacteria are highly susceptible to mold spores."
+    ],
+    "correct_answer": "A chance event led Fleming to discover the antibacterial properties of a specific mold.",
+    "explanation": "The text explicitly describes how Fleming discovered penicillin 'by accident' when a mold spore fell into his dish and killed the bacteria. Choice C accurately summarizes this main event.",
+    "ai_tutor_prompt": "Guide the student to identify the core subject of the passage, which is the accidental nature of the discovery rather than its future impact."
+  },
+  {
+    "category": "Math",
+    "topic": "Advanced Math",
+    "difficulty": "Hard",
+    "passage": null,
+    "question_text": "The function f is defined by f(x) = 2x^2 - 4x + 5. What is the minimum value of f(x)?",
+    "choices": ["2", "3", "4", "5"],
+    "correct_answer": "3",
+    "explanation": "This is a parabola opening upwards (a > 0). The x-coordinate of the vertex is -b / (2a) = -(-4) / (2 * 2) = 1. Substitute x = 1 into f(x): f(1) = 2(1)^2 - 4(1) + 5 = 2 - 4 + 5 = 3. The minimum value is 3.",
+    "ai_tutor_prompt": "Ask the student how to find the vertex of a quadratic function in standard form, and which coordinate represents the minimum value."
+  }
+]

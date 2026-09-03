@@ -88,6 +88,7 @@ const Quiz = () => {
 
   // Review mode: reduced rewards, no heart loss
   const effectivePracticeMode = isPracticeMode || isReview;
+  const [sessionAnswers, setSessionAnswers] = useState<Array<{ question: any; isCorrect: boolean }>>([]);
 
   useEffect(() => {
     if (!user || phase !== "quiz") return;
@@ -336,6 +337,7 @@ const Quiz = () => {
     }
 
     handleAnswerSubmission(isCorrect);
+    setSessionAnswers((prev) => [...prev, { question, isCorrect }]);
 
     if (user) {
       await (supabase as any).rpc("ua_record_answer", {
@@ -404,13 +406,35 @@ const Quiz = () => {
     }
 
     if (!effectivePracticeMode) {
-      await (supabase as any).rpc("tp_record_progress", {
-        _topic: topicId!,
-        _category: category,
-        _correct: score.correct,
-        _total: score.total,
-        _difficulty: difficulty,
-      });
+      const tagMap: Record<string, { correct: number; total: number; category: string }> = {};
+
+      for (const item of sessionAnswers) {
+        const t = item.question?.topic || topicId || "general";
+        const c = item.question?.category || category;
+        if (!tagMap[t]) tagMap[t] = { correct: 0, total: 0, category: c };
+        tagMap[t].total += 1;
+        if (item.isCorrect) tagMap[t].correct += 1;
+      }
+
+      for (const [tName, stat] of Object.entries(tagMap)) {
+        await (supabase as any).rpc("tp_record_progress", {
+          _topic: tName,
+          _category: stat.category,
+          _correct: stat.correct,
+          _total: stat.total,
+          _difficulty: difficulty,
+        });
+      }
+
+      if (Object.keys(tagMap).length === 0 && topicId) {
+        await (supabase as any).rpc("tp_record_progress", {
+          _topic: topicId,
+          _category: category,
+          _correct: score.correct,
+          _total: score.total,
+          _difficulty: difficulty,
+        });
+      }
     }
 
     // Module progression bookkeeping — server validates completion via level_progress
@@ -434,7 +458,7 @@ const Quiz = () => {
     queryClient.invalidateQueries({ queryKey: ["topic-progress"] });
     queryClient.invalidateQueries({ queryKey: ["module-progress"] });
     queryClient.invalidateQueries({ queryKey: ["level-progress"] });
-  }, [user, xpEarned, gemsEarned, score, topicId, category, difficulty, difficultyAnchor, correctStreak, queryClient, moduleNum, levelNum, isPracticeMode, isReview, isBossLevel, effectivePracticeMode]);
+  }, [user, xpEarned, gemsEarned, score, topicId, category, difficulty, difficultyAnchor, correctStreak, queryClient, moduleNum, levelNum, isPracticeMode, isReview, isBossLevel, effectivePracticeMode, sessionAnswers]);
 
   // Focus mode timer: Initialize
   useEffect(() => {

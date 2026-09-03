@@ -150,32 +150,67 @@ Each question must be a JSON object with the following fields:
 - "correct_answer": "A" (the exact text of the correct choice),
 - "explanation": "...",
 - "ai_tutor_prompt": "A brief instruction for an AI tutor on how to explain this question step-by-step to a student"
-Return a JSON array of objects without any additional commentary`;
-        // Use Groq API for AI generation
-        const keyToUse = apiKey?.trim() || import.meta.env.VITE_GROQ_API_KEY || 'gsk_ТВОЙ_КЛЮЧ_ЗДЕСЬ';
-        const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${keyToUse}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            model: 'llama-3.3-70b-versatile',
-            messages: [
-              {
-                role: 'system',
-                content:
-                  'You are an expert SAT question generator. Output ONLY a raw, valid JSON array of question objects without markdown blocks, code wrappers, or any explanation text.'
-              },
-              { role: 'user', content: prompt }
-            ],
-            temperature: 0.7
-          })
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error?.message || 'Ошибка Groq API');
-        const rawContent = data.choices[0].message.content;
-        const generated = JSON.parse(rawContent.trim());
+
+Return ONLY a valid JSON object with key 'questions' containing the array of questions. Keep explanations clear and concise.`;
+        const keyToUse = apiKey?.trim() || import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_GROQ_API_KEY || "";
+        let rawContent = "";
+
+        // 1. If key is a Gemini API key (starts with AIza or explicitly requested)
+        if (keyToUse.startsWith("AIza") || keyToUse.toLowerCase().includes("gemini")) {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${keyToUse}`;
+          const res = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: `${prompt}\nRespond strictly with a JSON object containing a 'questions' array.` }] }],
+            }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error?.message || "Gemini API Error");
+          rawContent = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+        } else {
+          // 2. Groq API using active model with max_tokens: 4096 and json_object response_format
+          const GROQ_MODEL = "qwen/qwen3.8-27b";
+          const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${keyToUse}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              model: GROQ_MODEL,
+              messages: [
+                {
+                  role: "system",
+                  content:
+                    "You are an expert SAT question generator. Output ONLY a valid JSON object with a 'questions' key containing the array of questions.",
+                },
+                { role: "user", content: prompt },
+              ],
+              temperature: 0.7,
+              max_tokens: 4096,
+              response_format: { type: "json_object" },
+            }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error?.message || "Groq API Error");
+          rawContent = data.choices?.[0]?.message?.content || "";
+        }
+
+        let rawText = rawContent.trim();
+        rawText = rawText.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+
+        const parsed = JSON.parse(rawText);
+        const generated = Array.isArray(parsed)
+          ? parsed
+          : Array.isArray(parsed?.questions)
+          ? parsed.questions
+          : [];
+
+        if (generated.length === 0) {
+          throw new Error("No questions array found in response JSON");
+        }
+
       setProgress(60);
       // const added = await importQuestions(generated);
       setProgress(100);

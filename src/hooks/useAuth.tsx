@@ -56,16 +56,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [{ data: prof }, { data: prog }] = await Promise.all([
       supabase
         .from("profiles")
-        .select("display_name, nickname, avatar_url, is_premium, onboarding_completed, is_admin, streak_days, referral_source")
+        .select("*")
         .eq("user_id", uid)
         .maybeSingle(),
       supabase
         .from("user_progress")
-        .select("xp, level, streak, gems, hearts")
+        .select("*")
         .eq("user_id", uid)
         .maybeSingle(),
     ]);
-    setProfile(prof as ProfileSummary | null);
+    if (prof) {
+      const p = prof as any;
+      setProfile({
+        display_name: p.display_name ?? null,
+        nickname: p.nickname ?? null,
+        avatar_url: p.avatar_url ?? null,
+        is_premium: Boolean(p.is_premium),
+        onboarding_completed: Boolean(p.onboarding_completed),
+        is_admin: Boolean(p.is_admin),
+        referral_source: p.referral_source ?? null,
+        streak_days: p.streak_days ?? 0,
+      });
+    } else {
+      setProfile(null);
+    }
     setProgress(prog as ProgressSummary | null);
   }, []);
 

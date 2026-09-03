@@ -91,6 +91,7 @@ const Analytics = () => {
     if (!answers || answers.length === 0) return [];
     const map: Record<string, { total: number; correct: number }> = {};
     for (const a of answers) {
+      if (!a.created_at) continue;
       const day = a.created_at.split("T")[0];
       if (!map[day]) map[day] = { total: 0, correct: 0 };
       map[day].total++;

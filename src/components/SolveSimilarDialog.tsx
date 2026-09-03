@@ -107,7 +107,7 @@ export const SolveSimilarDialog = ({
             </div>
 
             <div className="space-y-2.5">
-              {question.options.map((option, i) => {
+              {(question.options || []).map((option, i) => {
                 const isSelected = selectedAnswer === i;
                 const isCorrect = i === question.correct_answer;
                 return (

@@ -89,9 +89,11 @@ const Profile = () => {
   const nickname = (profile as any)?.nickname || profile?.display_name?.split(" ")[0] || "Learner";
   const initial = nickname.charAt(0).toUpperCase();
 
+  const streakValue = (progress as any)?.streak ?? (profile as any)?.streak_days ?? 0;
+
   const stats = [
     { icon: Heart, label: "Hearts", value: `${hearts}/${maxHearts}`, color: "text-destructive" },
-    { icon: Flame, label: "Streak", value: (profile as any)?.streak_days ?? 0, color: "text-streak" },
+    { icon: Flame, label: "Streak", value: streakValue, color: "text-streak" },
     { icon: Gem, label: "Gems", value: progress?.gems ?? 0, color: "text-gem" },
     { icon: Zap, label: "XP", value: progress?.xp ?? 0, color: "text-xp" },
   ];

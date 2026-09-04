@@ -18,12 +18,23 @@ const MobileTopBar = ({ title, showStats = true }: MobileTopBarProps) => {
     queryKey: ["user-progress", user?.id],
     queryFn: async () => {
       if (!user) return null;
-      const { data } = await supabase
-        .from("user_progress")
-        .select("streak, gems")
-        .eq("user_id", user.id)
-        .single();
-      return data;
+      const [{ data: progData }, { data: profData }] = await Promise.all([
+        supabase
+          .from("user_progress")
+          .select("streak, gems")
+          .eq("user_id", user.id)
+          .maybeSingle(),
+        supabase
+          .from("profiles")
+          .select("streak_days")
+          .eq("user_id", user.id)
+          .maybeSingle(),
+      ]);
+
+      const streak = progData?.streak ?? profData?.streak_days ?? 0;
+      const gems = progData?.gems ?? 0;
+
+      return { streak, gems };
     },
     enabled: !!user,
   });
@@ -48,18 +59,18 @@ const MobileTopBar = ({ title, showStats = true }: MobileTopBarProps) => {
 
         <div className="flex items-center gap-2 shrink-0">
           {showStats && progress && (
-            <div className="hidden sm:flex items-center border border-divider rounded-md overflow-hidden bg-card">
-              <div className="flex items-center gap-1.5 px-2.5 py-1 border-r border-divider">
-                <Heart className="w-3.5 h-3.5 text-heart" strokeWidth={2} fill="currentColor" />
-                <span className="font-mono-tech font-semibold text-[12px] text-foreground tabular-nums">{hearts}</span>
+            <div className="flex items-center border border-divider rounded-md overflow-hidden bg-card text-foreground">
+              <div className="flex items-center gap-1 px-1.5 xs:px-2 py-1 border-r border-divider" title="Hearts">
+                <Heart className="w-3.5 h-3.5 text-heart shrink-0" strokeWidth={2} fill="currentColor" />
+                <span className="font-mono-tech font-semibold text-[11px] sm:text-[12px] tabular-nums">{hearts}</span>
               </div>
-              <div className="flex items-center gap-1.5 px-2.5 py-1 border-r border-divider">
-                <Flame className="w-3.5 h-3.5 text-streak" strokeWidth={2} />
-                <span className="font-mono-tech font-semibold text-[12px] text-foreground tabular-nums">{progress.streak}</span>
+              <div className="flex items-center gap-1 px-1.5 xs:px-2 py-1 border-r border-divider" title="Streak">
+                <Flame className="w-3.5 h-3.5 text-streak shrink-0" strokeWidth={2} fill="currentColor" />
+                <span className="font-mono-tech font-semibold text-[11px] sm:text-[12px] tabular-nums">{progress.streak}</span>
               </div>
-              <div className="flex items-center gap-1.5 px-2.5 py-1">
-                <Gem className="w-3.5 h-3.5 text-gem" strokeWidth={2} />
-                <span className="font-mono-tech font-semibold text-[12px] text-foreground tabular-nums">{progress.gems}</span>
+              <div className="flex items-center gap-1 px-1.5 xs:px-2 py-1" title="Gems">
+                <Gem className="w-3.5 h-3.5 text-gem shrink-0" strokeWidth={2} fill="currentColor" />
+                <span className="font-mono-tech font-semibold text-[11px] sm:text-[12px] tabular-nums">{progress.gems}</span>
               </div>
             </div>
           )}

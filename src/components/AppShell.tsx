@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import BottomTabBar from "./BottomTabBar";
 import MobileTopBar from "./MobileTopBar";
+import Sidebar from "./Sidebar";
 
 interface AppShellProps {
   children: ReactNode;
@@ -19,13 +20,15 @@ const AppShell = ({
 }: AppShellProps) => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {showHeader && <MobileTopBar title={title} showStats={showStats} />}
-      <main
-        className="flex-1 max-w-lg w-full mx-auto px-4 pt-4"
-        style={{ paddingBottom: showTabs ? "calc(80px + env(safe-area-inset-bottom))" : undefined }}
-      >
-        {children}
-      </main>
+      <Sidebar />
+      <div className="flex-1 flex flex-col lg:pl-64">
+        {showHeader && <MobileTopBar title={title} showStats={showStats} />}
+        <main
+          className="flex-1 max-w-lg lg:max-w-4xl w-full mx-auto px-4 pt-4 pb-20 lg:pb-8"
+        >
+          {children}
+        </main>
+      </div>
       {showTabs && <BottomTabBar />}
     </div>
   );

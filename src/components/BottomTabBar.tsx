@@ -21,7 +21,7 @@ const BottomTabBar = () => {
 
   return (
     <nav
-      className="fixed bottom-0 inset-x-0 z-50 glass border-t border-border/50 safe-bottom"
+      className="fixed bottom-0 inset-x-0 z-50 glass border-t border-border/50 safe-bottom lg:hidden"
       style={{ height: "calc(64px + env(safe-area-inset-bottom))" }}
     >
       <div className="flex items-stretch justify-around h-16 max-w-lg mx-auto">

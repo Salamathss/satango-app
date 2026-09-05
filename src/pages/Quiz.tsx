@@ -214,7 +214,10 @@ const Quiz = () => {
     setHighlights([]);
   }, [currentIndex]);
 
-  const handleHighlight = () => {
+  const handleHighlight = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+    }
     const selection = window.getSelection();
     if (!selection) return;
     const selectedText = selection.toString().trim();
@@ -224,7 +227,7 @@ const Quiz = () => {
       }
       selection.removeAllRanges();
     } else {
-      toast.info("Select some text in the question first!");
+      toast.info("Highlight text by selecting words in the question first!");
     }
   };
 
@@ -238,7 +241,7 @@ const Quiz = () => {
     sortedHighlights.forEach((hl) => {
       const escapedHl = hl.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
       const regex = new RegExp(`(${escapedHl})`, 'gi');
-      result = result.replace(regex, `<mark class="bg-amber-100 text-foreground dark:bg-amber-950/40 dark:text-foreground border-b border-amber-300 dark:border-amber-700/50 px-0.5 rounded">$1</mark>`);
+      result = result.replace(regex, `<mark class="bg-yellow-200 dark:bg-yellow-500/30 text-inherit px-0.5 rounded">$1</mark>`);
     });
 
     return <span dangerouslySetInnerHTML={{ __html: result }} />;
@@ -827,7 +830,7 @@ const Quiz = () => {
         </button>
         <div className="flex items-center gap-2 text-sm font-bold">
           <button
-            onClick={handleHighlight}
+            onMouseDown={(e) => handleHighlight(e)}
             className="px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 text-xs font-extrabold transition-all flex items-center gap-1 shadow-sm active:scale-95 mr-1"
           >
             <Highlighter className="w-3.5 h-3.5" /> Highlight

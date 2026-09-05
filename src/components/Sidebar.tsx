@@ -29,9 +29,7 @@ const Sidebar = () => {
       <div className="space-y-6">
         {/* Brand header */}
         <div className="flex items-center gap-3 px-3 py-2">
-          <div className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary text-lg">
-            S
-          </div>
+          <img src="/logo-light.png" alt="SATANGO Logo" className="w-9 h-9 rounded-xl object-contain shadow-sm" />
           <div>
             <span className="font-mono-tech font-extrabold text-base tracking-[0.2em] uppercase text-foreground block">
               SATANGO

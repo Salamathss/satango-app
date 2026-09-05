@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <rect width="512" height="512" rx="128" fill="#FAF6EF" />
+  
+  <!-- SATANGO S shape -->
+  <path d="M305 115 C215 115 130 145 105 210 C80 275 140 292 275 285 C335 282 340 330 330 365 C315 410 240 435 110 425 L115 342 C205 348 245 345 252 322 C260 295 230 285 140 280 C60 275 25 210 50 145 C80 80 185 60 310 65 Z" fill="#242220" />
+  
+  <!-- Green dot indicator -->
+  <circle cx="328" cy="112" r="24" fill="#88B000" />
+</svg>

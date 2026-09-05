@@ -111,9 +111,7 @@ export default function Auth() {
 
       <header className="flex justify-between items-center max-w-6xl w-full mx-auto z-10">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
-          <div className="w-8 h-8 rounded-lg bg-primary/20 border border-primary/40 flex items-center justify-center font-mono font-bold text-primary">
-            S
-          </div>
+          <img src="/logo-light.png" alt="SATANGO Logo" className="w-8 h-8 rounded-xl object-contain shadow-sm" />
           <span className="font-mono font-bold text-lg tracking-tight">SATANGO</span>
         </div>
         <button

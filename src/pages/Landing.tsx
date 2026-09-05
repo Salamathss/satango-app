@@ -380,10 +380,8 @@ const Landing = () => {
         <DottedGrid />
         <div className="relative max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-md bg-foreground text-background flex items-center justify-center font-bold text-sm">
-              S
-            </div>
-            <span className="font-semibold tracking-tight text-lg">Satango</span>
+            <img src="/logo-light.png" alt="SATANGO Logo" className="w-8 h-8 rounded-xl object-contain shadow-sm" />
+            <span className="font-semibold tracking-tight text-lg">SATANGO</span>
           </div>
           <div className="flex items-center gap-3">
             <Link

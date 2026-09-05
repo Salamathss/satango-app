@@ -47,7 +47,8 @@ const MobileTopBar = ({ title, showStats = true }: MobileTopBarProps) => {
     <header className="sticky top-0 z-40 glass hairline-b safe-top">
       <div className="flex items-center justify-between flex-wrap px-4 h-14">
         <Link to="/" className="flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary mr-2 sm:hidden">←</Link>
-        <div className="flex items-center gap-2.5 min-w-0">
+        <div className="flex items-center gap-2 min-w-0">
+          <img src="/logo-light.png" alt="SATANGO Logo" className="w-6 h-6 rounded-md object-contain shrink-0" />
           <span className="font-mono-tech font-bold text-[13px] tracking-[0.18em] uppercase text-foreground">
             SATANGO
           </span>

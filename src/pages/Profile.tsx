@@ -1,23 +1,44 @@
 import AppShell from "@/components/AppShell";
-import { useAuth } from "@/hooks/useAuth";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
-import { LogOut, Trophy, BarChart3, Flame, Gem, Zap, Heart, ChevronRight, Sparkles, AlertCircle, MessageCircle, Swords, Target } from "lucide-react";
 import DailyCheckIn from "@/components/DailyCheckIn";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import { useHearts } from "@/hooks/useHearts";
 import { useUserErrors } from "@/hooks/useUserErrors";
 import { usePremium } from "@/hooks/usePremium";
+import { useTheme } from "@/context/ThemeContext";
+import { useLanguage } from "@/context/LanguageContext";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { SAT_TOPICS } from "@/lib/topics";
 import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import {
+  Heart,
+  Flame,
+  Gem,
+  Zap,
+  Sparkles,
+  BarChart3,
+  AlertCircle,
+  Trophy,
+  LogOut,
+  ChevronRight,
+  Target,
+  Swords,
+  MessageCircle,
+  Sun,
+  Moon,
+  Languages,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const { user, signOut } = useAuth();
-  const navigate = useNavigate();
   const { hearts, maxHearts } = useHearts();
   const { pendingCount: errorCount } = useUserErrors();
   const { isPremium } = usePremium();
+  const { theme, toggleTheme } = useTheme();
+  const { language, setLanguage, t } = useLanguage();
+  const navigate = useNavigate();
 
   const { data: profile } = useQuery({
     queryKey: ["profile", user?.id],
@@ -27,7 +48,7 @@ const Profile = () => {
         .from("profiles")
         .select("*")
         .eq("user_id", user.id)
-        .single();
+        .maybeSingle();
       return data;
     },
     enabled: !!user,
@@ -37,17 +58,12 @@ const Profile = () => {
     queryKey: ["user-progress", user?.id],
     queryFn: async () => {
       if (!user) return null;
-      const { data } = await supabase
-        .from("user_progress")
-        .select("*")
-        .eq("user_id", user.id)
-        .single();
+      const { data } = await supabase.from("user_progress").select("*").eq("user_id", user.id).single();
       return data;
     },
     enabled: !!user,
   });
 
-  // Weakness Practice: fetch user_answers to compute topic accuracy
   const { data: weakTopics } = useQuery({
     queryKey: ["weakness-practice", user?.id],
     queryFn: async () => {
@@ -71,11 +87,11 @@ const Profile = () => {
       return Object.entries(map)
         .filter(([, s]) => s.total >= 3)
         .map(([topic, s]) => {
-          const t = SAT_TOPICS.find((t) => t.id === topic);
+          const tItem = SAT_TOPICS.find((tItem) => tItem.id === topic);
           return {
             topic,
-            topicName: t?.name || topic,
-            icon: t?.icon || "📝",
+            topicName: tItem?.name || topic,
+            icon: tItem?.icon || "📝",
             accuracy: Math.round((s.correct / s.total) * 100),
             total: s.total,
           };
@@ -86,20 +102,20 @@ const Profile = () => {
     enabled: !!user,
   });
 
-  const nickname = (profile as any)?.nickname || profile?.display_name?.split(" ")[0] || "Learner";
+  const nickname = (profile as any)?.nickname || profile?.display_name?.split(" ")[0] || t("learner");
   const initial = nickname.charAt(0).toUpperCase();
 
   const streakValue = (progress as any)?.streak ?? (profile as any)?.streak_days ?? 0;
 
   const stats = [
-    { icon: Heart, label: "Hearts", value: `${hearts}/${maxHearts}`, color: "text-destructive" },
-    { icon: Flame, label: "Streak", value: streakValue, color: "text-streak" },
-    { icon: Gem, label: "Gems", value: progress?.gems ?? 0, color: "text-gem" },
-    { icon: Zap, label: "XP", value: progress?.xp ?? 0, color: "text-xp" },
+    { icon: Heart, label: t("hearts"), value: `${hearts}/${maxHearts}`, color: "text-destructive" },
+    { icon: Flame, label: t("streak"), value: streakValue, color: "text-streak" },
+    { icon: Gem, label: t("gems"), value: progress?.gems ?? 0, color: "text-gem" },
+    { icon: Zap, label: t("xp"), value: progress?.xp ?? 0, color: "text-xp" },
   ];
 
   return (
-    <AppShell title="Profile">
+    <AppShell title={t("profile")}>
       <div className="space-y-5 animate-spring-in">
         {/* Hero */}
         <div className="text-center pt-2">
@@ -115,7 +131,7 @@ const Profile = () => {
               </span>
             )}
           </div>
-          <p className="text-sm text-muted-foreground">Level {progress?.level ?? 1} · {progress?.xp ?? 0} XP</p>
+          <p className="text-sm text-muted-foreground">{t("level")} {progress?.level ?? 1} · {progress?.xp ?? 0} {t("xp")}</p>
         </div>
 
         {/* Stats grid */}
@@ -139,25 +155,25 @@ const Profile = () => {
           <div className="bg-card rounded-3xl p-4 border border-border/50 space-y-3">
             <div className="flex items-center gap-2">
               <Target className="w-5 h-5 text-destructive" />
-              <h3 className="font-extrabold text-sm">Weak Areas</h3>
+              <h3 className="font-extrabold text-sm">{t("weakAreas")}</h3>
             </div>
-            {weakTopics.map((t) => (
-              <div key={t.topic} className="flex items-center gap-3">
-                <span className="text-lg shrink-0">{t.icon}</span>
+            {weakTopics.map((tItem) => (
+              <div key={tItem.topic} className="flex items-center gap-3">
+                <span className="text-lg shrink-0">{tItem.icon}</span>
                 <div className="flex-1 min-w-0">
                   <div className="flex justify-between items-baseline mb-1">
-                    <span className="text-xs font-bold truncate">{t.topicName}</span>
-                    <span className="text-[10px] font-black text-destructive">{t.accuracy}%</span>
+                    <span className="text-xs font-bold truncate">{tItem.topicName}</span>
+                    <span className="text-[10px] font-black text-destructive">{tItem.accuracy}%</span>
                   </div>
-                  <Progress value={t.accuracy} className="h-1.5" />
+                  <Progress value={tItem.accuracy} className="h-1.5" />
                 </div>
               </div>
             ))}
             <Button
               onClick={() => {
-                const topicIds = weakTopics.map((t) => t.topic);
+                const topicIds = weakTopics.map((tItem) => tItem.topic);
                 const firstTopic = topicIds[0] || "linear-equations";
-                const topicMeta = SAT_TOPICS.find((t) => t.id === firstTopic);
+                const topicMeta = SAT_TOPICS.find((tItem) => tItem.id === firstTopic);
                 navigate(`/quiz/${firstTopic}?category=${topicMeta?.category || "math"}&review=true`);
               }}
               className="w-full h-11 rounded-2xl font-bold text-xs gap-1.5"
@@ -169,6 +185,40 @@ const Profile = () => {
           </div>
         )}
 
+        {/* Appearance & Language Settings Card */}
+        <div className="bg-card rounded-3xl p-4 border border-border/50 space-y-3">
+          <h3 className="font-extrabold text-sm text-foreground">{t("settings")}</h3>
+          <div className="flex items-center justify-between pt-1">
+            <div className="flex items-center gap-2.5">
+              {theme === "dark" ? <Moon className="w-4 h-4 text-amber-400" /> : <Sun className="w-4 h-4 text-muted-foreground" />}
+              <span className="text-xs font-bold">{t("theme")}</span>
+            </div>
+            <Button
+              onClick={toggleTheme}
+              variant="outline"
+              size="sm"
+              className="h-8 rounded-xl font-bold text-xs gap-1.5"
+            >
+              {theme === "dark" ? t("darkMode") : t("lightMode")}
+            </Button>
+          </div>
+
+          <div className="flex items-center justify-between border-t border-border/40 pt-3">
+            <div className="flex items-center gap-2.5">
+              <Languages className="w-4 h-4 text-muted-foreground" />
+              <span className="text-xs font-bold">{t("language")}</span>
+            </div>
+            <Button
+              onClick={() => setLanguage(language === "ru" ? "en" : "ru")}
+              variant="outline"
+              size="sm"
+              className="h-8 rounded-xl font-bold font-mono-tech text-xs gap-1.5"
+            >
+              {language === "ru" ? t("russian") : t("english")}
+            </Button>
+          </div>
+        </div>
+
         {/* Menu */}
         <div className="bg-card rounded-3xl divide-y divide-border/50 border border-border/50 overflow-hidden">
           <button
@@ -179,9 +229,9 @@ const Profile = () => {
               <AlertCircle className="w-5 h-5" />
             </div>
             <div className="flex-1 text-left">
-              <p className="font-bold text-sm">Review My Mistakes</p>
+              <p className="font-bold text-sm">{t("reviewMistakes")}</p>
               <p className="text-xs text-muted-foreground">
-                ({errorCount}) error{errorCount === 1 ? "" : "s"} pending
+                ({errorCount}) {t("errorsPending")}
               </p>
             </div>
             <ChevronRight className="w-5 h-5 text-muted-foreground" />
@@ -195,7 +245,7 @@ const Profile = () => {
               <BarChart3 className="w-5 h-5" />
             </div>
             <div className="flex-1 text-left">
-              <p className="font-bold text-sm">Analytics</p>
+              <p className="font-bold text-sm">{t("analytics")}</p>
               <p className="text-xs text-muted-foreground">Performance insights</p>
             </div>
             <ChevronRight className="w-5 h-5 text-muted-foreground" />
@@ -237,8 +287,8 @@ const Profile = () => {
               <Sparkles className="w-5 h-5" />
             </div>
             <div className="flex-1 text-left">
-              <p className="font-bold text-sm">Exam Hall</p>
-              <p className="text-xs text-muted-foreground">Full & section mocks</p>
+              <p className="font-bold text-sm">{t("examHall")}</p>
+              <p className="text-xs text-muted-foreground">{t("examHallDesc")}</p>
             </div>
             <ChevronRight className="w-5 h-5 text-muted-foreground" />
           </button>
@@ -266,7 +316,7 @@ const Profile = () => {
           className="w-full h-12 rounded-2xl gap-2 font-bold"
         >
           <LogOut className="w-4 h-4" />
-          Sign Out
+          {t("signOut")}
         </Button>
       </div>
     </AppShell>

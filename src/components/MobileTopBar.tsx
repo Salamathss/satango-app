@@ -2,8 +2,10 @@ import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useHearts } from "@/hooks/useHearts";
-import { Flame, Gem, Heart, LogOut, Calculator } from "lucide-react";
+import { Flame, Gem, Heart, LogOut, Calculator, Sun, Moon, Languages } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTheme } from "@/context/ThemeContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface MobileTopBarProps {
   title?: string;
@@ -13,6 +15,8 @@ interface MobileTopBarProps {
 const MobileTopBar = ({ title, showStats = true }: MobileTopBarProps) => {
   const { user, signOut } = useAuth();
   const { hearts } = useHearts();
+  const { theme, toggleTheme } = useTheme();
+  const { language, setLanguage } = useLanguage();
 
   const { data: progress } = useQuery({
     queryKey: ["user-progress", user?.id],
@@ -57,7 +61,7 @@ const MobileTopBar = ({ title, showStats = true }: MobileTopBarProps) => {
           )}
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-1.5 shrink-0">
           {showStats && progress && (
             <div className="flex items-center border border-divider rounded-md overflow-hidden bg-card text-foreground">
               <div className="flex items-center gap-1 px-1.5 xs:px-2 py-1 border-r border-divider" title="Hearts">
@@ -74,6 +78,28 @@ const MobileTopBar = ({ title, showStats = true }: MobileTopBarProps) => {
               </div>
             </div>
           )}
+
+          {/* Theme switcher */}
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            title={theme === "dark" ? "Light Mode" : "Dark Mode"}
+            className="inline-flex items-center justify-center w-8 h-8 rounded-md border border-divider bg-card text-muted-foreground hover:text-foreground hover:bg-[hsl(var(--surface-hover))] transition-colors duration-150"
+          >
+            {theme === "dark" ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5" />}
+          </button>
+
+          {/* Language selector */}
+          <button
+            onClick={() => setLanguage(language === "ru" ? "en" : "ru")}
+            aria-label="Toggle language"
+            title="Change language"
+            className="inline-flex items-center justify-center px-2 h-8 rounded-md border border-divider bg-card text-[11px] font-bold font-mono-tech text-foreground hover:bg-[hsl(var(--surface-hover))] transition-colors duration-150 gap-1"
+          >
+            <Languages className="w-3 h-3 text-muted-foreground" />
+            <span>{language.toUpperCase()}</span>
+          </button>
+
           <Link
             to="/score-calculator"
             aria-label="Score calculator"

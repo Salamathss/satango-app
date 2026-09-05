@@ -26,6 +26,9 @@ import AppShell from "@/components/AppShell";
 import ScoreCalculator from "./pages/ScoreCalculator";
 import { Battle } from "./pages/Battle";
 
+import { ThemeProvider } from "@/context/ThemeContext";
+import { LanguageProvider } from "@/context/LanguageContext";
+
 const queryClient = new QueryClient();
 
 const protectedRoute = (element: JSX.Element) => (
@@ -34,11 +37,13 @@ const protectedRoute = (element: JSX.Element) => (
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AuthProvider>
+    <ThemeProvider>
+      <LanguageProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AuthProvider>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={<Navigate to="/" replace />} />
@@ -65,7 +70,9 @@ const App = () => (
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
-  </QueryClientProvider>
+  </LanguageProvider>
+</ThemeProvider>
+</QueryClientProvider>
 );
 
 export default App;

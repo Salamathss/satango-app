@@ -5,6 +5,7 @@ import DailyCheckIn from "@/components/DailyCheckIn";
 import StreakWarning from "@/components/StreakWarning";
 import SeoHead from "@/components/SeoHead";
 import { useAuth } from "@/hooks/useAuth";
+import { useLanguage } from "@/context/LanguageContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { FileText, Sparkles, AlertCircle, ChevronRight } from "lucide-react";
@@ -12,19 +13,19 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useUserErrors } from "@/hooks/useUserErrors";
 
-const greeting = () => {
-  const h = new Date().getHours();
-  if (h < 5) return "Good night";
-  if (h < 12) return "Good morning";
-  if (h < 18) return "Good afternoon";
-  return "Good evening";
-};
-
 const Dashboard = () => {
   const { user } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const { pendingCount: errorCount } = useUserErrors();
 
+  const greetingText = () => {
+    const h = new Date().getHours();
+    if (h < 5) return t("goodNight");
+    if (h < 12) return t("goodMorning");
+    if (h < 18) return t("goodAfternoon");
+    return t("goodEvening");
+  };
 
   const { data: profile } = useQuery({
     queryKey: ["profile", user?.id],
@@ -58,7 +59,7 @@ const Dashboard = () => {
   }, [user, progress]);
 
   const nickname =
-    (profile as any)?.nickname || profile?.display_name?.split(" ")[0] || "Learner";
+    (profile as any)?.nickname || profile?.display_name?.split(" ")[0] || t("learner");
 
   return (
     <AppShell>
@@ -82,7 +83,7 @@ const Dashboard = () => {
         {/* Personalized greeting */}
         <div>
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-            {greeting()}
+            {greetingText()}
           </p>
           <h1 className="text-3xl font-extrabold tracking-tight truncate max-w-[280px]" style={{ lineHeight: "1.1" }}>
             {nickname} 👋
@@ -105,10 +106,10 @@ const Dashboard = () => {
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-1.5">
-                <h3 className="font-extrabold text-lg">Exam Hall</h3>
+                <h3 className="font-extrabold text-lg">{t("examHall")}</h3>
                 <Sparkles className="w-4 h-4" />
               </div>
-              <p className="text-sm opacity-80">Full SAT & sectional mock tests</p>
+              <p className="text-sm opacity-80">{t("examHallDesc")}</p>
             </div>
           </div>
         </button>
@@ -123,19 +124,18 @@ const Dashboard = () => {
               <AlertCircle className="w-6 h-6" />
             </div>
             <div className="flex-1">
-              <p className="font-extrabold text-[15px]">Review My Mistakes</p>
+              <p className="font-extrabold text-[15px]">{t("reviewMistakes")}</p>
               <p className="text-xs text-muted-foreground font-semibold">
-                ({errorCount}) error{errorCount === 1 ? "" : "s"} pending · No hearts lost
+                ({errorCount}) {t("errorsPending")}
               </p>
             </div>
             <ChevronRight className="w-5 h-5 text-muted-foreground" />
           </button>
         )}
 
-
         <div className="pt-2">
           <h2 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground mb-4">
-            Your Learning Path
+            {t("learningPath")}
           </h2>
           <MobileRoadmap />
         </div>

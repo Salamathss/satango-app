@@ -3,20 +3,22 @@ import { Link, useLocation } from "react-router-dom";
 import { Map, GraduationCap, BookOpen, ShoppingBag, User, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
+import { useLanguage, TranslationKey } from "@/context/LanguageContext";
 
 const BottomTabBar = () => {
   const location = useLocation();
-  const { user, profile } = useAuth();
+  const { profile } = useAuth();
+  const { t } = useLanguage();
 
   const isAdmin = profile?.is_admin === true;
 
-  const tabs = [
-    { path: "/", label: "Home", icon: Map },
-    { path: "/vocabulary", label: "Vocab", icon: BookOpen },
-    { path: "/exam-center", label: "Exams", icon: GraduationCap },
-    { path: "/shop", label: "Shop", icon: ShoppingBag },
-    { path: "/profile", label: "Profile", icon: User },
-    ...(isAdmin ? [{ path: "/admin-import", label: "Admin", icon: Shield }] : []),
+  const tabs: { path: string; labelKey: TranslationKey; icon: any }[] = [
+    { path: "/", labelKey: "home", icon: Map },
+    { path: "/vocabulary", labelKey: "vocab", icon: BookOpen },
+    { path: "/exam-center", labelKey: "exams", icon: GraduationCap },
+    { path: "/shop", labelKey: "shop", icon: ShoppingBag },
+    { path: "/profile", labelKey: "profile", icon: User },
+    ...(isAdmin ? [{ path: "/admin-import", labelKey: "admin" as TranslationKey, icon: Shield }] : []),
   ];
 
   return (
@@ -49,7 +51,7 @@ const BottomTabBar = () => {
                 <Icon className={cn("w-5 h-5", active && "scale-110")} strokeWidth={active ? 2.5 : 2} />
               </div>
               <span className={cn("text-[10px] font-bold tracking-tight", active ? "" : "opacity-80")}>
-                {tab.label}
+                {t(tab.labelKey)}
               </span>
             </Link>
           );

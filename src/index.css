@@ -152,13 +152,14 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-feature-settings: 'ss01', 'cv11';
     -webkit-font-smoothing: antialiased;
-    -webkit-user-select: none;
-    user-select: none;
+    -webkit-user-select: auto;
+    user-select: auto;
     overscroll-behavior-y: none;
   }
 
   input,
   textarea,
+  .select-text,
   [contenteditable="true"] {
     -webkit-user-select: text;
     user-select: text;

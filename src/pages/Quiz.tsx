@@ -880,7 +880,7 @@ const Quiz = () => {
         )}
 
         <div className="space-y-5">
-          <h2 className="text-xl font-bold leading-snug tracking-tight">{renderQuestionText(question?.question_text)}</h2>
+          <h2 className="text-xl font-bold leading-snug tracking-tight select-text">{renderQuestionText(question?.question_text)}</h2>
           <div className="space-y-3">
             {options.map((option, i) => {
               const isSelected = selectedAnswer === i;

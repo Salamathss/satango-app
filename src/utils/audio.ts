@@ -7,34 +7,50 @@
 
 // Singleton AudioContext to avoid creating multiple contexts which can be limited by browsers.
 let audioCtx: AudioContext | null = null;
-function getAudioContext(): AudioContext {
-  if (!audioCtx) {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+function getAudioContext(): AudioContext | null {
+  try {
+    if (!audioCtx && typeof window !== "undefined") {
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      if (AudioContextClass) {
+        audioCtx = new AudioContextClass();
+      }
+    }
+    return audioCtx;
+  } catch {
+    return null;
   }
-  return audioCtx;
 }
 
 /** Play a tone at a given frequency (Hz) for a duration (seconds). */
 function playTone(frequency: number, duration: number, when = 0) {
-  const ctx = getAudioContext();
-  const oscillator = ctx.createOscillator();
-  const gain = ctx.createGain();
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
 
-  oscillator.type = "sine";
-  oscillator.frequency.value = frequency;
+    if (ctx.state === "suspended") {
+      ctx.resume().catch(() => {});
+    }
 
-  // Connect nodes
-  oscillator.connect(gain);
-  gain.connect(ctx.destination);
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
 
-  // Fade out to avoid clicks
-  gain.gain.setValueAtTime(0.001, ctx.currentTime + when);
-  gain.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + when + 0.01);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + when + duration);
+    oscillator.type = "sine";
+    oscillator.frequency.value = frequency;
 
-  oscillator.start(ctx.currentTime + when);
-  oscillator.stop(ctx.currentTime + when + duration);
+    // Connect nodes
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+
+    // Fade out to avoid clicks
+    gain.gain.setValueAtTime(0.001, ctx.currentTime + when);
+    gain.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + when + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + when + duration);
+
+    oscillator.start(ctx.currentTime + when);
+    oscillator.stop(ctx.currentTime + when + duration);
+  } catch {
+    // Graceful fallback if browser restricts audio
+  }
 }
 
 /** Play success sound: two quick ascending tones (C5 -> G5). */

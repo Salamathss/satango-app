@@ -606,12 +606,122 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* FAQ SECTION */}
+      {/* PRICING SECTION */}
       <section className="relative z-10 border-t border-white/10 bg-[#11100f]">
         <div className="max-w-7xl mx-auto px-6 py-20">
           <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/10 pb-6 mb-12 gap-4">
             <div>
               <MonoLabel className="text-neutral-400">// Section 05</MonoLabel>
+              <h3 className="text-3xl md:text-4xl font-semibold tracking-tight text-white mt-2">
+                Transparent Pro Membership.
+              </h3>
+            </div>
+            <span className="font-mono-tech text-[10px] uppercase text-neutral-500 tracking-widest">
+              PRICING / 02 TIERS
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {/* Tier 1: 1-Month Sprint */}
+            <div className="bg-[#171615] border border-white/15 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-white/30 transition shadow-xl">
+              <div className="space-y-4">
+                <div className="inline-block px-3 py-1 rounded-full bg-white/5 border border-white/15 font-mono-tech text-[10px] uppercase tracking-wider text-neutral-300">
+                  FOCUSED PREP
+                </div>
+                <h4 className="text-2xl font-black text-white">1-Month Sprint</h4>
+                <p className="text-xs text-neutral-400 leading-relaxed">
+                  Ideal for students with an exam in 30 days who need intense practice and unlimited Socratic AI coach guidance.
+                </p>
+                <div className="pt-2">
+                  <span className="text-4xl font-black text-white">$9.99</span>
+                  <span className="text-xs text-neutral-400 font-mono-tech ml-2">/ month</span>
+                </div>
+                <ul className="space-y-2.5 pt-4 border-t border-white/10 text-xs text-neutral-300">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>Unlimited Socratic AI Tutor</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>Mistake Vault Pro & targeted drills</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>Time & Pacing Analytics</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>Infinite Hearts & Full Mocks</span>
+                  </li>
+                </ul>
+              </div>
+              <button
+                onClick={() => {
+                  void trackCta("pricing_sprint");
+                  navigate("/auth");
+                }}
+                className="w-full py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-mono-tech text-xs uppercase tracking-wider font-bold transition border border-white/20"
+              >
+                Choose 1-Month Sprint
+              </button>
+            </div>
+
+            {/* Tier 2: 3-Month Mastery (HIT) */}
+            <div className="bg-gradient-to-b from-[#221c16] via-[#1c1815] to-[#171615] border-2 border-amber-500/50 rounded-3xl p-8 flex flex-col justify-between space-y-6 relative overflow-hidden shadow-2xl shadow-amber-500/10 hover:border-amber-500 transition">
+              <div className="absolute top-0 right-0 bg-amber-500 text-neutral-950 font-mono-tech text-[9px] font-black px-3 py-1 rounded-bl-xl uppercase tracking-widest">
+                ХИТ · POPULAR · SAVE 20%
+              </div>
+              <div className="space-y-4">
+                <div className="inline-block px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30 font-mono-tech text-[10px] uppercase tracking-wider text-amber-400 font-bold">
+                  BEST VALUE
+                </div>
+                <h4 className="text-2xl font-black text-white">3-Month Mastery</h4>
+                <p className="text-xs text-neutral-300 leading-relaxed">
+                  Complete preparation cycle from baseline diagnostic to target 1500+ score.
+                </p>
+                <div className="pt-2 flex items-baseline gap-2">
+                  <span className="text-4xl font-black text-amber-400">$24.99</span>
+                  <span className="text-xs text-neutral-400 font-mono-tech">for 3 months (~$8.33/mo)</span>
+                </div>
+                <ul className="space-y-2.5 pt-4 border-t border-white/10 text-xs text-neutral-200">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                    <span className="font-semibold">All Pro features included</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                    <span>Built-in Streak Freeze Protection</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                    <span>Personalized weak-spot recovery path</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                    <span>Priority Support via Telegram @sltrn0l</span>
+                  </li>
+                </ul>
+              </div>
+              <button
+                onClick={() => {
+                  void trackCta("pricing_mastery");
+                  navigate("/auth");
+                }}
+                className="w-full py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-mono-tech text-xs uppercase tracking-wider font-extrabold transition shadow-lg shadow-amber-500/25"
+              >
+                Get 3-Month Mastery
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ SECTION */}
+      <section className="relative z-10 border-t border-white/10 bg-[#141312]">
+        <div className="max-w-7xl mx-auto px-6 py-20">
+          <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/10 pb-6 mb-12 gap-4">
+            <div>
+              <MonoLabel className="text-neutral-400">// Section 06</MonoLabel>
               <h3 className="text-3xl md:text-4xl font-semibold tracking-tight text-white mt-2">
                 Questions, answered.
               </h3>
@@ -697,6 +807,14 @@ const Landing = () => {
             >
               Sign in
             </Link>
+            <a
+              href="https://t.me/sltrn0l"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono-tech text-[10px] uppercase text-amber-500 hover:text-amber-400 tracking-widest transition flex items-center gap-1"
+            >
+              Support: @sltrn0l
+            </a>
             <span className="font-mono-tech text-[10px] uppercase text-neutral-600 tracking-widest">
               © Satango · Node 042
             </span>

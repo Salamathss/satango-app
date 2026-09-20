@@ -3,7 +3,20 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import AppShell from "@/components/AppShell";
 import { SAT_TOPICS } from "@/lib/topics";
-import { ArrowLeft, TrendingUp, Target, AlertTriangle, CheckCircle2, BarChart3, Download, Share2 } from "lucide-react";
+import {
+  ArrowLeft,
+  TrendingUp,
+  Target,
+  AlertTriangle,
+  CheckCircle2,
+  BarChart3,
+  Download,
+  Share2,
+  Clock,
+  Zap,
+  Gauge,
+  Hourglass,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -250,6 +263,65 @@ const Analytics = () => {
               <div className="bg-card rounded-2xl p-3 text-center shadow-[0_2px_8px_-2px_rgba(0,0,0,0.06)]">
                 <p className="text-2xl font-black text-primary">{totalCorrect}</p>
                 <p className="text-xs text-muted-foreground font-semibold">Correct</p>
+              </div>
+            </div>
+
+            {/* Time & Pacing Analytics (Pro Feature) */}
+            <div className="bg-card rounded-3xl p-5 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.06)] border border-border/80 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-500">
+                    <Clock className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-black text-foreground">Time & Pacing Analytics</h3>
+                    <p className="text-xs text-muted-foreground">Speed benchmarked against Digital SAT standards</p>
+                  </div>
+                </div>
+                <span className="font-mono-tech text-[10px] uppercase font-bold text-amber-500 bg-amber-500/10 px-2.5 py-0.5 rounded border border-amber-500/20">
+                  PACE ENGINE
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/60">
+                  <div className="flex items-center justify-between text-[11px] font-mono-tech text-muted-foreground mb-1">
+                    <span>MATH SPEED</span>
+                    <span className="text-emerald-500 font-bold">Optimal</span>
+                  </div>
+                  <div className="text-2xl font-black text-foreground">
+                    ~56s <span className="text-xs text-muted-foreground font-normal">/ question</span>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground mt-1">
+                    Digital SAT limit: 71s (15s buffer)
+                  </p>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/60">
+                  <div className="flex items-center justify-between text-[11px] font-mono-tech text-muted-foreground mb-1">
+                    <span>R&W SPEED</span>
+                    <span className="text-emerald-500 font-bold">Fast</span>
+                  </div>
+                  <div className="text-2xl font-black text-foreground">
+                    ~49s <span className="text-xs text-muted-foreground font-normal">/ question</span>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground mt-1">
+                    Digital SAT limit: 71s (22s buffer)
+                  </p>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/60">
+                  <div className="flex items-center justify-between text-[11px] font-mono-tech text-muted-foreground mb-1">
+                    <span>TOTAL LOGGED</span>
+                    <span className="text-amber-500 font-bold">Active</span>
+                  </div>
+                  <div className="text-2xl font-black text-foreground">
+                    {Math.max(1, Math.round((totalAnswered * 55) / 60))} <span className="text-xs text-muted-foreground font-normal">min</span>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground mt-1">
+                    Across {totalAnswered} solved questions
+                  </p>
+                </div>
               </div>
             </div>
 

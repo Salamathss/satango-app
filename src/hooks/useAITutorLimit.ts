@@ -3,14 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { usePremium } from "@/hooks/usePremium";
 
-const FREE_DAILY_LIMIT = 3;
+export const FREE_DAILY_LIMIT = 5;
 const todayUTC = () => new Date().toISOString().slice(0, 10);
 
 /**
- * Read-only view of the user's AI Tutor quota.
- * The authoritative consume/increment happens server-side inside the
- * `ai-tutor` edge function via the `consume_ai_tutor_request` RPC,
- * so the client cannot bypass the limit by editing React state.
+ * Read-only view of the user's Socratic AI Tutor quota.
+ * - Free users: 5 queries per day.
+ * - Satango Plus / Pro users: Unlimited.
  */
 export const useAITutorLimit = () => {
   const { user } = useAuth();
@@ -20,7 +19,14 @@ export const useAITutorLimit = () => {
   const { data: usage } = useQuery({
     queryKey: ["ai-tutor-usage", user?.id, date],
     queryFn: async () => {
-      if (!user) return null;
+      if (!user) {
+        try {
+          const localCount = parseInt(localStorage.getItem(`satango_ai_usage_${date}`) || "0", 10);
+          return { count: localCount };
+        } catch {
+          return { count: 0 };
+        }
+      }
       const { data } = await (supabase as any)
         .from("ai_tutor_usage")
         .select("count")
@@ -29,7 +35,7 @@ export const useAITutorLimit = () => {
         .maybeSingle();
       return data;
     },
-    enabled: !!user,
+    enabled: true,
   });
 
   const count = (usage as any)?.count ?? 0;

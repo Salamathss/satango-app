@@ -28,6 +28,7 @@ import {
   Sun,
   Moon,
   Languages,
+  Snowflake,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -132,6 +133,14 @@ const Profile = () => {
             )}
           </div>
           <p className="text-sm text-muted-foreground">{t("level")} {progress?.level ?? 1} · {progress?.xp ?? 0} {t("xp")}</p>
+          <div className="flex items-center justify-center gap-2 mt-2">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono-tech font-bold bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20">
+              <Snowflake className="w-3.5 h-3.5" />
+              {((progress as any)?.streak_freeze_count ?? 0) > 0
+                ? `${(progress as any)?.streak_freeze_count} Streak Freeze Equipped 🛡️`
+                : "Streak Freeze: Inactive (0 in Vault)"}
+            </span>
+          </div>
         </div>
 
         {/* Stats grid */}
@@ -294,7 +303,7 @@ const Profile = () => {
           </button>
 
           <a
-            href="https://t.me/Jukizavr"
+            href="https://t.me/sltrn0l"
             target="_blank"
             rel="noopener noreferrer"
             className="w-full flex items-center gap-3 p-4 tap-feedback active:bg-muted/50 transition-colors"

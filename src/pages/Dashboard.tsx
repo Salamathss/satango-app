@@ -1,34 +1,23 @@
 import AppShell from "@/components/AppShell";
 import MobileRoadmap from "@/components/MobileRoadmap";
-import XPBar from "@/components/XPBar";
-import DailyCheckIn from "@/components/DailyCheckIn";
-import DailyQuests from "@/components/DailyQuests";
 import DailyWisdom from "@/components/DailyWisdom";
-import QuickHub from "@/components/QuickHub";
 import StreakWarning from "@/components/StreakWarning";
+import { PersonalPlanCard } from "@/components/PersonalPlanCard";
+import DailyRitualDeck from "@/components/DailyRitualDeck";
+import CommandHub from "@/components/CommandHub";
 import SeoHead from "@/components/SeoHead";
 import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/context/LanguageContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { FileText, Sparkles, AlertCircle, ChevronRight, Flame, Trophy } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Flame } from "lucide-react";
 import { useEffect } from "react";
 import { useUserErrors } from "@/hooks/useUserErrors";
 
 const Dashboard = () => {
   const { user } = useAuth();
   const { t } = useLanguage();
-  const navigate = useNavigate();
   const { pendingCount: errorCount } = useUserErrors();
-
-  const greetingText = () => {
-    const h = new Date().getHours();
-    if (h < 5) return t("goodNight");
-    if (h < 12) return t("goodMorning");
-    if (h < 18) return t("goodAfternoon");
-    return t("goodEvening");
-  };
 
   const { data: profile } = useQuery({
     queryKey: ["profile", user?.id],
@@ -113,12 +102,12 @@ const Dashboard = () => {
         </div>
 
         {/* Dashboard content */}
-        <div className="relative z-10 space-y-5">
-          {/* Personalized Greeting Header */}
+        <div className="relative z-10 space-y-6">
+          {/* Top Header Deck */}
           <div className="flex items-center justify-between pt-1 border-b border-border/60 pb-4">
             <div>
-              <div className="font-mono-tech text-[10px] tracking-[0.2em] uppercase text-amber-500 font-bold mb-1 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+              <div className="font-mono-tech text-[10px] tracking-[0.2em] uppercase text-zinc-500 dark:text-zinc-400 font-bold mb-1 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500" />
                 SYSTEM / SCHOLAR / ACTIVE
               </div>
               <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground leading-tight">
@@ -127,101 +116,44 @@ const Dashboard = () => {
             </div>
 
             {progress && progress.streak > 0 && (
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 font-mono-tech text-xs font-black shadow-sm">
-                <Flame className="w-4 h-4 fill-amber-500/40" />
+              <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-2xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-foreground font-mono-tech text-xs font-bold shadow-xs">
+                <Flame className="w-4 h-4 fill-zinc-500 text-zinc-600 dark:text-zinc-300" />
                 <span>{progress.streak}D STREAK</span>
               </div>
             )}
           </div>
 
-          {/* Daily Philosophy & Mindset Quote */}
+          {/* Streak Warning if streak at risk */}
+          <StreakWarning />
+
+          {/* Philosophy & Mindset Quote */}
           <DailyWisdom targetScore={(profile as any)?.target_score ?? 1500} />
 
-          {/* Level XP Progress Bar */}
-          <XPBar />
+          {/* Personal Study Plan & Diagnostic Hero Deck */}
+          <PersonalPlanCard />
 
-          {/* Daily Diamond Collector */}
-          <DailyCheckIn />
-
-          {/* Daily SAT Objectives & Quests */}
-          <DailyQuests
+          {/* Daily Ritual Deck: XP Progress + Interactive Daily Chest & Quests */}
+          <DailyRitualDeck
             quizDoneToday={quizDoneToday}
             chestClaimedToday={chestClaimedToday}
             errorsReviewDone={errorsReviewDone}
           />
 
-          {/* Quick Launch Hub (1v1 Battle, Vocab, Calculator) */}
-          <QuickHub />
-
-          {/* Streak Warning if streak at risk */}
-          <StreakWarning />
-
-          {/* Exam hall CTA — Obsidian & Gold Kintsugi Glow */}
-          <button
-            onClick={() => navigate("/exam-center")}
-            className="w-full p-6 rounded-3xl text-left tap-feedback active:scale-[0.98] transition-all relative overflow-hidden bg-gradient-to-r from-neutral-900 via-neutral-800 to-amber-950 dark:from-neutral-900 dark:via-[#1c1a18] dark:to-amber-950/80 border border-amber-500/30 text-white shadow-xl group"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.08] to-transparent animate-shimmer pointer-events-none" />
-            <div className="relative flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-amber-500/20 border border-amber-500/30 backdrop-blur-sm flex items-center justify-center text-amber-400 shrink-0 group-hover:scale-105 transition-transform shadow-md">
-                <FileText className="w-7 h-7" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="font-mono-tech text-[10px] uppercase tracking-widest text-amber-400 font-bold bg-amber-500/15 px-2 py-0.5 rounded border border-amber-500/25">
-                    DIAGNOSTIC
-                  </span>
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                </div>
-                <h3 className="font-black text-lg sm:text-xl text-white mt-1">
-                  {t("examHall")}
-                </h3>
-                <p className="text-xs sm:text-sm text-neutral-300 opacity-90 mt-0.5">
-                  {t("examHallDesc")}
-                </p>
-              </div>
-              <ChevronRight className="w-6 h-6 text-neutral-400 group-hover:text-white group-hover:translate-x-1 transition-all shrink-0" />
-            </div>
-          </button>
-
-          {/* Error Log card — "Карцер" */}
-          {errorCount > 0 && (
-            <button
-              onClick={() => navigate("/errors")}
-              className="w-full p-5 rounded-3xl bg-card/90 dark:bg-[#171615]/90 backdrop-blur-xl border border-red-500/25 tap-feedback active:scale-[0.98] transition-all flex items-center gap-3 text-left shadow-sm group"
-            >
-              <div className="w-12 h-12 rounded-2xl bg-destructive/15 text-destructive flex items-center justify-center shrink-0 border border-destructive/25 group-hover:scale-105 transition-transform">
-                <AlertCircle className="w-6 h-6" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <span className="font-mono-tech text-[10px] uppercase text-red-500 font-bold">
-                    RECOVERY ZONE
-                  </span>
-                </div>
-                <p className="font-black text-base text-foreground mt-0.5">
-                  {t("reviewMistakes")}
-                </p>
-                <p className="text-xs text-muted-foreground font-semibold">
-                  ({errorCount}) {t("errorsPending")}
-                </p>
-              </div>
-              <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-all shrink-0" />
-            </button>
-          )}
+          {/* Command Hub: Exam Simulation, Error Recovery, and Fast Utilities */}
+          <CommandHub errorCount={errorCount} />
 
           {/* Learning Path (Interactive Map) */}
-          <div className="pt-4">
+          <div className="pt-2">
             <div className="flex items-center justify-between mb-4 border-b border-border/60 pb-3">
               <div>
-                <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-amber-500 font-bold">
+                <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400 font-bold">
                   // CURRICULUM ROADMAP
                 </span>
-                <h2 className="text-lg font-black tracking-tight text-foreground mt-0.5">
+                <h2 className="text-lg sm:text-xl font-black tracking-tight text-foreground mt-0.5">
                   {t("learningPath")}
                 </h2>
               </div>
-              <span className="font-mono-tech text-xs text-muted-foreground font-bold">
+              <span className="font-mono-tech text-xs text-muted-foreground font-bold bg-muted/60 dark:bg-zinc-900 px-3 py-1 rounded-xl border border-border/60 dark:border-zinc-800">
                 9 MODULES
               </span>
             </div>

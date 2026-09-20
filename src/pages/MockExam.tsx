@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { ArrowLeft, Clock, CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import MockExamReport from "@/components/MockExamReport";
+import { useUserErrors } from "@/hooks/useUserErrors";
 
 interface ExamConfig {
   totalQuestions: number;
@@ -38,6 +39,7 @@ interface ExamAnswer {
 const MockExam = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { logMultipleErrors } = useUserErrors();
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
   const examType = searchParams.get("type") || "full";
@@ -205,6 +207,20 @@ const MockExam = () => {
         isCorrect: false,
         timeSpent: 0,
       });
+    }
+
+    // Auto-save incorrect answers to Mistake Vault
+    const wrongAnswers = finalAnswers.filter((a) => !a.isCorrect).map((a) => ({
+      questionId: a.questionId,
+      question_text: a.questionText,
+      topic: a.topic,
+      category: a.category,
+      options: a.options,
+      correct_answer: a.correctAnswer,
+      source: "mock" as const,
+    }));
+    if (wrongAnswers.length > 0) {
+      logMultipleErrors(wrongAnswers);
     }
 
     // Compute pacing & weakest topics locally so the premium report always has them

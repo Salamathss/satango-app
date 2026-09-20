@@ -87,8 +87,17 @@ const Trust = () => {
         </section>
 
         <p className="text-xs text-muted-foreground text-center">
-          Last reviewed by the SATango team on the page above. For security concerns, please reach
-          out via the in-app support link.
+          Last reviewed by the SATango team on the page above. For security concerns and inquiries, please reach
+          out directly via Telegram{" "}
+          <a
+            href="https://t.me/sltrn0l"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-amber-500 font-bold underline hover:text-amber-400"
+          >
+            @sltrn0l
+          </a>
+          .
         </p>
       </main>
     </div>

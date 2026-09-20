@@ -25,6 +25,7 @@ import AdminImporter from "@/components/AdminImporter";
 import AppShell from "@/components/AppShell";
 import ScoreCalculator from "./pages/ScoreCalculator";
 import { Battle } from "./pages/Battle";
+import DiagnosticMockExam from "./pages/DiagnosticMockExam";
 
 import { ThemeProvider } from "@/context/ThemeContext";
 import { LanguageProvider } from "@/context/LanguageContext";
@@ -56,6 +57,7 @@ const App = () => (
             <Route path="/battle" element={protectedRoute(<Battle />)} />
             <Route path="/jump-test/:moduleId" element={protectedRoute(<JumpTest />)} />
             <Route path="/mock-exam" element={protectedRoute(<MockExam />)} />
+            <Route path="/diagnostic-mock" element={protectedRoute(<DiagnosticMockExam />)} />
             <Route path="/exam-center" element={protectedRoute(<ExamCenter />)} />
             <Route path="/analytics" element={protectedRoute(<Analytics />)} />
             <Route path="/leaderboard" element={protectedRoute(<Leaderboard />)} />

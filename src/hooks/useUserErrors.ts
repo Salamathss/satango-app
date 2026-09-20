@@ -1,16 +1,16 @@
 /**
- * useUserErrors — Error Log ("Карцер") system.
+ * useUserErrors — Error Log & Mistake Vault ("Карцер" / Vault) system.
  *
- * Persists incorrect answers from practice / boss levels into
- * `user_errors`, exposes a count for dashboard badges, and clears
- * entries when reviewed correctly. Clearing the entire queue
- * grants a +50 Gems completion bonus through useGameEconomy.
+ * Persists incorrect answers from practice, mock exams, and diagnostic tests
+ * into `user_errors` + local vault, exposes counts for dashboard badges,
+ * and clears entries when reviewed correctly.
  */
 import { useCallback } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useGameEconomy } from "@/hooks/useGameEconomy";
+import { recordMistake, removeLocalMistake, getLocalMistakes } from "@/services/mistakeVaultService";
 
 export const ERROR_REVIEW_BONUS = 50;
 
@@ -22,7 +22,10 @@ export const useUserErrors = () => {
   const { data: errorRows = [], isLoading } = useQuery({
     queryKey: ["user-errors", user?.id],
     queryFn: async () => {
-      if (!user) return [];
+      if (!user) {
+        const local = getLocalMistakes();
+        return local.map((l) => ({ id: l.id, question_id: l.question_id, created_at: l.created_at }));
+      }
       const { data, error } = await supabase
         .from("user_errors" as any)
         .select("id, question_id, created_at")
@@ -31,23 +34,52 @@ export const useUserErrors = () => {
       if (error) throw error;
       return (data as any) || [];
     },
-    enabled: !!user,
+    enabled: true,
   });
 
   const invalidate = useCallback(() => {
     queryClient.invalidateQueries({ queryKey: ["user-errors"] });
   }, [queryClient]);
 
-  /** Persist a wrong answer. Uniqueness on (user_id, question_id) — duplicates are silently ignored. */
+  /** Persist a wrong answer. */
   const logError = useCallback(
-    async (questionId: string) => {
-      if (!user || !questionId) return;
-      await supabase
-        .from("user_errors" as any)
-        .upsert(
-          { user_id: user.id, question_id: questionId },
-          { onConflict: "user_id,question_id", ignoreDuplicates: true }
-        );
+    async (
+      questionId: string,
+      extra?: {
+        question_text?: string;
+        topic?: string;
+        category?: string;
+        options?: string[];
+        correct_answer?: number;
+        explanation?: string;
+        source?: "quiz" | "mock" | "diagnostic";
+      }
+    ) => {
+      if (!questionId) return;
+      await recordMistake(user?.id, questionId, extra);
+      invalidate();
+    },
+    [user, invalidate]
+  );
+
+  /** Bulk persist wrong answers (e.g. from diagnostic mock or full mock exam). */
+  const logMultipleErrors = useCallback(
+    async (
+      items: Array<{
+        questionId: string;
+        question_text?: string;
+        topic?: string;
+        category?: string;
+        options?: string[];
+        correct_answer?: number;
+        explanation?: string;
+        source?: "quiz" | "mock" | "diagnostic";
+      }>
+    ) => {
+      if (!items.length) return;
+      for (const item of items) {
+        await recordMistake(user?.id, item.questionId, item);
+      }
       invalidate();
     },
     [user, invalidate]
@@ -56,12 +88,14 @@ export const useUserErrors = () => {
   /** Clear a single error after the user reviews it correctly. */
   const clearError = useCallback(
     async (questionId: string) => {
-      if (!user) return;
-      await supabase
-        .from("user_errors" as any)
-        .delete()
-        .eq("user_id", user.id)
-        .eq("question_id", questionId);
+      removeLocalMistake(questionId);
+      if (user) {
+        await supabase
+          .from("user_errors" as any)
+          .delete()
+          .eq("user_id", user.id)
+          .eq("question_id", questionId);
+      }
       invalidate();
     },
     [user, invalidate]
@@ -78,6 +112,7 @@ export const useUserErrors = () => {
     pendingCount: errorRows.length,
     isLoading,
     logError,
+    logMultipleErrors,
     clearError,
     grantQueueCompletionBonus,
   };

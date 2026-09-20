@@ -40,35 +40,37 @@ const DailyWisdom = ({ targetScore = 1500 }: DailyWisdomProps) => {
   }, []);
 
   return (
-    <div className="relative overflow-hidden rounded-3xl bg-card/90 dark:bg-[#171615]/90 backdrop-blur-xl border border-border/80 dark:border-white/[0.12] p-5 shadow-sm space-y-3 transition-all">
-      {/* Background subtle gold aura */}
-      <div className="absolute top-0 right-0 w-40 h-40 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white via-zinc-50/90 to-zinc-100/70 dark:from-zinc-900/90 dark:via-zinc-900/60 dark:to-zinc-950/90 border border-zinc-200/90 dark:border-zinc-800 hover:border-zinc-400/80 dark:hover:border-zinc-700 p-5 sm:p-6 shadow-xs hover:shadow-md space-y-3.5 transition-all group">
+      {/* Background subtle depth */}
+      <div className="absolute top-0 right-0 w-48 h-48 bg-zinc-200/30 dark:bg-zinc-800/20 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex items-center justify-between gap-3 relative z-10">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-500">
+          <div className="w-8 h-8 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 flex items-center justify-center shadow-xs">
             <Sparkles className="w-4 h-4" />
           </div>
-          <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-amber-500 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+          <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-zinc-700 dark:text-zinc-300 font-bold bg-zinc-100 dark:bg-zinc-800 px-2.5 py-0.5 rounded-md border border-zinc-200 dark:border-zinc-700 shadow-xs">
             {language === "ru" ? "ФИЛОСОФИЯ ТОЧНОСТИ" : "PRINCIPLE OF MASTERY"}
           </span>
         </div>
 
         {targetScore && (
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-primary/10 dark:bg-white/5 border border-primary/20 dark:border-white/10 text-primary dark:text-neutral-200 font-mono-tech text-xs font-bold">
-            <Target className="w-3.5 h-3.5 text-amber-500" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-foreground font-mono-tech text-xs font-bold shadow-xs">
+            <Target className="w-3.5 h-3.5 text-zinc-500" />
             <span>{targetScore}+ SAT</span>
           </div>
         )}
       </div>
 
-      <p className="text-sm font-medium italic text-foreground/90 leading-relaxed font-serif">
-        "{language === "ru" ? quote.ru : quote.en}"
-      </p>
+      <div className="relative z-10 pl-3 border-l-2 border-zinc-300 dark:border-zinc-700">
+        <p className="text-sm sm:text-[15px] font-medium italic text-foreground/90 leading-relaxed font-serif">
+          «{language === "ru" ? quote.ru : quote.en}»
+        </p>
+      </div>
 
-      <div className="flex justify-between items-center pt-2 border-t border-border/60 dark:border-white/10 text-[10px] font-mono-tech text-muted-foreground">
-        <span className="font-semibold text-foreground/70">— {quote.author}</span>
-        <span className="opacity-70 uppercase tracking-widest">
+      <div className="flex justify-between items-center pt-2 border-t border-zinc-200/80 dark:border-zinc-800 text-[10px] font-mono-tech text-muted-foreground relative z-10">
+        <span className="font-bold text-foreground/80">— {quote.author}</span>
+        <span className="opacity-70 uppercase tracking-widest font-semibold">
           {language === "ru" ? "ЕЖЕДНЕВНАЯ УСТАНОВКА" : "DAILY MINDSET"}
         </span>
       </div>

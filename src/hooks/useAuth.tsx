@@ -38,8 +38,8 @@ const AuthContext = createContext<AuthContextType>({
   loading: true,
   profile: null,
   progress: null,
-  refreshProfile: async () => {},
-  signOut: async () => {},
+  refreshProfile: async () => { },
+  signOut: async () => { },
 });
 
 const REMEMBER_KEY = "satango.rememberMe";
@@ -114,7 +114,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (localStorage.getItem(REMEMBER_KEY) === "0") {
           supabase.auth.signOut();
         }
-      } catch {}
+      } catch { }
     };
     window.addEventListener("beforeunload", handleUnload);
 
@@ -136,7 +136,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setProgress(null);
       try {
         localStorage.removeItem(REMEMBER_KEY);
-      } catch {}
+      } catch { }
       navigate("/auth", { replace: true });
     }
   };

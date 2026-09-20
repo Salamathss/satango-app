@@ -148,7 +148,7 @@ export default function Auth() {
                 navigate("/dashboard");
               });
             return;
-          } catch {}
+          } catch { }
         }
         navigate("/dashboard");
       }
@@ -243,7 +243,7 @@ function Wizard({ navigate }: { navigate: (path: string) => void }) {
     persistPending();
     try {
       localStorage.setItem(REMEMBER_KEY, "1");
-    } catch {}
+    } catch { }
 
     try {
       const redirectUrl = `${window.location.origin}/auth`;
@@ -282,7 +282,7 @@ function Wizard({ navigate }: { navigate: (path: string) => void }) {
     };
     try {
       localStorage.setItem(PENDING_KEY, JSON.stringify(payload));
-    } catch {}
+    } catch { }
   };
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -362,11 +362,10 @@ function Wizard({ navigate }: { navigate: (path: string) => void }) {
                   key={p.score}
                   type="button"
                   onClick={() => setTarget(p.score)}
-                  className={`p-3.5 rounded-2xl border text-left transition-all relative overflow-hidden ${
-                    isSelected
+                  className={`p-3.5 rounded-2xl border text-left transition-all relative overflow-hidden ${isSelected
                       ? "border-amber-500 bg-amber-500/15 text-white shadow-md shadow-amber-500/10"
                       : "border-white/10 hover:border-white/20 bg-white/5 text-neutral-300"
-                  }`}
+                    }`}
                 >
                   <div className="font-mono-tech font-extrabold text-lg">
                     {p.label}
@@ -439,11 +438,10 @@ function Wizard({ navigate }: { navigate: (path: string) => void }) {
                         onClick={() =>
                           setAnswers((prev) => ({ ...prev, [q.id]: optIdx }))
                         }
-                        className={`p-2.5 rounded-xl border text-xs font-mono-tech text-left transition-all ${
-                          isChosen
+                        className={`p-2.5 rounded-xl border text-xs font-mono-tech text-left transition-all ${isChosen
                             ? "border-amber-500 bg-amber-500/20 text-amber-300 font-bold"
                             : "border-white/10 hover:border-white/20 bg-white/5 text-neutral-300"
-                        }`}
+                          }`}
                       >
                         {opt}
                       </button>
@@ -617,7 +615,7 @@ function SignInView({
     setGoogleLoading(true);
     try {
       localStorage.setItem(REMEMBER_KEY, remember ? "1" : "0");
-    } catch {}
+    } catch { }
 
     try {
       const redirectUrl = `${window.location.origin}/auth`;
@@ -647,7 +645,7 @@ function SignInView({
     setLoading(true);
     try {
       localStorage.setItem(REMEMBER_KEY, remember ? "1" : "0");
-    } catch {}
+    } catch { }
 
     const { error: err } = await supabase.auth.signInWithPassword({
       email,

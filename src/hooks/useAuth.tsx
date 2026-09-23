@@ -53,6 +53,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
 
   const loadBootstrap = useCallback(async (uid: string) => {
+    const pending = localStorage.getItem("satango_pending_onboarding");
+    if (pending) {
+      try {
+        const parsed = JSON.parse(pending);
+        await supabase.from("profiles").upsert({
+          user_id: uid,
+          target_score: parsed.target_score,
+          daily_minutes: parsed.daily_minutes,
+          diagnostic_score: parsed.diagnostic_score,
+          initial_level: parsed.initial_level,
+          updated_at: new Date().toISOString(),
+        } as any);
+        localStorage.removeItem("satango_pending_onboarding");
+      } catch { }
+    }
+
     const [{ data: prof }, { data: prog }] = await Promise.all([
       supabase
         .from("profiles")

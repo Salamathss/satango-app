@@ -246,7 +246,7 @@ function Wizard({ navigate }: { navigate: (path: string) => void }) {
     } catch { }
 
     try {
-      const redirectUrl = `${window.location.origin}/auth`;
+      const redirectUrl = `${window.location.origin}/`;
       const { error: oauthErr } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
@@ -618,7 +618,7 @@ function SignInView({
     } catch { }
 
     try {
-      const redirectUrl = `${window.location.origin}/auth`;
+      const redirectUrl = `${window.location.origin}/`;
       const { error: oauthErr } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {

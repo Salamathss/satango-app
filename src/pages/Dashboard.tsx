@@ -106,9 +106,9 @@ const Dashboard = () => {
           {/* Top Header Deck */}
           <div className="flex items-center justify-between pt-1 border-b border-border/60 pb-4">
             <div>
-              <div className="font-mono-tech text-[10px] tracking-[0.2em] uppercase text-zinc-500 dark:text-zinc-400 font-bold mb-1 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500" />
-                SYSTEM / SCHOLAR / ACTIVE
+              <div className="font-mono-tech text-[10px] tracking-[0.2em] uppercase text-amber-700 dark:text-amber-400 font-extrabold mb-1 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                ACADEMIC SCHOLAR // ACTIVE
               </div>
               <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground leading-tight">
                 {nickname} 👋
@@ -116,8 +116,8 @@ const Dashboard = () => {
             </div>
 
             {progress && progress.streak > 0 && (
-              <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-2xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-foreground font-mono-tech text-xs font-bold shadow-xs">
-                <Flame className="w-4 h-4 fill-zinc-500 text-zinc-600 dark:text-zinc-300" />
+              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-2xl bg-amber-500/15 dark:bg-amber-500/20 border border-amber-500/30 text-amber-800 dark:text-amber-300 font-mono-tech text-xs font-black shadow-2xs">
+                <Flame className="w-4 h-4 fill-amber-500 text-amber-500 animate-pulse" />
                 <span>{progress.streak}D STREAK</span>
               </div>
             )}
@@ -146,14 +146,15 @@ const Dashboard = () => {
           <div className="pt-2">
             <div className="flex items-center justify-between mb-4 border-b border-border/60 pb-3">
               <div>
-                <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400 font-bold">
+                <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-foreground font-extrabold flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-foreground" />
                   // CURRICULUM ROADMAP
                 </span>
                 <h2 className="text-lg sm:text-xl font-black tracking-tight text-foreground mt-0.5">
                   {t("learningPath")}
                 </h2>
               </div>
-              <span className="font-mono-tech text-xs text-muted-foreground font-bold bg-muted/60 dark:bg-zinc-900 px-3 py-1 rounded-xl border border-border/60 dark:border-zinc-800">
+              <span className="font-mono-tech text-xs text-foreground font-extrabold bg-card px-3 py-1 rounded-xl border border-border shadow-2xs">
                 9 MODULES
               </span>
             </div>

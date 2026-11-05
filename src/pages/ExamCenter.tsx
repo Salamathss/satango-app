@@ -179,10 +179,18 @@ const ExamCenter = () => {
 
   return (
     <AppShell title="Exam Hall">
-      <main className="space-y-6">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-extrabold">Exam Hall 📝</h1>
-          <p className="text-sm text-muted-foreground">Official Digital SAT format. Purchase a ticket to begin.</p>
+      <main className="space-y-6 animate-spring-in">
+        <div className="border-b border-border/60 pb-5">
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="font-mono-tech text-[10px] uppercase tracking-widest font-extrabold text-amber-700 dark:text-amber-400 bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 rounded-md flex items-center gap-1.5 shadow-2xs">
+              <Sparkles className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+              CAMPUS EXAMINATION HALL // DIGITAL SAT
+            </span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">Exam Hall 📝</h1>
+          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 font-medium leading-relaxed">
+            Официальный формат Digital SAT: адаптивные модули, таймер College Board и встроенный калькулятор Desmos.
+          </p>
         </div>
 
         <div className="space-y-4">
@@ -190,73 +198,100 @@ const ExamCenter = () => {
             const tickets = getTickets(exam);
             const hasTicket = tickets > 0;
 
+            const iconColors = {
+              full: "from-amber-400 to-amber-600 text-neutral-950 shadow-amber-500/25",
+              rw: "from-violet-500 to-indigo-600 text-white shadow-violet-500/25",
+              math: "from-sky-500 to-cyan-600 text-white shadow-sky-500/25",
+            };
+
             return (
               <div
                 key={exam.id}
                 className={cn(
-                  "relative rounded-2xl border overflow-hidden transition-all",
+                  "relative rounded-3xl border overflow-hidden transition-all duration-200 shadow-2xs hover:shadow-md",
                   hasTicket
-                    ? "border-border/50 bg-card/60 backdrop-blur-xl"
-                    : "border-border/30 bg-card/30 backdrop-blur-sm"
+                    ? "border-border/80 bg-card hover:bg-card/90"
+                    : "border-border/60 bg-card/60 hover:bg-card/80"
                 )}
               >
-                {/* Header gradient */}
-                <div className={cn("h-2 bg-gradient-to-r", exam.gradient)} />
+                {/* Header gradient bar */}
+                <div
+                  className={cn(
+                    "h-1.5 bg-gradient-to-r",
+                    exam.id === "full"
+                      ? "from-amber-500 via-amber-400 to-amber-600"
+                      : exam.id === "rw"
+                      ? "from-violet-500 to-indigo-600"
+                      : "from-sky-500 to-cyan-600"
+                  )}
+                />
 
-                <div className="p-5 space-y-4">
+                <div className="p-5 sm:p-6 space-y-4">
                   <div className="flex items-start gap-4">
-                    <div className={cn(
-                      "w-14 h-14 rounded-2xl flex items-center justify-center text-primary-foreground bg-gradient-to-br shrink-0",
-                      exam.gradient
-                    )}>
+                    <div
+                      className={cn(
+                        "w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br shrink-0 shadow-md",
+                        iconColors[exam.id]
+                      )}
+                    >
                       {exam.icon}
                     </div>
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <h3 className="font-extrabold text-base">{exam.title}</h3>
-                        {exam.id === "full" && <Sparkles className="w-4 h-4 text-gem" />}
+                        <h3 className="font-black text-lg text-foreground">{exam.title}</h3>
+                        {exam.id === "full" && (
+                          <span className="bg-amber-500/15 text-amber-700 dark:text-amber-300 font-mono-tech text-[9px] uppercase font-black px-2 py-0.5 rounded border border-amber-500/30">
+                            FULL TEST
+                          </span>
+                        )}
                       </div>
-                      <p className="text-xs text-muted-foreground mt-0.5">{exam.subtitle}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 font-medium">{exam.subtitle}</p>
                     </div>
 
                     {hasTicket && (
-                      <span className="bg-primary/10 text-primary rounded-full px-2.5 py-0.5 text-xs font-bold shrink-0">
-                        {tickets} ticket{tickets !== 1 ? "s" : ""}
+                      <span className="bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 rounded-xl px-3 py-1 text-xs font-mono-tech font-black shrink-0 shadow-2xs">
+                        {tickets} {tickets === 1 ? "билет" : "билета"}
                       </span>
                     )}
                   </div>
 
                   {/* Info chips */}
-                  <div className="flex items-center gap-3 text-xs font-semibold text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <HelpCircle className="w-3.5 h-3.5" />
-                      {exam.questions} questions
+                  <div className="flex items-center gap-4 text-xs font-bold text-muted-foreground pt-1 border-t border-border/50">
+                    <span className="flex items-center gap-1.5 text-foreground">
+                      <HelpCircle className="w-4 h-4 text-amber-500" />
+                      {exam.questions} вопросов
                     </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5" />
+                    <span className="flex items-center gap-1.5 text-foreground">
+                      <Clock className="w-4 h-4 text-sky-500" />
                       {exam.duration}
                     </span>
                   </div>
 
                   {/* Actions */}
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 pt-1">
                     {hasTicket ? (
                       <Button
                         onClick={() => setConfirmExam(exam)}
-                        className={cn("flex-1 font-bold gap-1.5", exam.id === "full" && "mock-exam-glow")}
+                        className={cn(
+                          "flex-1 h-12 rounded-2xl font-black text-xs uppercase tracking-wider gap-2 shadow-md tap-feedback",
+                          exam.id === "full"
+                            ? "bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-neutral-950 hover:from-amber-400 hover:to-amber-500 shadow-amber-500/25"
+                            : "bg-foreground text-background hover:opacity-90"
+                        )}
                       >
-                        Start Exam
+                        <span>Начать экзамен</span>
+                        <Sparkles className="w-4 h-4" />
                       </Button>
                     ) : (
                       <Button
                         onClick={() => handlePurchase(exam)}
                         disabled={gems < getDiscountedCost(exam) || purchasing === exam.id}
                         variant="outline"
-                        className="flex-1 font-bold gap-1.5"
+                        className="flex-1 h-12 rounded-2xl font-mono-tech font-extrabold text-xs uppercase tracking-wider gap-2 border-border/80 hover:bg-muted/70 tap-feedback"
                       >
                         {purchasing === exam.id ? (
-                          <span className="animate-pulse">Purchasing...</span>
+                          <span className="animate-pulse">Оформление...</span>
                         ) : (
                           <>
                             {gems < getDiscountedCost(exam) ? <Lock className="w-4 h-4" /> : <Gem className="w-4 h-4 text-gem" />}

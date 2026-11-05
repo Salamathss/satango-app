@@ -147,85 +147,88 @@ export default function Vocabulary() {
       <div className="min-h-screen bg-background pb-24 pt-6 px-4 max-w-4xl mx-auto space-y-6">
         
         {/* Header & Subtitle */}
-        <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border/40 pb-4">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2 text-xs font-mono-tech uppercase text-muted-foreground tracking-widest">
-              <BrainCircuit className="w-4 h-4 text-primary" />
-              <span>[ sat.vocab_lab ]</span>
+        {/* Header & Subtitle */}
+        <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border/60 pb-5">
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2">
+              <span className="font-mono-tech text-[10px] uppercase tracking-widest font-extrabold text-violet-700 dark:text-violet-300 bg-violet-500/15 border border-violet-500/30 px-2.5 py-0.5 rounded-md flex items-center gap-1.5 shadow-2xs">
+                <BrainCircuit className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
+                SAT VOCABULARY LAB // CONTEXT ENGINE
+              </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
               SAT Vocabulary Lab
             </h1>
-            <p className="text-sm text-muted-foreground max-w-xl">
+            <p className="text-xs sm:text-sm text-muted-foreground max-w-xl font-medium leading-relaxed">
               Тренируйте контекстное использование слов из секции SAT Reading & Writing и сохраняйте их в личный словарь.
             </p>
           </div>
         </header>
 
         {/* 📈 Statistics Banner */}
-        <div className="grid grid-cols-3 gap-3">
-          <div className="border border-border/60 bg-card rounded-2xl p-3.5 flex items-center gap-3 shadow-sm hover:border-border transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0">
-              <Flame className="w-5.5 h-5.5 fill-current" />
+        <div className="grid grid-cols-3 gap-3 sm:gap-3.5">
+          <div className="border border-border/80 bg-card hover:bg-card/90 rounded-2xl sm:rounded-3xl p-4 flex items-center gap-3.5 shadow-2xs hover:shadow-xs transition-all">
+            <div className="w-11 h-11 rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0 shadow-2xs">
+              <Flame className="w-5 h-5 fill-current animate-pulse" />
             </div>
             <div className="min-w-0">
-              <p className="text-[10px] font-mono-tech uppercase text-muted-foreground leading-none">Streak</p>
-              <p className="text-base sm:text-lg font-bold tracking-tight mt-1 leading-none">{stats.streak} дн.</p>
+              <p className="text-[10px] font-mono-tech uppercase text-muted-foreground font-extrabold leading-none tracking-wider">Streak</p>
+              <p className="text-lg sm:text-xl font-black text-foreground tracking-tight mt-1 leading-none">{stats.streak} дн.</p>
             </div>
           </div>
 
-          <div className="border border-border/60 bg-card rounded-2xl p-3.5 flex items-center gap-3 shadow-sm hover:border-border transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-              <CheckSquare className="w-5.5 h-5.5" />
+          <div className="border border-border/80 bg-card hover:bg-card/90 rounded-2xl sm:rounded-3xl p-4 flex items-center gap-3.5 shadow-2xs hover:shadow-xs transition-all">
+            <div className="w-11 h-11 rounded-2xl bg-violet-500/15 text-violet-600 dark:text-violet-400 border border-violet-500/30 flex items-center justify-center shrink-0 shadow-2xs">
+              <CheckSquare className="w-5 h-5" />
             </div>
             <div className="min-w-0">
-              <p className="text-[10px] font-mono-tech uppercase text-muted-foreground leading-none">Карточки</p>
-              <p className="text-base sm:text-lg font-bold tracking-tight mt-1 leading-none">{stats.completedToday}</p>
+              <p className="text-[10px] font-mono-tech uppercase text-muted-foreground font-extrabold leading-none tracking-wider">Карточки</p>
+              <p className="text-lg sm:text-xl font-black text-foreground tracking-tight mt-1 leading-none">{stats.completedToday}</p>
             </div>
           </div>
 
-          <div className="border border-border/60 bg-card rounded-2xl p-3.5 flex items-center gap-3 shadow-sm hover:border-border transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
-              <TrendingUp className="w-5.5 h-5.5" />
+          <div className="border border-border/80 bg-card hover:bg-card/90 rounded-2xl sm:rounded-3xl p-4 flex items-center gap-3.5 shadow-2xs hover:shadow-xs transition-all">
+            <div className="w-11 h-11 rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0 shadow-2xs">
+              <TrendingUp className="w-5 h-5" />
             </div>
             <div className="min-w-0">
-              <p className="text-[10px] font-mono-tech uppercase text-muted-foreground leading-none">Точность</p>
-              <p className="text-base sm:text-lg font-bold tracking-tight mt-1 leading-none">{accuracyPct}%</p>
+              <p className="text-[10px] font-mono-tech uppercase text-muted-foreground font-extrabold leading-none tracking-wider">Точность</p>
+              <p className="text-lg sm:text-xl font-black text-foreground tracking-tight mt-1 leading-none">{accuracyPct}%</p>
             </div>
           </div>
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex border border-border bg-card/50 p-1 rounded-xl gap-1">
+        <div className="flex border border-border/80 bg-muted/50 p-1.5 rounded-2xl gap-1.5 shadow-2xs">
           <button
             onClick={() => setActiveTab("trainer")}
             className={cn(
-              "flex-1 py-2 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2",
+              "flex-1 py-2.5 rounded-xl font-mono-tech text-xs uppercase tracking-wider font-extrabold transition-all flex items-center justify-center gap-2 tap-feedback",
               activeTab === "trainer"
-                ? "bg-background text-foreground shadow-sm font-semibold border border-border/50"
-                : "text-muted-foreground hover:text-foreground hover:bg-background/40"
+                ? "bg-card text-foreground shadow-sm border border-border"
+                : "text-muted-foreground hover:text-foreground"
             )}
           >
-            <Sparkles className="w-4 h-4 text-primary" />
+            <Sparkles className="w-4 h-4 text-violet-600 dark:text-violet-400" />
             <span>Контекстный тренажер</span>
           </button>
 
           <button
             onClick={() => setActiveTab("my-words")}
             className={cn(
-              "flex-1 py-2 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2",
+              "flex-1 py-2.5 rounded-xl font-mono-tech text-xs uppercase tracking-wider font-extrabold transition-all flex items-center justify-center gap-2 tap-feedback",
               activeTab === "my-words"
-                ? "bg-background text-foreground shadow-sm font-semibold border border-border/50"
-                : "text-muted-foreground hover:text-foreground hover:bg-background/40"
+                ? "bg-card text-foreground shadow-sm border border-border"
+                : "text-muted-foreground hover:text-foreground"
             )}
           >
             <BookOpen className="w-4 h-4 text-amber-500" />
             <span>Мои слова</span>
             <span
               className={cn(
-                "ml-1 px-2 py-0.5 text-xs rounded-full font-mono font-bold transition-colors",
+                "ml-1 px-2 py-0.5 text-xs rounded-full font-mono-tech font-black transition-colors",
                 activeSavedCount > 0
-                  ? "bg-primary/10 text-primary border border-primary/20"
+                  ? "bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/35"
                   : "bg-muted text-muted-foreground"
               )}
             >

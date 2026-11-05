@@ -26,65 +26,68 @@ export const CommandHub = ({ errorCount }: CommandHubProps) => {
       desc: language === "ru" ? "1v1 Дуэль" : "1v1 Battle",
       icon: Swords,
       path: "/battle",
-      color: "text-zinc-800 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700",
+      color: "text-rose-600 dark:text-rose-400 bg-rose-500/10 border-rose-500/25",
     },
     {
       title: t("vocab"),
       desc: language === "ru" ? "1000+ слов" : "SAT Vocab",
       icon: BookOpen,
       path: "/vocabulary",
-      color: "text-zinc-800 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700",
+      color: "text-violet-600 dark:text-violet-400 bg-violet-500/10 border-violet-500/25",
     },
     {
       title: t("calculator"),
       desc: language === "ru" ? "Шкала 1600" : "1600 Score",
       icon: Calculator,
       path: "/score-calculator",
-      color: "text-zinc-800 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700",
+      color: "text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 border-cyan-500/25",
     },
   ];
 
   return (
     <div className="space-y-3 font-sans">
       <div className="flex items-center justify-between px-1">
-        <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold">
-          // {language === "ru" ? "КОМАНДНЫЙ ЦЕНТР И РЕЖИМЫ" : "COMMAND HUB & MODES"}
-        </span>
-        <span className="font-mono-tech text-[10px] text-zinc-700 dark:text-zinc-300 font-bold uppercase tracking-wider bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded-md border border-zinc-200 dark:border-zinc-700 shadow-xs">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-foreground" />
+          <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-foreground font-extrabold">
+            // {language === "ru" ? "КОМАНДНЫЙ ЦЕНТР И РЕЖИМЫ" : "COMMAND HUB & MODES"}
+          </span>
+        </div>
+        <span className="font-mono-tech text-[10px] text-amber-700 dark:text-amber-400 font-extrabold uppercase tracking-wider bg-amber-500/15 px-2 py-0.5 rounded-md border border-amber-500/30 shadow-2xs">
           FAST LAUNCH
         </span>
       </div>
 
       {/* Main Grid: Exam Hall (and Error Recovery if active) + Quick Tools */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
-        {/* Left/Main Hero: Exam Hall CTA (Light Gray Sleek Card) */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-3.5">
+        {/* Left/Main Hero: Exam Hall CTA */}
         <button
           onClick={() => navigate("/exam-center")}
           className={cn(
-            "p-5 sm:p-6 rounded-3xl text-left tap-feedback active:scale-[0.99] transition-all relative overflow-hidden bg-gradient-to-br from-white via-zinc-50/90 to-zinc-100/70 dark:from-zinc-900/90 dark:via-zinc-900/60 dark:to-zinc-950/90 border border-zinc-200/90 dark:border-zinc-800 hover:border-zinc-400/80 dark:hover:border-zinc-700 text-foreground shadow-xs hover:shadow-md group flex flex-col justify-between",
+            "p-5 sm:p-6 rounded-3xl text-left tap-feedback active:scale-[0.99] transition-all relative overflow-hidden bg-card hover:bg-card/90 border border-border/80 hover:border-violet-500/50 text-foreground shadow-sm hover:shadow-md group flex flex-col justify-between",
             errorCount > 0 ? "md:col-span-7" : "md:col-span-12"
           )}
         >
-          {/* Subtle Ambient Depth */}
-          <div className="absolute top-0 right-0 w-48 h-48 bg-zinc-200/30 dark:bg-zinc-800/20 rounded-full blur-3xl pointer-events-none" />
+          {/* Subtle Ambient Glow */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-violet-500/[0.06] rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10">
             <div className="flex items-center justify-between gap-2 mb-3">
-              <span className="font-mono-tech text-[10px] uppercase tracking-widest text-zinc-700 dark:text-zinc-300 font-bold bg-zinc-100 dark:bg-zinc-800 px-2.5 py-0.5 rounded-md border border-zinc-200 dark:border-zinc-700 flex items-center gap-1.5 shadow-xs">
-                <Sparkles className="w-3 h-3 text-zinc-500" />
+              <span className="font-mono-tech text-[10px] uppercase tracking-wider text-violet-700 dark:text-violet-300 font-extrabold bg-violet-500/15 px-2.5 py-0.5 rounded-md border border-violet-500/30 flex items-center gap-1.5 shadow-2xs">
+                <Sparkles className="w-3 h-3 text-violet-600 dark:text-violet-400" />
                 EXAM SIMULATION
               </span>
-              <span className="font-mono-tech text-[10px] text-zinc-500 dark:text-zinc-400 font-semibold">
+              <span className="font-mono-tech text-[10px] text-muted-foreground font-bold">
                 COLLEGE BOARD FORMAT
               </span>
             </div>
 
             <div className="flex items-start gap-3.5">
-              <div className="w-12 h-12 rounded-2xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-sm">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-600 text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-md shadow-violet-500/20">
                 <FileText className="w-6 h-6" />
               </div>
               <div className="min-w-0 flex-1">
-                <h3 className="font-black text-lg text-foreground group-hover:text-primary transition">
+                <h3 className="font-black text-lg text-foreground group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
                   {t("examHall")}
                 </h3>
                 <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed font-medium">
@@ -94,7 +97,7 @@ export const CommandHub = ({ errorCount }: CommandHubProps) => {
             </div>
           </div>
 
-          <div className="relative z-10 flex items-center justify-between pt-3 mt-3 border-t border-zinc-200/80 dark:border-zinc-800 text-xs font-mono-tech text-foreground font-bold">
+          <div className="relative z-10 flex items-center justify-between pt-3 mt-4 border-t border-border/60 text-xs font-mono-tech text-foreground font-bold group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
             <span className="flex items-center gap-1">
               {language === "ru" ? "Открыть экзамены" : "Launch Exam Center"}
             </span>
@@ -106,28 +109,30 @@ export const CommandHub = ({ errorCount }: CommandHubProps) => {
         {errorCount > 0 && (
           <button
             onClick={() => navigate("/errors")}
-            className="md:col-span-5 p-5 rounded-3xl bg-gradient-to-br from-white via-zinc-50/90 to-zinc-100/70 dark:from-zinc-900/90 dark:via-zinc-900/60 dark:to-zinc-950/90 border border-zinc-200/90 dark:border-zinc-800 hover:border-zinc-400/80 dark:hover:border-zinc-700 text-foreground tap-feedback active:scale-[0.99] transition-all flex flex-col justify-between text-left shadow-xs group hover:shadow-md relative overflow-hidden"
+            className="md:col-span-5 p-5 rounded-3xl bg-card hover:bg-card/90 border border-border/80 hover:border-rose-500/50 text-foreground tap-feedback active:scale-[0.99] transition-all flex flex-col justify-between text-left shadow-sm hover:shadow-md group relative overflow-hidden"
           >
+            <div className="absolute top-0 right-0 w-48 h-48 bg-rose-500/[0.06] rounded-full blur-2xl pointer-events-none" />
+
             <div className="relative z-10">
               <div className="flex items-center justify-between gap-2 mb-3">
-                <span className="font-mono-tech text-[10px] uppercase text-rose-700 dark:text-rose-300 font-bold bg-rose-500/10 dark:bg-rose-950/30 px-2.5 py-0.5 rounded-md border border-rose-200 dark:border-rose-900/50 flex items-center gap-1 shadow-xs">
-                  <ShieldAlert className="w-3 h-3 text-rose-500" />
+                <span className="font-mono-tech text-[10px] uppercase text-rose-700 dark:text-rose-300 font-extrabold bg-rose-500/15 px-2.5 py-0.5 rounded-md border border-rose-500/30 flex items-center gap-1 shadow-2xs">
+                  <ShieldAlert className="w-3 h-3 text-rose-600 dark:text-rose-400" />
                   MISTAKE VAULT
                 </span>
-                <span className="font-mono-tech text-[10px] text-rose-600 dark:text-rose-400 font-bold">
+                <span className="font-mono-tech text-[10px] text-rose-600 dark:text-rose-400 font-extrabold bg-rose-500/10 px-2 py-0.5 rounded">
                   {errorCount} {language === "ru" ? "ОШИБОК" : "PENDING"}
                 </span>
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-11 h-11 rounded-2xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0 border border-rose-200 dark:border-rose-800 group-hover:scale-105 transition-transform">
+                <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-rose-500 to-rose-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-rose-500/20 group-hover:scale-105 transition-transform">
                   <AlertCircle className="w-5 h-5" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h3 className="font-black text-sm sm:text-base text-foreground mt-0.5">
+                  <h3 className="font-black text-sm sm:text-base text-foreground mt-0.5 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
                     {t("reviewMistakes")}
                   </h3>
-                  <p className="text-xs text-muted-foreground mt-0.5 font-medium">
+                  <p className="text-xs text-muted-foreground mt-0.5 font-medium leading-relaxed">
                     {language === "ru"
                       ? "Закрой слабые места без потери жизней"
                       : "Clear errors with zero heart penalty"}
@@ -136,7 +141,7 @@ export const CommandHub = ({ errorCount }: CommandHubProps) => {
               </div>
             </div>
 
-            <div className="relative z-10 flex items-center justify-between pt-3 mt-3 border-t border-zinc-200/80 dark:border-zinc-800 text-xs font-mono-tech text-rose-600 dark:text-rose-400 font-bold">
+            <div className="relative z-10 flex items-center justify-between pt-3 mt-4 border-t border-border/60 text-xs font-mono-tech text-rose-600 dark:text-rose-400 font-extrabold">
               <span>{language === "ru" ? "Пройти карцер" : "Review ledger"}</span>
               <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
@@ -144,23 +149,26 @@ export const CommandHub = ({ errorCount }: CommandHubProps) => {
         )}
       </div>
 
-      {/* Quick Tools Row (3 Columns with Light Gray Styling) */}
-      <div className="grid grid-cols-3 gap-2.5 sm:gap-3 pt-1">
+      {/* Quick Tools Row (3 Columns with distinct thematic colors) */}
+      <div className="grid grid-cols-3 gap-2.5 sm:gap-3.5 pt-1">
         {quickTools.map((item) => {
           const Icon = item.icon;
           return (
             <button
               key={item.path}
               onClick={() => navigate(item.path)}
-              className="group p-3.5 sm:p-4 rounded-3xl bg-gradient-to-br from-white via-zinc-50/90 to-zinc-100/70 dark:from-zinc-900/90 dark:via-zinc-900/60 dark:to-zinc-950/90 border border-zinc-200/90 dark:border-zinc-800 text-left hover:border-zinc-400/80 dark:hover:border-zinc-700 hover:shadow-xs transition-all duration-150 flex flex-col justify-between"
+              className="group p-3.5 sm:p-4 rounded-2xl sm:rounded-3xl bg-card hover:bg-card/90 border border-border/80 text-left hover:border-border hover:shadow-md transition-all duration-200 flex flex-col justify-between tap-feedback active:scale-95"
             >
               <div
-                className={`w-9 h-9 rounded-2xl flex items-center justify-center border ${item.color} mb-2.5 group-hover:scale-105 transition-transform shadow-xs`}
+                className={cn(
+                  "w-10 h-10 rounded-2xl flex items-center justify-center border mb-3 transition-transform group-hover:scale-105 shadow-2xs",
+                  item.color
+                )}
               >
-                <Icon className="w-4 h-4" />
+                <Icon className="w-5 h-5" strokeWidth={2.3} />
               </div>
               <div>
-                <p className="font-black text-xs text-foreground truncate">
+                <p className="font-black text-xs sm:text-sm text-foreground truncate">
                   {item.title}
                 </p>
                 <p className="text-[10px] font-mono-tech text-muted-foreground font-semibold truncate mt-0.5">

@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { usePremium } from "@/hooks/usePremium";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   Heart,
   Snowflake,
@@ -15,13 +16,19 @@ import {
   Gem,
   ShoppingBag,
   Sparkles,
+  ArrowRight,
+  Shield,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const Shop = () => {
   const { user } = useAuth();
+  const { language } = useLanguage();
   const [open, setOpen] = useState(false);
   const [premiumOpen, setPremiumOpen] = useState(false);
   const { isPremium } = usePremium();
+
+  const isRu = language === "ru";
 
   const { data: progress } = useQuery({
     queryKey: ["user-progress", user?.id],
@@ -40,27 +47,31 @@ const Shop = () => {
   const inventoryItems = [
     {
       icon: Heart,
-      label: "Hearts",
+      label: isRu ? "Жизни" : "Hearts",
+      sublabel: isRu ? "Энергия практики" : "Practice health",
       value: (progress as any)?.hearts ?? 0,
-      color: "text-destructive bg-destructive/10",
+      color: "text-rose-600 dark:text-rose-400 bg-rose-500/10 border-rose-500/20",
     },
     {
       icon: Snowflake,
-      label: "Streak Freezes",
+      label: isRu ? "Заморозка стрика" : "Streak Freezes",
+      sublabel: isRu ? "Защита серии" : "Streak protection",
       value: (progress as any)?.streak_freeze_count ?? 0,
-      color: "text-sky-500 bg-sky-500/10",
+      color: "text-sky-600 dark:text-sky-400 bg-sky-500/10 border-sky-500/20",
     },
     {
       icon: FileText,
-      label: "Full Exam Tickets",
+      label: isRu ? "Билеты Full Exam" : "Full Exam Tickets",
+      sublabel: isRu ? "98 вопросов SAT" : "98-question mock",
       value: (progress as any)?.full_exam_tickets ?? 0,
-      color: "text-amber-500 bg-amber-500/10",
+      color: "text-violet-600 dark:text-violet-400 bg-violet-500/10 border-violet-500/20",
     },
     {
       icon: BookOpen,
-      label: "Section Tickets",
+      label: isRu ? "Билеты секций" : "Section Tickets",
+      sublabel: isRu ? "Math или R&W" : "Math or R&W",
       value: (progress as any)?.section_exam_tickets ?? 0,
-      color: "text-secondary bg-secondary/10",
+      color: "text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/20",
     },
   ];
 
@@ -69,77 +80,108 @@ const Shop = () => {
   };
 
   return (
-    <AppShell title="Shop">
+    <AppShell title={isRu ? "Магазин" : "Shop"}>
       <div className="space-y-6 animate-spring-in font-sans">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-black tracking-tight text-foreground">
-              Shop & Membership
+            <div className="flex items-center gap-2 mb-1">
+              <span className="font-mono-tech text-[10px] uppercase tracking-widest font-extrabold text-amber-700 dark:text-amber-400 bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded-md">
+                CAMPUS STORE & ARSENAL
+              </span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+              {isRu ? "Магазин и подписка" : "Shop & Membership"}
             </h1>
-            <p className="text-muted-foreground text-xs sm:text-sm mt-0.5">
-              Power-ups, tickets, and Satango Plus Pro Arsenal
+            <p className="text-muted-foreground text-xs sm:text-sm mt-0.5 font-medium">
+              {isRu
+                ? "Усилители, билеты на мок-тесты и полный арсенал Satango Plus"
+                : "Power-ups, tickets, and Satango Plus Pro Arsenal"}
             </p>
           </div>
 
           <button
             onClick={() => setOpen(true)}
-            className="px-4 py-2.5 rounded-2xl bg-foreground text-background font-mono-tech text-xs uppercase tracking-wider font-bold shadow-md hover:opacity-90 transition flex items-center gap-2"
+            className="px-4 py-2.5 rounded-2xl bg-foreground text-background font-mono-tech text-xs uppercase tracking-wider font-extrabold shadow-md hover:opacity-90 active:scale-95 transition flex items-center gap-2 tap-feedback shrink-0"
           >
             <ShoppingBag className="w-4 h-4" />
-            <span>Store</span>
+            <span>{isRu ? "Магазин" : "Store"}</span>
           </button>
         </div>
 
         {/* SATANGO PLUS PRO ARSENAL DECK (Real Features & Interactive Showcase) */}
         <ProAcademyDeck onSelectPlan={handleSelectPlan} />
 
-        {/* Gem Balance Box */}
-        <div className="bg-card/90 dark:bg-[#171615]/90 backdrop-blur-xl rounded-3xl p-5 border border-border/80 dark:border-white/10 shadow-sm flex items-center justify-between">
-          <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-500 shadow-inner">
-              <Gem className="w-6 h-6 fill-amber-500/40" />
+        {/* Gem Balance Box with Warm High-End Styling */}
+        <div className="bg-gradient-to-r from-amber-500/[0.08] via-card to-card rounded-3xl p-5 sm:p-6 border border-amber-500/30 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-500 text-neutral-950 flex items-center justify-center shadow-md shadow-amber-500/25 shrink-0">
+              <Gem className="w-7 h-7 fill-neutral-950" />
             </div>
             <div>
-              <p className="font-mono-tech text-[10px] uppercase text-muted-foreground font-bold tracking-widest">
-                AVAILABLE GEMS
+              <p className="font-mono-tech text-[10px] uppercase text-amber-700 dark:text-amber-400 font-extrabold tracking-widest">
+                {isRu ? "ДОСТУПНЫЕ ГЕМЫ" : "AVAILABLE GEMS"}
               </p>
-              <p className="text-3xl font-black text-foreground tabular-nums">
-                {progress?.gems ?? 0}
-              </p>
+              <div className="flex items-baseline gap-2 mt-0.5">
+                <p className="text-3xl sm:text-4xl font-black text-foreground tabular-nums tracking-tight">
+                  {progress?.gems ?? 0}
+                </p>
+                <span className="text-xs text-muted-foreground font-semibold">
+                  {isRu ? "гемов на балансе" : "gems available"}
+                </span>
+              </div>
             </div>
           </div>
 
           <button
             onClick={() => setOpen(true)}
-            className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-mono-tech text-xs uppercase font-extrabold shadow-md transition"
+            className="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-mono-tech text-xs uppercase font-black shadow-md shadow-amber-500/20 active:scale-95 transition flex items-center justify-center gap-2 shrink-0 tap-feedback"
           >
-            Spend Gems
+            <ShoppingBag className="w-4 h-4" />
+            <span>{isRu ? "Потратить гемы" : "Spend Gems"}</span>
           </button>
         </div>
 
-        {/* Inventory */}
+        {/* Inventory Section */}
         <div className="space-y-3">
           <div className="flex items-center justify-between px-1">
-            <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold">
-              // YOUR INVENTORY
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-foreground" />
+              <span className="font-mono-tech text-[11px] uppercase tracking-[0.18em] text-foreground font-extrabold">
+                {isRu ? "// ТВОЙ ИНВЕНТАРЬ" : "// YOUR INVENTORY"}
+              </span>
+            </div>
+            <span className="font-mono-tech text-[10px] text-muted-foreground font-semibold">
+              {isRu ? "АКТИВНЫЕ ПРЕДМЕТЫ" : "ACTIVE ITEMS"}
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-3.5">
             {inventoryItems.map((item) => {
               const Icon = item.icon;
               return (
                 <div
                   key={item.label}
-                  className="bg-card/90 dark:bg-[#171615]/90 backdrop-blur-xl rounded-3xl p-4 border border-border/80 dark:border-white/10 shadow-sm flex flex-col justify-between"
+                  className="bg-card hover:bg-card/90 rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-border/80 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
                 >
-                  <div className={`w-9 h-9 rounded-2xl flex items-center justify-center ${item.color} mb-3`}>
-                    <Icon className="w-4 h-4" />
+                  <div
+                    className={cn(
+                      "w-10 h-10 rounded-2xl flex items-center justify-center border mb-3 transition-transform group-hover:scale-105 shadow-xs",
+                      item.color
+                    )}
+                  >
+                    <Icon className="w-5 h-5" strokeWidth={2.4} />
                   </div>
                   <div>
-                    <p className="text-2xl font-black text-foreground tabular-nums">{item.value}</p>
-                    <p className="text-xs text-muted-foreground font-semibold truncate mt-0.5">{item.label}</p>
+                    <p className="text-2xl sm:text-3xl font-black text-foreground tabular-nums tracking-tight">
+                      {item.value}
+                    </p>
+                    <p className="text-xs font-bold text-foreground truncate mt-1">
+                      {item.label}
+                    </p>
+                    <p className="text-[10px] text-muted-foreground truncate font-medium mt-0.5">
+                      {item.sublabel}
+                    </p>
                   </div>
                 </div>
               );
@@ -150,10 +192,11 @@ const Shop = () => {
         {/* Bottom Store Open Button */}
         <button
           onClick={() => setOpen(true)}
-          className="w-full h-14 rounded-3xl bg-primary text-primary-foreground font-black text-xs sm:text-sm uppercase tracking-wider shadow-xl active:scale-[0.98] transition-all tap-feedback flex items-center justify-center gap-2.5"
+          className="w-full h-14 rounded-2xl sm:rounded-3xl bg-foreground text-background font-mono-tech font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-lg hover:opacity-90 active:scale-[0.98] transition-all tap-feedback flex items-center justify-center gap-2.5"
         >
           <ShoppingBag className="w-5 h-5" />
-          <span>Open Full Power-Up Shop</span>
+          <span>{isRu ? "Открыть полный каталог усилений" : "Open Full Power-Up Shop"}</span>
+          <ArrowRight className="w-4 h-4" />
         </button>
       </div>
 

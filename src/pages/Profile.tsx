@@ -117,24 +117,35 @@ const Profile = () => {
 
   return (
     <AppShell title={t("profile")}>
-      <div className="space-y-5 animate-spring-in">
+      <div className="space-y-6 animate-spring-in">
         {/* Hero */}
         <div className="text-center pt-2">
-          <div className="w-24 h-24 rounded-full mx-auto bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-4xl font-black text-primary-foreground shadow-lg">
-            {initial}
-          </div>
-          <div className="flex items-center justify-center gap-2 mt-3">
-            <h1 className="text-2xl font-extrabold tracking-tight">{nickname}</h1>
+          <div className="relative inline-block">
+            <div className="w-24 h-24 rounded-3xl mx-auto bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 flex items-center justify-center text-4xl font-black text-neutral-950 shadow-lg shadow-amber-500/25 ring-4 ring-card">
+              {initial}
+            </div>
             {isPremium && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold tracking-wide uppercase bg-gradient-to-br from-[#D9CFC0] to-[#B8AC97] text-[#1F1B16] shadow-sm">
-                <Sparkles className="w-2.5 h-2.5" />
-                Plus
+              <span className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-neutral-950 flex items-center justify-center shadow-md ring-2 ring-card">
+                <Sparkles className="w-3.5 h-3.5 fill-neutral-950" />
               </span>
             )}
           </div>
-          <p className="text-sm text-muted-foreground">{t("level")} {progress?.level ?? 1} · {progress?.xp ?? 0} {t("xp")}</p>
-          <div className="flex items-center justify-center gap-2 mt-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono-tech font-bold bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20">
+
+          <div className="flex items-center justify-center gap-2 mt-3">
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">{nickname}</h1>
+            {isPremium && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wide uppercase bg-gradient-to-r from-amber-500 to-amber-600 text-neutral-950 shadow-sm">
+                <Sparkles className="w-2.5 h-2.5 fill-neutral-950" />
+                PLUS
+              </span>
+            )}
+          </div>
+          <p className="text-xs sm:text-sm text-muted-foreground font-semibold mt-0.5">
+            {t("level")} {progress?.level ?? 1} · {progress?.xp ?? 0} {t("xp")}
+          </p>
+
+          <div className="flex items-center justify-center gap-2 mt-2.5">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono-tech font-bold bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/25 shadow-2xs">
               <Snowflake className="w-3.5 h-3.5" />
               {((progress as any)?.streak_freeze_count ?? 0) > 0
                 ? `${(progress as any)?.streak_freeze_count} Streak Freeze Equipped 🛡️`
@@ -144,14 +155,24 @@ const Profile = () => {
         </div>
 
         {/* Stats grid */}
-        <div className="grid grid-cols-4 gap-2">
-          {stats.map((s) => {
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {[
+            { icon: Heart, label: t("hearts"), value: `${hearts}/${maxHearts}`, bg: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20" },
+            { icon: Flame, label: t("streak"), value: streakValue, bg: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20" },
+            { icon: Gem, label: t("gems"), value: progress?.gems ?? 0, bg: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20" },
+            { icon: Zap, label: t("xp"), value: progress?.xp ?? 0, bg: "bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/20" },
+          ].map((s) => {
             const Icon = s.icon;
             return (
-              <div key={s.label} className="bg-card rounded-3xl p-3 text-center border border-border/50">
-                <Icon className={`w-5 h-5 mx-auto ${s.color}`} />
-                <p className="text-base font-black mt-1">{s.value}</p>
-                <p className="text-[10px] text-muted-foreground font-semibold">{s.label}</p>
+              <div
+                key={s.label}
+                className="bg-card hover:bg-card/90 rounded-2xl sm:rounded-3xl p-4 text-center border border-border/80 shadow-2xs hover:shadow-xs transition-all"
+              >
+                <div className={`w-9 h-9 mx-auto rounded-xl flex items-center justify-center border ${s.bg} mb-2`}>
+                  <Icon className="w-4 h-4" strokeWidth={2.4} />
+                </div>
+                <p className="text-xl sm:text-2xl font-black text-foreground tabular-nums tracking-tight">{s.value}</p>
+                <p className="text-[11px] text-muted-foreground font-bold mt-0.5">{s.label}</p>
               </div>
             );
           })}

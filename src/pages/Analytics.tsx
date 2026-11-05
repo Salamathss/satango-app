@@ -225,44 +225,52 @@ const Analytics = () => {
           <>
             {/* Predicted SAT Score */}
             {predictedTotal > 0 && (
-              <div className="bg-card rounded-2xl p-5 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.06)] border border-primary/10">
-                <div className="flex items-center gap-2 mb-3">
-                  <TrendingUp className="w-5 h-5 text-primary" />
-                  <h2 className="text-lg font-extrabold">Predicted SAT Score</h2>
+              <div className="bg-card rounded-3xl p-5 sm:p-6 shadow-sm border border-amber-500/30 bg-gradient-to-r from-amber-500/[0.06] via-card to-card space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                      <TrendingUp className="w-5 h-5 stroke-[2.5]" />
+                    </div>
+                    <div>
+                      <h2 className="text-base sm:text-lg font-black text-foreground">Прогноз балла SAT</h2>
+                      <p className="text-xs text-muted-foreground font-medium">На основе последних ответов</p>
+                    </div>
+                  </div>
+                  <span className="font-mono-tech text-[10px] font-black uppercase text-amber-700 dark:text-amber-300 bg-amber-500/15 px-2.5 py-0.5 rounded-md border border-amber-500/30">
+                    AI PREDICTION
+                  </span>
                 </div>
+
                 <div className="grid grid-cols-3 gap-3 text-center">
-                  <div className="bg-primary/5 rounded-xl p-3">
-                    <p className="text-3xl font-black text-primary">{predictedMath}</p>
-                    <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Math</p>
+                  <div className="bg-muted/50 border border-border/70 rounded-2xl p-3 sm:p-4">
+                    <p className="text-2xl sm:text-3xl font-black text-sky-600 dark:text-sky-400 tabular-nums">{predictedMath}</p>
+                    <p className="text-[10px] font-mono-tech text-muted-foreground font-extrabold uppercase tracking-wider mt-0.5">Math</p>
                   </div>
-                  <div className="bg-primary/5 rounded-xl p-3">
-                    <p className="text-3xl font-black text-primary">{predictedRW}</p>
-                    <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">R&W</p>
+                  <div className="bg-muted/50 border border-border/70 rounded-2xl p-3 sm:p-4">
+                    <p className="text-2xl sm:text-3xl font-black text-violet-600 dark:text-violet-400 tabular-nums">{predictedRW}</p>
+                    <p className="text-[10px] font-mono-tech text-muted-foreground font-extrabold uppercase tracking-wider mt-0.5">R&W</p>
                   </div>
-                  <div className="bg-primary/10 rounded-xl p-3 border border-primary/20">
-                    <p className="text-3xl font-black text-primary">{predictedTotal}</p>
-                    <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Total</p>
+                  <div className="bg-amber-500/15 border border-amber-500/30 rounded-2xl p-3 sm:p-4 shadow-2xs">
+                    <p className="text-2xl sm:text-3xl font-black text-amber-700 dark:text-amber-300 tabular-nums">{predictedTotal}</p>
+                    <p className="text-[10px] font-mono-tech text-amber-800 dark:text-amber-300 font-black uppercase tracking-wider mt-0.5">Итого (1600)</p>
                   </div>
                 </div>
-                <p className="text-[10px] text-muted-foreground mt-2 text-center">
-                  Based on your recent answer accuracy. Keep practicing to improve!
-                </p>
               </div>
             )}
 
             {/* Overview cards */}
             <div className="grid grid-cols-3 gap-3">
-              <div className="bg-card rounded-2xl p-3 text-center shadow-[0_2px_8px_-2px_rgba(0,0,0,0.06)]">
-                <p className="text-2xl font-black text-primary">{overallAccuracy}%</p>
-                <p className="text-xs text-muted-foreground font-semibold">Accuracy</p>
+              <div className="bg-card hover:bg-card/90 rounded-2xl sm:rounded-3xl p-4 text-center border border-border/80 shadow-2xs hover:shadow-xs transition-all">
+                <p className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400 tabular-nums tracking-tight">{overallAccuracy}%</p>
+                <p className="text-[11px] text-muted-foreground font-bold uppercase tracking-wider mt-1">Точность</p>
               </div>
-              <div className="bg-card rounded-2xl p-3 text-center shadow-[0_2px_8px_-2px_rgba(0,0,0,0.06)]">
-                <p className="text-2xl font-black text-foreground">{totalAnswered}</p>
-                <p className="text-xs text-muted-foreground font-semibold">Answered</p>
+              <div className="bg-card hover:bg-card/90 rounded-2xl sm:rounded-3xl p-4 text-center border border-border/80 shadow-2xs hover:shadow-xs transition-all">
+                <p className="text-2xl sm:text-3xl font-black text-foreground tabular-nums tracking-tight">{totalAnswered}</p>
+                <p className="text-[11px] text-muted-foreground font-bold uppercase tracking-wider mt-1">Отвечено</p>
               </div>
-              <div className="bg-card rounded-2xl p-3 text-center shadow-[0_2px_8px_-2px_rgba(0,0,0,0.06)]">
-                <p className="text-2xl font-black text-primary">{totalCorrect}</p>
-                <p className="text-xs text-muted-foreground font-semibold">Correct</p>
+              <div className="bg-card hover:bg-card/90 rounded-2xl sm:rounded-3xl p-4 text-center border border-border/80 shadow-2xs hover:shadow-xs transition-all">
+                <p className="text-2xl sm:text-3xl font-black text-amber-600 dark:text-amber-400 tabular-nums tracking-tight">{totalCorrect}</p>
+                <p className="text-[11px] text-muted-foreground font-bold uppercase tracking-wider mt-1">Верно</p>
               </div>
             </div>
 

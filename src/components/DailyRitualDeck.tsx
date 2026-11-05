@@ -14,6 +14,7 @@ import {
   BookOpen,
   Flame,
   Sparkles,
+  ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -98,54 +99,61 @@ export const DailyRitualDeck = ({
     {
       id: "lesson",
       label: t("questCompleteLesson"),
-      reward: "+20 XP",
       done: quizDoneToday,
+      reward: "+30 XP",
       icon: BookOpen,
+      color: "text-violet-500",
     },
     {
       id: "chest",
-      label: t("questClaimChest"),
-      reward: "+Gems",
-      done: chestClaimedToday || alreadyClaimed,
+      label: t("questDailyChest"),
+      done: chestClaimedToday,
+      reward: "+10 XP",
       icon: Gem,
+      color: "text-amber-500",
     },
     {
-      id: "ledger",
-      label: t("questReviewMistakes"),
-      reward: "+30 XP",
+      id: "errors",
+      label: t("questReviewErrors"),
       done: errorsReviewDone,
+      reward: "+20 XP",
       icon: Flame,
+      color: "text-rose-500",
     },
   ];
 
   const completedQuestsCount = quests.filter((q) => q.done).length;
   const allQuestsCompleted = completedQuestsCount === quests.length;
 
-  const xpForNextLevel = progress ? progress.level * 100 : 100;
-  const currentLevelXP = progress ? progress.xp % xpForNextLevel : 0;
-  const xpPercent = Math.min((currentLevelXP / xpForNextLevel) * 100, 100);
+  // XP calculation
+  const xp = progress?.xp ?? 0;
+  const level = progress?.level ?? 1;
+  const xpForNextLevel = level * 100;
+  const currentLevelXP = xp % 100;
+  const xpPercent = Math.min(Math.round((currentLevelXP / xpForNextLevel) * 100), 100);
 
   return (
     <>
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white via-zinc-50/90 to-zinc-100/70 dark:from-zinc-900/90 dark:via-zinc-900/60 dark:to-zinc-950/90 border border-zinc-200/90 dark:border-zinc-800 hover:border-zinc-400/80 dark:hover:border-zinc-700 text-foreground p-6 sm:p-7 shadow-xs hover:shadow-md transition-all space-y-5 font-sans">
-        {/* Subtle Ambient Depth */}
-        <div className="absolute top-0 right-0 w-52 h-52 bg-zinc-200/30 dark:bg-zinc-800/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="relative overflow-hidden rounded-3xl bg-card border border-border/80 text-foreground p-5 sm:p-7 shadow-sm hover:shadow-md transition-all space-y-5 font-sans">
+        {/* Subtle Ambient Glow */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/[0.06] rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/[0.05] rounded-full blur-3xl pointer-events-none" />
 
         {/* TOP ROW: Level XP Header & Live Progress */}
         <div className="space-y-3 relative z-10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-2xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 flex items-center justify-center shrink-0 shadow-sm">
-                <Zap className="w-5 h-5 fill-current" />
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-500 text-neutral-950 flex items-center justify-center shrink-0 shadow-md shadow-amber-500/20">
+                <Zap className="w-5 h-5 fill-neutral-950" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-mono-tech text-[10px] uppercase tracking-widest text-zinc-700 dark:text-zinc-300 font-bold bg-zinc-100 dark:bg-zinc-800 px-2.5 py-0.5 rounded-md border border-zinc-200 dark:border-zinc-700 shadow-xs">
+                  <span className="font-mono-tech text-[10px] uppercase tracking-wider text-amber-700 dark:text-amber-300 font-black bg-amber-500/15 px-2.5 py-0.5 rounded-md border border-amber-500/30 shadow-2xs">
                     LEVEL {progress?.level ?? 1}
                   </span>
                   <span className="font-black text-sm text-foreground">Scholar Rank</span>
                 </div>
-                <p className="text-[11px] font-mono-tech text-muted-foreground mt-0.5 font-medium">
+                <p className="text-[11px] font-mono-tech text-muted-foreground mt-0.5 font-semibold">
                   {currentLevelXP} / {xpForNextLevel} XP до уровня {(progress?.level ?? 1) + 1}
                 </p>
               </div>
@@ -155,37 +163,37 @@ export const DailyRitualDeck = ({
               <span className="font-mono-tech text-2xl sm:text-3xl font-black text-foreground tabular-nums">
                 {progress?.xp ?? 0}
               </span>
-              <span className="font-mono-tech text-xs text-muted-foreground ml-1 uppercase font-bold">XP</span>
+              <span className="font-mono-tech text-xs text-amber-600 dark:text-amber-400 ml-1 uppercase font-black">XP</span>
             </div>
           </div>
 
-          {/* Clean Progress Bar */}
-          <div className="h-2.5 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden p-0.5 border border-zinc-200 dark:border-zinc-700">
+          {/* Clean Radiant Progress Bar */}
+          <div className="h-3 bg-muted rounded-full overflow-hidden p-0.5 border border-border/70">
             <div
-              className="h-full bg-zinc-900 dark:bg-zinc-200 rounded-full transition-all duration-700"
+              className="h-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 rounded-full transition-all duration-700 shadow-xs"
               style={{ width: `${xpPercent}%` }}
             />
           </div>
         </div>
 
         {/* TAB CONTROLS: Segmented switcher between Daily Chest & Daily Quests */}
-        <div className="pt-2 border-t border-zinc-200/80 dark:border-zinc-800 relative z-10">
+        <div className="pt-3 border-t border-border/60 relative z-10">
           <div className="flex items-center justify-between gap-2 mb-4">
-            <div className="flex items-center p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-2xl border border-zinc-200 dark:border-zinc-700/60 w-full sm:w-auto shadow-xs">
+            <div className="flex items-center p-1 bg-muted/60 rounded-2xl border border-border/60 w-full sm:w-auto shadow-2xs">
               <button
                 type="button"
                 onClick={() => setActiveTab("chest")}
                 className={cn(
-                  "flex-1 sm:flex-initial px-4 py-2 rounded-xl font-mono-tech text-xs font-bold transition-all flex items-center justify-center gap-2",
+                  "flex-1 sm:flex-initial px-4 py-2 rounded-xl font-mono-tech text-xs font-extrabold transition-all flex items-center justify-center gap-2 tap-feedback",
                   activeTab === "chest"
-                    ? "bg-white dark:bg-zinc-900 text-foreground shadow-xs border border-zinc-200 dark:border-zinc-700"
+                    ? "bg-card text-foreground shadow-sm border border-border"
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >
-                <Gem className="w-3.5 h-3.5 text-zinc-700 dark:text-zinc-300" />
+                <Gem className="w-3.5 h-3.5 text-amber-500 fill-amber-500/30" />
                 <span>{language === "ru" ? "Сундук дня" : "Daily Chest"}</span>
                 {!alreadyClaimed && (
-                  <span className="w-2 h-2 rounded-full bg-zinc-500 animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
                 )}
               </button>
 
@@ -193,17 +201,17 @@ export const DailyRitualDeck = ({
                 type="button"
                 onClick={() => setActiveTab("quests")}
                 className={cn(
-                  "flex-1 sm:flex-initial px-4 py-2 rounded-xl font-mono-tech text-xs font-bold transition-all flex items-center justify-center gap-2",
+                  "flex-1 sm:flex-initial px-4 py-2 rounded-xl font-mono-tech text-xs font-extrabold transition-all flex items-center justify-center gap-2 tap-feedback",
                   activeTab === "quests"
-                    ? "bg-white dark:bg-zinc-900 text-foreground shadow-xs border border-zinc-200 dark:border-zinc-700"
+                    ? "bg-card text-foreground shadow-sm border border-border"
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >
-                <Trophy className="w-3.5 h-3.5 text-zinc-700 dark:text-zinc-300" />
+                <Trophy className="w-3.5 h-3.5 text-emerald-500" />
                 <span>{language === "ru" ? "Квесты дня" : "Daily Quests"}</span>
                 <span
                   className={cn(
-                    "text-[10px] px-1.5 py-0.5 rounded-full font-mono-tech font-extrabold",
+                    "text-[10px] px-1.5 py-0.5 rounded-full font-mono-tech font-black",
                     allQuestsCompleted
                       ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/35"
                       : "bg-muted text-muted-foreground border border-border/60"
@@ -214,14 +222,14 @@ export const DailyRitualDeck = ({
               </button>
             </div>
 
-            <span className="hidden sm:block font-mono-tech text-[10px] uppercase text-muted-foreground font-semibold tracking-wider">
+            <span className="hidden sm:block font-mono-tech text-[10px] uppercase text-muted-foreground font-extrabold tracking-wider">
               {language === "ru" ? "ЕЖЕДНЕВНЫЙ ПРОТОКОЛ" : "DAILY PROTOCOL"}
             </span>
           </div>
 
           {/* TAB 1: DAILY CHEST */}
           {activeTab === "chest" && (
-            <div className="space-y-4 animate-fadeIn">
+            <div className="space-y-4 animate-in fade-in duration-200">
               <div className="flex items-center justify-between">
                 <div>
                   <h4 className="text-sm font-black text-foreground">
@@ -235,15 +243,15 @@ export const DailyRitualDeck = ({
                 </div>
 
                 {!alreadyClaimed && (
-                  <div className="flex items-center gap-1.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-foreground font-bold text-xs px-3 py-1.5 rounded-xl shrink-0 shadow-xs">
-                    <Gem className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" />
+                  <div className="flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/30 text-amber-700 dark:text-amber-300 font-black text-xs px-3 py-1.5 rounded-xl shrink-0 shadow-2xs">
+                    <Gem className="w-3.5 h-3.5 fill-current" />
                     <span>+{reward}</span>
                   </div>
                 )}
               </div>
 
               {/* 7-day grid */}
-              <div className="grid grid-cols-7 gap-1.5 sm:gap-2 w-full">
+              <div className="grid grid-cols-7 gap-1.5 sm:gap-2.5 w-full">
                 {DAILY_REWARDS.map((r, i) => {
                   let isPast = false;
                   let isCurrent = false;
@@ -262,35 +270,38 @@ export const DailyRitualDeck = ({
                     <div
                       key={i}
                       className={cn(
-                        "flex flex-col items-center justify-center py-2.5 px-1 rounded-2xl text-center transition-all duration-200 border",
-                        isPast && "bg-zinc-100 dark:bg-zinc-800/90 text-foreground border-zinc-200 dark:border-zinc-700 font-bold",
+                        "flex flex-col items-center justify-center py-3 px-1 rounded-2xl text-center transition-all duration-200 border",
+                        isPast &&
+                          "bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border-emerald-500/30 font-bold",
                         isCurrent &&
-                          "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border-2 border-zinc-900 dark:border-white shadow-sm scale-[1.03] font-black",
+                          "bg-gradient-to-b from-amber-500 to-amber-600 text-neutral-950 border-2 border-amber-400 shadow-md shadow-amber-500/25 scale-[1.04] font-black",
                         !isPast &&
                           !isCurrent &&
-                          "bg-white/80 dark:bg-zinc-900/60 text-muted-foreground border-zinc-200/80 dark:border-zinc-800 font-semibold"
+                          "bg-muted/30 text-muted-foreground border-border/60 font-semibold"
                       )}
                     >
-                      <span className="text-[9px] font-mono-tech uppercase tracking-wider opacity-80 mb-0.5 font-bold">
+                      <span className="text-[9px] font-mono-tech uppercase tracking-wider opacity-90 mb-0.5 font-bold">
                         {language === "ru" ? `Д${i + 1}` : `D${i + 1}`}
                       </span>
                       {isPast ? (
-                        <div className="w-4 h-4 rounded-full bg-zinc-700 dark:bg-zinc-300 text-white dark:text-zinc-900 flex items-center justify-center my-0.5">
-                          <Check className="w-2.5 h-2.5" strokeWidth={3} />
+                        <div className="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center my-0.5 shadow-2xs">
+                          <Check className="w-3 h-3 stroke-[3]" />
                         </div>
                       ) : (
                         <div className="flex items-center gap-0.5 my-0.5">
                           <Gem
                             className={cn(
-                              "w-3 h-3",
+                              "w-3.5 h-3.5",
                               isCurrent
-                                ? "text-white dark:text-zinc-900"
-                                : "text-muted-foreground/80"
+                                ? "text-neutral-950 fill-neutral-950"
+                                : "text-amber-500/60"
                             )}
                           />
                         </div>
                       )}
-                      <span className="text-[10px] font-mono-tech leading-tight font-bold">+{r}</span>
+                      <span className="text-[10px] font-mono-tech leading-tight font-extrabold">
+                        +{r}
+                      </span>
                     </div>
                   );
                 })}
@@ -298,15 +309,15 @@ export const DailyRitualDeck = ({
 
               {/* Action Button */}
               {alreadyClaimed ? (
-                <div className="w-full py-2.5 px-4 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center gap-2 text-xs font-bold text-muted-foreground font-mono-tech">
-                  <Check className="w-4 h-4 text-emerald-500" strokeWidth={2.5} />
+                <div className="w-full py-3 px-4 rounded-2xl bg-muted/40 border border-border/70 flex items-center justify-center gap-2 text-xs font-bold text-muted-foreground font-mono-tech">
+                  <Check className="w-4 h-4 text-emerald-500 stroke-[2.5]" />
                   <span>{t("claimedToday")} · {t("claimedNotice")}</span>
                 </div>
               ) : (
                 <button
                   onClick={handleClaim}
                   disabled={claiming}
-                  className="w-full h-11 rounded-2xl font-black text-xs uppercase tracking-wider bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 shadow-sm flex items-center justify-center gap-2 hover:scale-[1.004] active:scale-[0.99] transition-all"
+                  className="w-full h-12 rounded-2xl font-black text-xs sm:text-sm uppercase tracking-wider bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-500 text-neutral-950 shadow-md shadow-amber-500/25 flex items-center justify-center gap-2 hover:scale-[1.004] active:scale-[0.99] transition-all tap-feedback"
                 >
                   {claiming ? (
                     <span className="animate-pulse font-mono-tech">
@@ -314,12 +325,13 @@ export const DailyRitualDeck = ({
                     </span>
                   ) : (
                     <>
-                      <Gem className="w-4 h-4 fill-current" />
+                      <Gem className="w-4 h-4 fill-neutral-950" />
                       <span>
                         {language === "ru"
                           ? `Забрать награду (+${reward} 💎)`
-                          : `Claim Reward (+${reward} 💎)`}
+                          : `Claim Daily Reward (+${reward} 💎)`}
                       </span>
+                      <ArrowRight className="w-4 h-4 stroke-[2.5]" />
                     </>
                   )}
                 </button>
@@ -329,7 +341,7 @@ export const DailyRitualDeck = ({
 
           {/* TAB 2: DAILY QUESTS */}
           {activeTab === "quests" && (
-            <div className="space-y-3 animate-fadeIn">
+            <div className="space-y-3 animate-in fade-in duration-200">
               <div className="flex items-center justify-between">
                 <div>
                   <h4 className="text-sm font-black text-foreground">
@@ -347,7 +359,7 @@ export const DailyRitualDeck = ({
                     "px-2.5 py-1 rounded-xl border text-[11px] font-mono-tech font-bold shadow-xs",
                     allQuestsCompleted
                       ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30"
-                      : "bg-white dark:bg-zinc-900 text-muted-foreground border-zinc-200 dark:border-zinc-800"
+                      : "bg-muted/50 text-muted-foreground border-border/60"
                   )}
                 >
                   {completedQuestsCount} / {quests.length} DONE
@@ -355,42 +367,52 @@ export const DailyRitualDeck = ({
               </div>
 
               <div className="space-y-2">
-                {quests.map((q) => (
-                  <div
-                    key={q.id}
-                    className={cn(
-                      "flex items-center justify-between p-3 rounded-2xl border transition-all duration-150 shadow-xs",
-                      q.done
-                        ? "bg-emerald-500/10 dark:bg-emerald-950/20 border-emerald-500/30 text-foreground"
-                        : "bg-white dark:bg-zinc-900/80 border-zinc-200 dark:border-zinc-800 text-muted-foreground"
-                    )}
-                  >
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      {q.done ? (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" strokeWidth={2.5} />
-                      ) : (
-                        <Circle className="w-4 h-4 text-muted-foreground/60 shrink-0" />
+                {quests.map((q) => {
+                  const Icon = q.icon;
+                  return (
+                    <div
+                      key={q.id}
+                      className={cn(
+                        "flex items-center justify-between p-3.5 rounded-2xl border transition-all duration-150 shadow-2xs",
+                        q.done
+                          ? "bg-emerald-500/10 border-emerald-500/30 text-foreground"
+                          : "bg-card border-border/70 text-foreground"
                       )}
-                      <span
-                        className={cn(
-                          "text-xs font-bold truncate",
-                          q.done ? "text-foreground line-through opacity-75" : "text-foreground"
-                        )}
-                      >
-                        {q.label}
-                      </span>
-                    </div>
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className={cn("w-7 h-7 rounded-lg flex items-center justify-center bg-muted/60", q.color)}>
+                          <Icon className="w-4 h-4" />
+                        </div>
+                        <div className="min-w-0">
+                          <span
+                            className={cn(
+                              "text-xs font-extrabold truncate block",
+                              q.done && "line-through opacity-70"
+                            )}
+                          >
+                            {q.label}
+                          </span>
+                        </div>
+                      </div>
 
-                    <span className="font-mono-tech text-[10px] font-bold px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 shrink-0 ml-2">
-                      {q.reward}
-                    </span>
-                  </div>
-                ))}
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono-tech text-[10px] font-extrabold px-2.5 py-1 rounded-lg bg-muted border border-border text-foreground shrink-0">
+                          {q.reward}
+                        </span>
+                        {q.done ? (
+                          <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" strokeWidth={2.5} />
+                        ) : (
+                          <Circle className="w-4 h-4 text-muted-foreground/50 shrink-0" />
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
 
               {allQuestsCompleted && (
-                <div className="p-2.5 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-center font-mono-tech text-xs font-bold text-emerald-700 dark:text-emerald-300 shadow-xs">
-                  ✨ {t("allQuestsDone")} +50 Bonus XP
+                <div className="p-3 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-center font-mono-tech text-xs font-black text-emerald-700 dark:text-emerald-300 shadow-xs">
+                  ✨ {t("allQuestsDone")} +50 Bonus XP Claimed!
                 </div>
               )}
             </div>

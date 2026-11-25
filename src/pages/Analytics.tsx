@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { DomainMasteryRadar } from "@/components/analytics/DomainMasteryRadar";
 
 interface TopicStat {
   topic: string;
@@ -236,8 +237,8 @@ const Analytics = () => {
                       <p className="text-xs text-muted-foreground font-medium">На основе последних ответов</p>
                     </div>
                   </div>
-                  <span className="font-mono-tech text-[10px] font-black uppercase text-amber-700 dark:text-amber-300 bg-amber-500/15 px-2.5 py-0.5 rounded-md border border-amber-500/30">
-                    AI PREDICTION
+                  <span className="text-[11px] font-semibold text-amber-800 dark:text-amber-300 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/25">
+                    Прогноз по шкале College Board
                   </span>
                 </div>
 
@@ -274,6 +275,9 @@ const Analytics = () => {
               </div>
             </div>
 
+            {/* Interactive Domain Mastery Radar */}
+            <DomainMasteryRadar userAnswers={answers} />
+
             {/* Time & Pacing Analytics (Pro Feature) */}
             <div className="bg-card rounded-3xl p-5 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.06)] border border-border/80 space-y-4">
               <div className="flex items-center justify-between">
@@ -286,8 +290,8 @@ const Analytics = () => {
                     <p className="text-xs text-muted-foreground">Speed benchmarked against Digital SAT standards</p>
                   </div>
                 </div>
-                <span className="font-mono-tech text-[10px] uppercase font-bold text-amber-500 bg-amber-500/10 px-2.5 py-0.5 rounded border border-amber-500/20">
-                  PACE ENGINE
+                <span className="text-xs font-semibold text-amber-800 dark:text-amber-300 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">
+                  Live Pacing
                 </span>
               </div>
 

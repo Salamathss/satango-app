@@ -217,8 +217,8 @@ const ResetPassword = () => {
       </div>
 
       {/* Footer */}
-      <footer className="max-w-6xl w-full mx-auto text-center text-[11px] text-neutral-500 font-mono-tech tracking-widest uppercase relative z-10 pb-2">
-        SATANGO ENGINE v2.4 // SECURE AUTHENTICATION
+      <footer className="max-w-6xl w-full mx-auto text-center text-xs text-neutral-400 font-medium relative z-10 pb-4">
+        🔒 Безопасное восстановление доступа · SATANGO 2026
       </footer>
     </main>
   );

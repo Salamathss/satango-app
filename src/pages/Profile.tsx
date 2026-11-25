@@ -1,5 +1,8 @@
+import { useState } from "react";
 import AppShell from "@/components/AppShell";
 import DailyCheckIn from "@/components/DailyCheckIn";
+import { StreakRepairDialog } from "@/components/StreakRepairDialog";
+import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 import { useHearts } from "@/hooks/useHearts";
 import { useUserErrors } from "@/hooks/useUserErrors";
@@ -40,6 +43,7 @@ const Profile = () => {
   const { theme, toggleTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
   const navigate = useNavigate();
+  const [streakRepairOpen, setStreakRepairOpen] = useState(false);
 
   const { data: profile } = useQuery({
     queryKey: ["profile", user?.id],
@@ -106,7 +110,7 @@ const Profile = () => {
   const nickname = (profile as any)?.nickname || profile?.display_name?.split(" ")[0] || t("learner");
   const initial = nickname.charAt(0).toUpperCase();
 
-  const streakValue = (progress as any)?.streak ?? (profile as any)?.streak_days ?? 0;
+  const streakValue = Math.max((progress as any)?.streak ?? 0, (profile as any)?.streak_days ?? 0);
 
   const stats = [
     { icon: Heart, label: t("hearts"), value: `${hearts}/${maxHearts}`, color: "text-destructive" },
@@ -157,25 +161,65 @@ const Profile = () => {
         {/* Stats grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
-            { icon: Heart, label: t("hearts"), value: `${hearts}/${maxHearts}`, bg: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20" },
-            { icon: Flame, label: t("streak"), value: streakValue, bg: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20" },
-            { icon: Gem, label: t("gems"), value: progress?.gems ?? 0, bg: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20" },
-            { icon: Zap, label: t("xp"), value: progress?.xp ?? 0, bg: "bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/20" },
+            { id: "hearts", icon: Heart, label: t("hearts"), value: `${hearts}/${maxHearts}`, bg: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20" },
+            { id: "streak", icon: Flame, label: t("streak"), value: streakValue, bg: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20", clickable: true },
+            { id: "gems", icon: Gem, label: t("gems"), value: progress?.gems ?? 0, bg: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20" },
+            { id: "xp", icon: Zap, label: t("xp"), value: progress?.xp ?? 0, bg: "bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/20" },
           ].map((s) => {
             const Icon = s.icon;
             return (
               <div
                 key={s.label}
-                className="bg-card hover:bg-card/90 rounded-2xl sm:rounded-3xl p-4 text-center border border-border/80 shadow-2xs hover:shadow-xs transition-all"
+                onClick={s.clickable ? () => setStreakRepairOpen(true) : undefined}
+                className={cn(
+                  "bg-card hover:bg-card/90 rounded-2xl sm:rounded-3xl p-4 text-center border border-border/80 shadow-2xs hover:shadow-xs transition-all",
+                  s.clickable && "cursor-pointer active:scale-95 group"
+                )}
+                title={s.clickable ? (language === "ru" ? "Нажмите для восстановления стрика" : "Click to repair streak") : undefined}
               >
-                <div className={`w-9 h-9 mx-auto rounded-xl flex items-center justify-center border ${s.bg} mb-2`}>
+                <div className={`w-9 h-9 mx-auto rounded-xl flex items-center justify-center border ${s.bg} mb-2 ${s.clickable ? "group-hover:scale-110 transition-transform" : ""}`}>
                   <Icon className="w-4 h-4" strokeWidth={2.4} />
                 </div>
                 <p className="text-xl sm:text-2xl font-black text-foreground tabular-nums tracking-tight">{s.value}</p>
-                <p className="text-[11px] text-muted-foreground font-bold mt-0.5">{s.label}</p>
+                <p className="text-[11px] text-muted-foreground font-bold mt-0.5 flex items-center justify-center gap-1">
+                  <span>{s.label}</span>
+                  {s.clickable && <span className="text-[10px] text-amber-500">🛠️</span>}
+                </p>
               </div>
             );
           })}
+        </div>
+
+        {/* Streak Repair Action Box */}
+        <div className="bg-gradient-to-r from-amber-500/[0.12] via-card to-card rounded-3xl p-4 sm:p-5 border border-amber-500/30 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0 shadow-2xs">
+              <Flame className="w-6 h-6 fill-current animate-pulse" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="font-extrabold text-sm sm:text-base text-foreground">
+                  {language === "ru" ? "Streak Repair (Восстановление)" : "Streak Repair"}
+                </h3>
+                <span className="font-mono-tech text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-300">
+                  150 💎
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground font-medium mt-0.5">
+                {language === "ru"
+                  ? "Спасите серию занятий или восстановите сгоревший стрик за гемы."
+                  : "Protect or restore your daily study momentum for gems."}
+              </p>
+            </div>
+          </div>
+
+          <Button
+            onClick={() => setStreakRepairOpen(true)}
+            className="h-10 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-mono-tech text-xs font-black uppercase tracking-wider shadow-sm active:scale-95 transition-all shrink-0 gap-1.5"
+          >
+            <Flame className="w-4 h-4 fill-current" />
+            <span>{language === "ru" ? "Восстановить стрик" : "Repair Streak"}</span>
+          </Button>
         </div>
 
         <DailyCheckIn />
@@ -349,6 +393,11 @@ const Profile = () => {
           {t("signOut")}
         </Button>
       </div>
+
+      <StreakRepairDialog
+        open={streakRepairOpen}
+        onOpenChange={setStreakRepairOpen}
+      />
     </AppShell>
   );
 };

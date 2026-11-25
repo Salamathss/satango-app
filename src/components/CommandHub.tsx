@@ -49,12 +49,12 @@ export const CommandHub = ({ errorCount }: CommandHubProps) => {
       <div className="flex items-center justify-between px-1">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-foreground" />
-          <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-foreground font-extrabold">
-            // {language === "ru" ? "КОМАНДНЫЙ ЦЕНТР И РЕЖИМЫ" : "COMMAND HUB & MODES"}
+          <span className="text-xs font-bold text-foreground">
+            {language === "ru" ? "Режимы тренировок" : "Training Modes"}
           </span>
         </div>
-        <span className="font-mono-tech text-[10px] text-amber-700 dark:text-amber-400 font-extrabold uppercase tracking-wider bg-amber-500/15 px-2 py-0.5 rounded-md border border-amber-500/30 shadow-2xs">
-          FAST LAUNCH
+        <span className="text-[11px] font-semibold text-amber-800 dark:text-amber-300 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/25">
+          {language === "ru" ? "Быстрый старт" : "Quick Start"}
         </span>
       </div>
 

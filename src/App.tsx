@@ -26,6 +26,10 @@ import AppShell from "@/components/AppShell";
 import ScoreCalculator from "./pages/ScoreCalculator";
 import { Battle } from "./pages/Battle";
 import DiagnosticMockExam from "./pages/DiagnosticMockExam";
+import Mocks from "./pages/Mocks";
+import DesmosLab from "./pages/DesmosLab";
+import BluebookExamSimulator from "./pages/BluebookExamSimulator";
+import Cheatsheet from "./pages/Cheatsheet";
 
 import { ThemeProvider } from "@/context/ThemeContext";
 import { LanguageProvider } from "@/context/LanguageContext";
@@ -54,8 +58,12 @@ const App = () => (
             <Route path="/trust" element={<Trust />} />
             <Route path="/unit/:unitId" element={protectedRoute(<UnitDetail />)} />
             <Route path="/quiz/:topicId" element={protectedRoute(<Quiz />)} />
-            <Route path="/battle" element={protectedRoute(<Battle />)} />
+            <Route path="/battle" element={<Battle />} />
             <Route path="/jump-test/:moduleId" element={protectedRoute(<JumpTest />)} />
+            <Route path="/mocks" element={protectedRoute(<Mocks />)} />
+            <Route path="/bluebook" element={protectedRoute(<BluebookExamSimulator />)} />
+            <Route path="/desmos-lab" element={protectedRoute(<DesmosLab />)} />
+            <Route path="/cheatsheet" element={protectedRoute(<Cheatsheet />)} />
             <Route path="/mock-exam" element={protectedRoute(<MockExam />)} />
             <Route path="/diagnostic-mock" element={protectedRoute(<DiagnosticMockExam />)} />
             <Route path="/exam-center" element={protectedRoute(<ExamCenter />)} />

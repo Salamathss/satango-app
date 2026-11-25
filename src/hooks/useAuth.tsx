@@ -30,6 +30,7 @@ interface AuthContextType {
   progress: ProgressSummary | null;
   refreshProfile: () => Promise<void>;
   signOut: () => Promise<void>;
+  signInAsGuest: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -40,9 +41,39 @@ const AuthContext = createContext<AuthContextType>({
   progress: null,
   refreshProfile: async () => { },
   signOut: async () => { },
+  signInAsGuest: () => { },
 });
 
 const REMEMBER_KEY = "satango.rememberMe";
+const GUEST_KEY = "satango.guest_student";
+
+const DEMO_USER = {
+  id: "demo-student-uuid",
+  email: "student@satango.app",
+  app_metadata: {},
+  user_metadata: { full_name: "Demo Student" },
+  aud: "authenticated",
+  created_at: new Date().toISOString(),
+} as User;
+
+const DEMO_PROFILE: ProfileSummary = {
+  display_name: "Demo Student",
+  nickname: "SatangoPrep",
+  avatar_url: null,
+  is_premium: true,
+  onboarding_completed: true,
+  is_admin: false,
+  referral_source: null,
+  streak_days: 5,
+};
+
+const DEMO_PROGRESS: ProgressSummary = {
+  xp: 450,
+  level: 4,
+  streak: 5,
+  gems: 180,
+  hearts: 5,
+};
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -120,9 +151,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-      if (session?.user) loadBootstrap(session.user.id);
+      if (session?.user) {
+        setUser(session.user);
+        setLoading(false);
+        loadBootstrap(session.user.id);
+      } else if (localStorage.getItem(GUEST_KEY) === "1") {
+        setUser(DEMO_USER);
+        setProfile(DEMO_PROFILE);
+        setProgress(DEMO_PROGRESS);
+        setLoading(false);
+      } else {
+        setUser(null);
+        setLoading(false);
+      }
     });
 
     const handleUnload = () => {
@@ -140,6 +181,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [loadBootstrap]);
 
+  const signInAsGuest = useCallback(() => {
+    try {
+      localStorage.setItem(GUEST_KEY, "1");
+    } catch { }
+    setUser(DEMO_USER);
+    setProfile(DEMO_PROFILE);
+    setProgress(DEMO_PROGRESS);
+    setLoading(false);
+  }, []);
+
   const signOut = async () => {
     try {
       await supabase.auth.signOut();
@@ -152,13 +203,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setProgress(null);
       try {
         localStorage.removeItem(REMEMBER_KEY);
+        localStorage.removeItem(GUEST_KEY);
       } catch { }
       navigate("/auth", { replace: true });
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, profile, progress, refreshProfile, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, profile, progress, refreshProfile, signOut, signInAsGuest }}>
       {children}
     </AuthContext.Provider>
   );

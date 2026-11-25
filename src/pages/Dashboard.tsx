@@ -16,7 +16,7 @@ import { useUserErrors } from "@/hooks/useUserErrors";
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { pendingCount: errorCount } = useUserErrors();
 
   const { data: profile } = useQuery({
@@ -88,7 +88,7 @@ const Dashboard = () => {
         }}
       />
 
-      <div className="relative space-y-6 animate-spring-in">
+      <div className="relative space-y-6 motion-safe:animate-spring-in">
         {/* Full-screen Philosopher Background with subtle contrast overlay */}
         <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
           <img
@@ -106,19 +106,22 @@ const Dashboard = () => {
           {/* Top Header Deck */}
           <div className="flex items-center justify-between pt-1 border-b border-border/60 pb-4">
             <div>
-              <div className="font-mono-tech text-[10px] tracking-[0.2em] uppercase text-amber-700 dark:text-amber-400 font-extrabold mb-1 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                ACADEMIC SCHOLAR // ACTIVE
-              </div>
-              <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground leading-tight">
-                {nickname} 👋
+              <p className="text-xs font-mono-tech text-muted-foreground mb-0.5">
+                {t("digitalSatPrep")}
+              </p>
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground leading-tight">
+                {nickname}
               </h1>
             </div>
 
             {progress && progress.streak > 0 && (
-              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-2xl bg-amber-500/15 dark:bg-amber-500/20 border border-amber-500/30 text-amber-800 dark:text-amber-300 font-mono-tech text-xs font-black shadow-2xs">
-                <Flame className="w-4 h-4 fill-amber-500 text-amber-500 animate-pulse" />
-                <span>{progress.streak}D STREAK</span>
+              <div
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-card/80 border border-border/70 text-foreground font-mono-tech text-xs font-medium shadow-2xs"
+                title={`${progress.streak} ${t("streak").toLowerCase()}`}
+              >
+                <Flame className="w-3.5 h-3.5 text-streak shrink-0" strokeWidth={2} fill="currentColor" />
+                <span className="font-semibold tabular-nums text-foreground">{progress.streak}</span>
+                <span className="text-muted-foreground text-[11px]">{t("streak").toLowerCase()}</span>
               </div>
             )}
           </div>
@@ -146,16 +149,15 @@ const Dashboard = () => {
           <div className="pt-2">
             <div className="flex items-center justify-between mb-4 border-b border-border/60 pb-3">
               <div>
-                <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-foreground font-extrabold flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-foreground" />
-                  // CURRICULUM ROADMAP
-                </span>
-                <h2 className="text-lg sm:text-xl font-black tracking-tight text-foreground mt-0.5">
+                <h2 className="text-lg sm:text-xl font-bold tracking-tight text-foreground">
                   {t("learningPath")}
                 </h2>
+                <p className="text-xs text-muted-foreground font-sans mt-0.5">
+                  {language === "ru" ? "9 модулей подготовки" : "9 curriculum modules"}
+                </p>
               </div>
-              <span className="font-mono-tech text-xs text-foreground font-extrabold bg-card px-3 py-1 rounded-xl border border-border shadow-2xs">
-                9 MODULES
+              <span className="font-mono-tech text-xs text-muted-foreground font-medium bg-card px-2.5 py-1 rounded-md border border-border/70 shadow-2xs">
+                9 {language === "ru" ? "модулей" : "modules"}
               </span>
             </div>
             <MobileRoadmap />

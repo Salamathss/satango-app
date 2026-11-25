@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams, Link } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import {
@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import SeoHead from "@/components/SeoHead";
+import { useAuth } from "@/hooks/useAuth";
 
 function calculateTargetLevel(correct: number, total: number) {
   const percentage = (correct / total) * 100;
@@ -106,7 +107,7 @@ const MonoLabel = ({
   className?: string;
 }) => (
   <span
-    className={`font-mono-tech text-[10px] text-amber-400/90 tracking-[0.2em] uppercase bg-amber-500/10 px-2.5 py-1 rounded border border-amber-500/25 ${className}`}
+    className={`text-xs font-semibold text-amber-300 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/25 ${className}`}
   >
     {children}
   </span>
@@ -190,9 +191,9 @@ export default function Auth() {
 
         <button
           onClick={() => setMode(mode === "login" ? "signup" : "login")}
-          className="font-mono-tech text-xs tracking-widest uppercase text-neutral-400 hover:text-white transition px-3.5 py-2 rounded-lg bg-white/5 border border-white/10 hover:border-white/25"
+          className="text-xs font-semibold text-neutral-300 hover:text-white transition px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/50"
         >
-          {mode === "login" ? "// Create Account" : "// Existing User"}
+          {mode === "login" ? "Создать аккаунт" : "Войти"}
         </button>
       </header>
 
@@ -208,16 +209,22 @@ export default function Auth() {
       </main>
 
       {/* Footer */}
-      <footer className="max-w-6xl w-full mx-auto text-center text-[11px] text-neutral-500 font-mono-tech tracking-widest uppercase relative z-10 pb-2">
-        SATANGO ENGINE v2.4 // AI-POWERED ADAPTIVE PREP
+      <footer className="max-w-6xl w-full mx-auto text-center text-xs text-neutral-400 font-medium relative z-10 pb-4 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
+        <span>🎓 SATANGO · Платформа подготовки к Digital SAT 2026</span>
+        <span className="hidden sm:inline text-neutral-600">·</span>
+        <span>🔒 Ваши результаты и прогресс надежно защищены</span>
       </footer>
     </div>
   );
 }
 
 function Wizard({ navigate }: { navigate: (path: string) => void }) {
+  const location = useLocation();
+  const stateTarget = (location.state as { targetScore?: number })?.targetScore;
   const [step, setStep] = useState<WizardStep>(1);
-  const [target, setTarget] = useState<number>(1400);
+  const [target, setTarget] = useState<number>(
+    stateTarget && stateTarget >= 1000 && stateTarget <= 1600 ? stateTarget : 1400
+  );
   const [minutes, setMinutes] = useState<number>(30);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [analyzing, setAnalyzing] = useState(false);
@@ -601,6 +608,11 @@ function SignInView({
 }: {
   onSwitchToSignup: () => void;
 }) {
+  const { signInAsGuest } = useAuth();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirect = searchParams.get("redirect") || "/";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(true);
@@ -796,6 +808,20 @@ function SignInView({
             "SIGN IN"
           )}
         </button>
+
+        <div className="pt-2">
+          <button
+            type="button"
+            onClick={() => {
+              signInAsGuest();
+              navigate(redirect);
+            }}
+            className="w-full py-3 rounded-xl border border-neutral-700/80 bg-neutral-900/60 hover:bg-neutral-800 text-neutral-300 hover:text-white text-xs font-semibold transition-colors flex items-center justify-center gap-2"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <span>Демо-вход студента (без регистрации)</span>
+          </button>
+        </div>
       </form>
     </div>
   );

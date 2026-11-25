@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Heart, Snowflake, FileText, Gem, Check, Sparkles, BookOpen, Calculator } from "lucide-react";
+import { Heart, Snowflake, FileText, Gem, Check, Sparkles, BookOpen, Calculator, Zap } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { BoostersDeck } from "@/components/BoostersDeck";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
@@ -138,76 +140,99 @@ const ShopModal = ({ open, onOpenChange }: ShopModalProps) => {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-3 mt-2">
-          {SHOP_ITEMS.map((item) => {
-            const canAfford = gems >= item.cost;
-            const isPurchasing = purchasing === item.id;
-            const isPurchased = purchased === item.id;
+        <Tabs defaultValue="boosters" className="w-full mt-2">
+          <TabsList className="grid grid-cols-2 w-full h-10 p-1 rounded-xl bg-muted/60 border border-border/70 mb-3">
+            <TabsTrigger
+              value="boosters"
+              className="rounded-lg font-mono-tech text-xs uppercase font-extrabold flex items-center justify-center gap-1.5 data-[state=active]:bg-card data-[state=active]:shadow-xs"
+            >
+              <Zap className="w-3.5 h-3.5 text-amber-500 fill-current" />
+              <span>Boosters</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="items"
+              className="rounded-lg font-mono-tech text-xs uppercase font-extrabold flex items-center justify-center gap-1.5 data-[state=active]:bg-card data-[state=active]:shadow-xs"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-gem" />
+              <span>Items & Tickets</span>
+            </TabsTrigger>
+          </TabsList>
 
-            return (
-              <div
-                key={item.id}
-                className={cn(
-                  "relative overflow-hidden rounded-2xl border border-border/50 p-4 transition-all duration-300",
-                  "bg-card/60 backdrop-blur-xl",
-                  "hover:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.12)] hover:border-border",
-                  isPurchased && "animate-bounce-in",
-                  item.id === "full-exam" && "ring-1 ring-gem/30 shadow-[0_0_20px_-4px_hsl(var(--gem)/0.3)]"
-                )}
-              >
-                {/* Glassmorphism shimmer */}
-                <div className="absolute inset-0 bg-gradient-to-br from-card/20 via-transparent to-card/10 pointer-events-none" />
+          <TabsContent value="boosters" className="mt-0 max-h-[60vh] overflow-y-auto pr-1">
+            <BoostersDeck compact />
+          </TabsContent>
 
-                <div className="relative flex items-center gap-4">
-                  <div className={cn(
-                    "w-14 h-14 rounded-2xl flex items-center justify-center text-primary-foreground bg-gradient-to-br shrink-0",
-                    item.gradient
-                  )}>
-                    {isPurchased ? <Check className="w-8 h-8" /> : item.icon}
-                  </div>
+          <TabsContent value="items" className="mt-0 space-y-3">
+            {SHOP_ITEMS.map((item) => {
+              const canAfford = gems >= item.cost;
+              const isPurchasing = purchasing === item.id;
+              const isPurchased = purchased === item.id;
 
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-extrabold text-sm flex items-center gap-1.5">
-                      {item.name}
-                      {item.id === "full-exam" && (
-                        <Sparkles className="w-3.5 h-3.5 text-gem" />
+              return (
+                <div
+                  key={item.id}
+                  className={cn(
+                    "relative overflow-hidden rounded-2xl border border-border/50 p-4 transition-all duration-300",
+                    "bg-card/60 backdrop-blur-xl",
+                    "hover:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.12)] hover:border-border",
+                    isPurchased && "animate-bounce-in",
+                    item.id === "full-exam" && "ring-1 ring-gem/30 shadow-[0_0_20px_-4px_hsl(var(--gem)/0.3)]"
+                  )}
+                >
+                  {/* Glassmorphism shimmer */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-card/20 via-transparent to-card/10 pointer-events-none" />
+
+                  <div className="relative flex items-center gap-4">
+                    <div className={cn(
+                      "w-14 h-14 rounded-2xl flex items-center justify-center text-primary-foreground bg-gradient-to-br shrink-0",
+                      item.gradient
+                    )}>
+                      {isPurchased ? <Check className="w-8 h-8" /> : item.icon}
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-extrabold text-sm flex items-center gap-1.5">
+                        {item.name}
+                        {item.id === "full-exam" && (
+                          <Sparkles className="w-3.5 h-3.5 text-gem" />
+                        )}
+                      </h3>
+                      <p className="text-xs text-muted-foreground mt-0.5">{item.description}</p>
+                    </div>
+
+                    <Button
+                      size="sm"
+                      disabled={!canAfford || isPurchasing}
+                      onClick={() => handlePurchase(item)}
+                      className={cn(
+                        "shrink-0 gap-1 font-bold min-w-[80px]",
+                        !canAfford && "opacity-50"
                       )}
-                    </h3>
-                    <p className="text-xs text-muted-foreground mt-0.5">{item.description}</p>
+                    >
+                      {isPurchasing ? (
+                        <span className="animate-pulse">...</span>
+                      ) : isPurchased ? (
+                        <Check className="w-4 h-4" />
+                      ) : (
+                        <>
+                          <Gem className="w-3.5 h-3.5" />
+                          {item.cost}
+                        </>
+                      )}
+                    </Button>
                   </div>
 
-                  <Button
-                    size="sm"
-                    disabled={!canAfford || isPurchasing}
-                    onClick={() => handlePurchase(item)}
-                    className={cn(
-                      "shrink-0 gap-1 font-bold min-w-[80px]",
-                      !canAfford && "opacity-50"
-                    )}
-                  >
-                    {isPurchasing ? (
-                      <span className="animate-pulse">...</span>
-                    ) : isPurchased ? (
-                      <Check className="w-4 h-4" />
-                    ) : (
-                      <>
-                        <Gem className="w-3.5 h-3.5" />
-                        {item.cost}
-                      </>
-                    )}
-                  </Button>
+                  {/* Inventory count for stackable items */}
+                  {item.field !== "hearts" && progress && (
+                    <div className="relative mt-2 text-xs text-muted-foreground font-semibold">
+                      Owned: {(progress as any)[item.field] ?? 0}
+                    </div>
+                  )}
                 </div>
-
-                {/* Inventory count for stackable items */}
-                {item.field !== "hearts" && progress && (
-                  <div className="relative mt-2 text-xs text-muted-foreground font-semibold">
-                    Owned: {(progress as any)[item.field] ?? 0}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );

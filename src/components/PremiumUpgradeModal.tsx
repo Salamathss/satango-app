@@ -78,7 +78,7 @@ const PremiumUpgradeModal = ({ open, onOpenChange, reason }: PremiumUpgradeModal
 
     setPromoLoading(true);
     try {
-      const { data, error } = await supabase.rpc("check_and_apply_promo_code", {
+      const { data, error } = await (supabase as any).rpc("check_and_apply_promo_code", {
         input_code: formatted,
       });
 

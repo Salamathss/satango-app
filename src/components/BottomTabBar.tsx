@@ -1,6 +1,6 @@
 // src/components/BottomTabBar.tsx
 import { Link, useLocation } from "react-router-dom";
-import { Map, GraduationCap, BookOpen, ShoppingBag, User, Shield } from "lucide-react";
+import { Map, ClipboardList, BookOpen, ShoppingBag, User, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 import { useLanguage, TranslationKey } from "@/context/LanguageContext";
@@ -14,8 +14,8 @@ const BottomTabBar = () => {
 
   const tabs: { path: string; labelKey: TranslationKey; icon: any }[] = [
     { path: "/", labelKey: "home", icon: Map },
+    { path: "/mocks", labelKey: "mocks", icon: ClipboardList },
     { path: "/vocabulary", labelKey: "vocab", icon: BookOpen },
-    { path: "/exam-center", labelKey: "exams", icon: GraduationCap },
     { path: "/shop", labelKey: "shop", icon: ShoppingBag },
     { path: "/profile", labelKey: "profile", icon: User },
     ...(isAdmin ? [{ path: "/admin-import", labelKey: "admin" as TranslationKey, icon: Shield }] : []),
@@ -38,17 +38,17 @@ const BottomTabBar = () => {
               key={tab.path}
               to={tab.path}
               className={cn(
-                "flex-1 flex flex-col items-center justify-center gap-0.5 tap-feedback transition-colors",
+                "flex-1 flex flex-col items-center justify-center gap-0.5 tap-feedback motion-safe:transition-colors",
                 active ? "text-primary" : "text-muted-foreground"
               )}
             >
               <div
                 className={cn(
-                  "flex items-center justify-center w-11 h-7 rounded-full transition-all",
+                  "flex items-center justify-center w-11 h-7 rounded-full motion-safe:transition-colors",
                   active && "bg-primary/12"
                 )}
               >
-                <Icon className={cn("w-5 h-5", active && "scale-110")} strokeWidth={active ? 2.5 : 2} />
+                <Icon className={cn("w-5 h-5", active && "scale-105")} strokeWidth={active ? 2.5 : 2} />
               </div>
               <span className={cn("text-[10px] font-bold tracking-tight", active ? "" : "opacity-80")}>
                 {t(tab.labelKey)}

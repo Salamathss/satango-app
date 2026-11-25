@@ -117,7 +117,7 @@ const AITutorDialog = ({ open, onOpenChange, question, userSelectedAnswer, userL
 
           <div className="space-y-4 pt-4">
             <div className="border border-divider rounded-md p-3.5 text-sm bg-card">
-              <p className="tech-label mb-1.5">// Question</p>
+              <p className="tech-label mb-1.5">Question</p>
               <p className="text-foreground leading-relaxed">{question?.question_text}</p>
             </div>
 

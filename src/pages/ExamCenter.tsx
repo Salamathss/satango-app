@@ -182,12 +182,12 @@ const ExamCenter = () => {
       <main className="space-y-6 animate-spring-in">
         <div className="border-b border-border/60 pb-5">
           <div className="flex items-center gap-2 mb-1.5">
-            <span className="font-mono-tech text-[10px] uppercase tracking-widest font-extrabold text-amber-700 dark:text-amber-400 bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 rounded-md flex items-center gap-1.5 shadow-2xs">
-              <Sparkles className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-              CAMPUS EXAMINATION HALL // DIGITAL SAT
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-800 dark:text-amber-300 bg-amber-500/10 border border-amber-500/25 px-2.5 py-1 rounded-full">
+              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+              Официальный симулятор Digital SAT (Bluebook Format)
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">Exam Hall 📝</h1>
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">Exam Hall</h1>
           <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 font-medium leading-relaxed">
             Официальный формат Digital SAT: адаптивные модули, таймер College Board и встроенный калькулятор Desmos.
           </p>

@@ -135,12 +135,12 @@ export const ProAcademyDeck = ({ onSelectPlan }: ProAcademyDeckProps) => {
       <div className="flex items-center justify-between px-1">
         <div className="flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
-          <span className="font-mono-tech text-[11px] uppercase tracking-[0.2em] text-amber-700 dark:text-amber-400 font-extrabold">
-            // SATANGO PLUS ARSENAL
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-800 dark:text-amber-300 bg-amber-500/10 border border-amber-500/25 px-2.5 py-1 rounded-full">
+            Премиум-возможности SATANGO PLUS
           </span>
         </div>
-        <span className="font-mono-tech text-[10px] text-muted-foreground uppercase font-bold tracking-wider">
-          PRO SPECIFICATION 2026
+        <span className="text-xs text-muted-foreground font-medium">
+          Безлимитный доступ ко всем модулям
         </span>
       </div>
 

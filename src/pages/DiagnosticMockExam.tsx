@@ -194,7 +194,7 @@ export default function DiagnosticMockExam() {
         wrongQuestions.push({
           questionId: q.id,
           question_text: q.question_text,
-          topic: q.topic,
+          topic: q.domain || "General SAT",
           category: q.section,
           options: q.options,
           correct_answer: q.correct_answer,

@@ -151,9 +151,9 @@ export default function Vocabulary() {
         <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border/60 pb-5">
           <div className="space-y-1.5">
             <div className="flex items-center gap-2">
-              <span className="font-mono-tech text-[10px] uppercase tracking-widest font-extrabold text-violet-700 dark:text-violet-300 bg-violet-500/15 border border-violet-500/30 px-2.5 py-0.5 rounded-md flex items-center gap-1.5 shadow-2xs">
-                <BrainCircuit className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
-                SAT VOCABULARY LAB // CONTEXT ENGINE
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-violet-800 dark:text-violet-300 bg-violet-500/10 border border-violet-500/25 px-2.5 py-1 rounded-full">
+                <BrainCircuit className="w-3.5 h-3.5 text-violet-500" />
+                Контекстный тренажер лексики SAT 1500+
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">

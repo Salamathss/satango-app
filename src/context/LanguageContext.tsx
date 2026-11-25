@@ -7,6 +7,9 @@ export const translations = {
   en: {
     // Navigation & Tabs
     home: "Home",
+    mocks: "Mock Tests",
+    desmosLab: "Desmos Lab",
+    cheatsheet: "SAT Hacks",
     vocab: "Vocab",
     exams: "Exams",
     analytics: "Analytics",
@@ -81,7 +84,7 @@ export const translations = {
     questReviewMistakes: "Review mistakes in ledger",
     allQuestsDone: "All objectives completed!",
     quickActions: "Quick Launch",
-    battleArena: "1v1 SAT Battle",
+    battleArena: "SAT Battle",
     vocabCard: "Word of the Day",
     targetGoal: "Target SAT",
 
@@ -96,6 +99,9 @@ export const translations = {
   ru: {
     // Navigation & Tabs
     home: "Главная",
+    mocks: "Мок-тесты",
+    desmosLab: "Desmos Lab",
+    cheatsheet: "Шпаргалка",
     vocab: "Словарь",
     exams: "Тесты",
     analytics: "Аналитика",
@@ -170,7 +176,7 @@ export const translations = {
     questReviewMistakes: "Разобрать ошибки в карцере",
     allQuestsDone: "Все цели на сегодня выполнены!",
     quickActions: "Быстрый доступ",
-    battleArena: "1v1 SAT Дуэль",
+    battleArena: "SAT Дуэль",
     vocabCard: "Слово дня",
     targetGoal: "Цель SAT",
 

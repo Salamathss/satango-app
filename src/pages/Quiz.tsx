@@ -18,6 +18,7 @@ import DifficultyIndicator from "@/components/DifficultyIndicator";
 import HeartsDisplay from "@/components/HeartsDisplay";
 import TheorySlides from "@/components/TheorySlides";
 import { useHearts } from "@/hooks/useHearts";
+import { useBoosters } from "@/hooks/useBoosters";
 import GemAnimation from "@/components/GemAnimation";
 import WatchVideoHeart from "@/components/WatchVideoHeart";
 import UnitMasteryModal from "@/components/UnitMasteryModal";
@@ -37,6 +38,7 @@ const Quiz = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { hearts, maxHearts, canPlay, loseHeart, refillWithGems, gemRefillCost, gems } = useHearts();
+  const { counts: boosterCounts, consumeBooster, purchaseBooster: buyBooster } = useBoosters();
   const { logError } = useUserErrors();
 
   const category = searchParams.get("category") || "math";
@@ -351,6 +353,51 @@ const Quiz = () => {
     }
   };
 
+  const handleUseFiftyFifty = async () => {
+    const q = shuffledQuestions[currentIndex];
+    if (!q || !q.options || (q.options as string[]).length < 3) return;
+    if (Object.keys(struckOptions).length > 0) {
+      toast("Подсказка 50/50 уже применена к этому вопросу.");
+      return;
+    }
+
+    if (boosterCounts.fiftyFifty > 0) {
+      const ok = consumeBooster("fiftyFifty");
+      if (ok) {
+        applyFiftyFifty(q);
+      }
+    } else {
+      if (gems < 60) {
+        toast.error("Недостаточно гемов (нужно 60 💎 для подсказки 50/50).");
+        return;
+      }
+      const bought = await buyBooster("fiftyFifty");
+      if (bought) {
+        consumeBooster("fiftyFifty");
+        applyFiftyFifty(q);
+      }
+    }
+  };
+
+  const applyFiftyFifty = (q: any) => {
+    const opts = (q.options as string[]) || [];
+    const wrongIndexes = opts
+      .map((_, i) => i)
+      .filter((i) => i !== q.correct_answer);
+    for (let i = wrongIndexes.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [wrongIndexes[i], wrongIndexes[j]] = [wrongIndexes[j], wrongIndexes[i]];
+    }
+    const toStrike = wrongIndexes.slice(0, 2);
+    const newStruck: Record<number, boolean> = {};
+    toStrike.forEach((idx) => {
+      newStruck[idx] = true;
+    });
+    setStruckOptions(newStruck);
+    playSuccessSound();
+    toast.success("💡 50/50: 2 неверных варианта вычеркнуты!");
+  };
+
   const handleNext = () => {
     if (!shuffledQuestions.length) return;
 
@@ -366,6 +413,7 @@ const Quiz = () => {
       setCurrentIndex((prev) => prev + 1);
       setSelectedAnswer(null);
       setShowResult(false);
+      setStruckOptions({});
     }
   };
 
@@ -843,6 +891,24 @@ const Quiz = () => {
               <span>🧮</span> Calculator
             </button>
           )}
+          {options.length >= 3 && (
+            <button
+              onClick={handleUseFiftyFifty}
+              disabled={showResult || Object.keys(struckOptions).length > 0}
+              className={cn(
+                "px-2.5 py-1 rounded-full text-xs font-extrabold transition-all flex items-center gap-1 shadow-2xs active:scale-95 mr-1 tap-feedback",
+                Object.keys(struckOptions).length > 0
+                  ? "bg-muted text-muted-foreground opacity-50 cursor-not-allowed"
+                  : "bg-amber-500/15 text-amber-700 dark:text-amber-300 hover:bg-amber-500/25 border border-amber-500/30"
+              )}
+              title="Использовать подсказку 50/50"
+            >
+              <span>💡 50/50</span>
+              <span className="font-mono-tech text-[10px] opacity-80">
+                ({boosterCounts.fiftyFifty})
+              </span>
+            </button>
+          )}
           {isBossLevel && (
             <span className="text-xs font-bold bg-destructive/10 text-destructive px-2 py-1 rounded-full flex items-center gap-1">
               <Shield className="w-3 h-3" /> Boss
@@ -897,7 +963,7 @@ const Quiz = () => {
                   className={cn(
                     "w-full p-4 rounded-3xl text-left font-semibold text-[15px] transition-all duration-300 active:scale-[0.98] border-2 tap-feedback relative group",
                     "min-h-[64px]",
-                    isStruck && "opacity-30 line-through",
+                    isStruck && "opacity-30 line-through border-dashed border-border/50 cursor-not-allowed pointer-events-none bg-muted/20",
                     !showResult && !isStruck && "bg-card border-border hover:border-primary",
                     showResult && isCorrect && "bg-primary/10 border-primary animate-correct-glow scale-105",
                     showResult && isSelected && !isCorrect && "bg-destructive/10 border-destructive animate-shake",

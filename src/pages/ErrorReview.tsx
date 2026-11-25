@@ -84,8 +84,8 @@ export const ErrorReviewInner = () => {
           correct_answer: fromDiag.correct_answer,
           explanation: fromDiag.explanation,
           category: fromDiag.section,
-          topic: fromDiag.topic,
-          difficulty: fromDiag.difficulty === "hard" ? 3 : fromDiag.difficulty === "medium" ? 2 : 1,
+          topic: fromDiag.domain || "General SAT",
+          difficulty: fromDiag.difficulty || 2,
         });
         continue;
       }
@@ -115,7 +115,7 @@ export const ErrorReviewInner = () => {
 
   useEffect(() => {
     if (!filteredQuestions.length) {
-      setShuffled([]);
+      setShuffled((prev) => (prev.length === 0 ? prev : []));
       return;
     }
     const sh = filteredQuestions.map((q: any) => {

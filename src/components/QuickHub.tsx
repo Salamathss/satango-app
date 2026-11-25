@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Swords, BookOpen, Calculator } from "lucide-react";
+import { Swords, BookOpen, Calculator, Sparkles } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
 const QuickHub = () => {
@@ -8,11 +8,18 @@ const QuickHub = () => {
 
   const items = [
     {
+      title: language === "ru" ? "Шпаргалка" : "SAT Hacks",
+      desc: language === "ru" ? "Desmos & формулы" : "Desmos & Formulas",
+      icon: Sparkles,
+      path: "/cheatsheet",
+      color: "text-amber-500 bg-amber-500/10 border-amber-500/20",
+    },
+    {
       title: t("battleArena"),
       desc: language === "ru" ? "Дуэль на скорость" : "Live PvP Blitz",
       icon: Swords,
       path: "/battle",
-      color: "text-amber-500 bg-amber-500/10 border-amber-500/20",
+      color: "text-rose-500 bg-rose-500/10 border-rose-500/20",
     },
     {
       title: t("vocab"),
@@ -33,12 +40,12 @@ const QuickHub = () => {
   return (
     <div className="space-y-2.5">
       <div className="flex items-center justify-between px-1">
-        <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold">
-          // {t("quickActions")}
+        <span className="text-xs font-bold text-foreground">
+          {t("quickActions")}
         </span>
       </div>
 
-      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
         {items.map((item) => {
           const Icon = item.icon;
           return (

@@ -2,7 +2,9 @@
 import { Link, useLocation } from "react-router-dom";
 import {
   Map,
-  GraduationCap,
+  ClipboardList,
+  Binary,
+  Sparkles,
   BookOpen,
   ShoppingBag,
   User,
@@ -12,7 +14,7 @@ import {
   Sun,
   Moon,
   Languages,
-  Sparkles,
+  Swords,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
@@ -31,51 +33,51 @@ const Sidebar = () => {
       path: "/",
       labelKey: "home" as TranslationKey,
       icon: Map,
-      accent: "text-amber-500 dark:text-amber-400",
-      activeBg: "bg-foreground text-background dark:bg-amber-500/15 dark:text-amber-300 dark:border dark:border-amber-500/30",
+    },
+    {
+      path: "/mocks",
+      labelKey: "mocks" as TranslationKey,
+      icon: ClipboardList,
+    },
+    {
+      path: "/battle",
+      labelKey: "battleArena" as TranslationKey,
+      icon: Swords,
+    },
+    {
+      path: "/desmos-lab",
+      labelKey: "desmosLab" as TranslationKey,
+      icon: Binary,
+    },
+    {
+      path: "/cheatsheet",
+      labelKey: "cheatsheet" as TranslationKey,
+      icon: Sparkles,
     },
     {
       path: "/vocabulary",
       labelKey: "vocab" as TranslationKey,
       icon: BookOpen,
-      accent: "text-violet-500 dark:text-violet-400",
-      activeBg: "bg-foreground text-background dark:bg-violet-500/15 dark:text-violet-300 dark:border dark:border-violet-500/30",
-    },
-    {
-      path: "/exam-center",
-      labelKey: "exams" as TranslationKey,
-      icon: GraduationCap,
-      accent: "text-sky-500 dark:text-sky-400",
-      activeBg: "bg-foreground text-background dark:bg-sky-500/15 dark:text-sky-300 dark:border dark:border-sky-500/30",
     },
     {
       path: "/analytics",
       labelKey: "analytics" as TranslationKey,
       icon: BarChart3,
-      accent: "text-emerald-500 dark:text-emerald-400",
-      activeBg: "bg-foreground text-background dark:bg-emerald-500/15 dark:text-emerald-300 dark:border dark:border-emerald-500/30",
     },
     {
       path: "/shop",
       labelKey: "shop" as TranslationKey,
       icon: ShoppingBag,
-      accent: "text-amber-500 dark:text-amber-400",
-      badge: "PLUS",
-      activeBg: "bg-foreground text-background dark:bg-amber-500/15 dark:text-amber-300 dark:border dark:border-amber-500/30",
     },
     {
       path: "/score-calculator",
       labelKey: "calculator" as TranslationKey,
       icon: Calculator,
-      accent: "text-cyan-500 dark:text-cyan-400",
-      activeBg: "bg-foreground text-background dark:bg-cyan-500/15 dark:text-cyan-300 dark:border dark:border-cyan-500/30",
     },
     {
       path: "/profile",
       labelKey: "profile" as TranslationKey,
       icon: User,
-      accent: "text-rose-500 dark:text-rose-400",
-      activeBg: "bg-foreground text-background dark:bg-rose-500/15 dark:text-rose-300 dark:border dark:border-rose-500/30",
     },
     ...(isAdmin
       ? [
@@ -83,38 +85,39 @@ const Sidebar = () => {
             path: "/admin-import",
             labelKey: "admin" as TranslationKey,
             icon: Shield,
-            accent: "text-red-500 dark:text-red-400",
-            activeBg: "bg-foreground text-background dark:bg-red-500/15 dark:text-red-300 dark:border dark:border-red-500/30",
           },
         ]
       : []),
   ];
 
   return (
-    <aside className="hidden lg:flex flex-col w-64 fixed left-0 top-0 h-screen border-r border-border/70 bg-card/85 backdrop-blur-xl z-40 p-4 justify-between transition-colors">
-      <div className="space-y-6">
+    <aside className="hidden lg:flex flex-col w-64 fixed left-0 top-0 h-screen border-r border-border/70 bg-card/95 dark:bg-card/85 backdrop-blur-md z-40 p-3.5 justify-between select-none">
+      <div className="space-y-4">
         {/* Brand header */}
-        <Link to="/" className="flex items-center gap-3 px-3 py-2 rounded-2xl hover:bg-muted/50 transition-colors group">
-          <div className="relative">
+        <Link
+          to="/"
+          className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-muted/40 motion-safe:transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring group"
+          aria-label="SATANGO Home"
+        >
+          <div className="w-8 h-8 rounded-md border border-border/70 bg-background/50 p-1 flex items-center justify-center shrink-0 shadow-2xs">
             <img
               src="/logo-light.png"
               alt="SATANGO Logo"
-              className="w-9 h-9 rounded-xl object-contain shadow-sm group-hover:scale-105 transition-transform"
+              className="w-full h-full object-contain"
             />
-            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-500 ring-2 ring-card animate-pulse" />
           </div>
-          <div>
-            <span className="font-mono-tech font-black text-base tracking-[0.2em] uppercase text-foreground block">
+          <div className="min-w-0">
+            <span className="wordmark font-mono-tech font-bold text-[13px] tracking-[0.08em] uppercase text-foreground block leading-tight">
               SATANGO
             </span>
-            <span className="text-[11px] text-muted-foreground font-semibold flex items-center gap-1">
-              <span>{t("digitalSatPrep")}</span>
+            <span className="text-[11px] text-muted-foreground font-sans block leading-tight mt-0.5 truncate">
+              {t("digitalSatPrep")}
             </span>
           </div>
         </Link>
 
         {/* Navigation links */}
-        <nav className="space-y-1.5">
+        <nav className="space-y-1" aria-label="Sidebar navigation">
           {navItems.map((item) => {
             const active =
               item.path === "/"
@@ -126,92 +129,82 @@ const Sidebar = () => {
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  "flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-sm font-bold transition-all duration-200 group relative",
+                  "flex items-center justify-between px-3 py-2 rounded-md text-[13px] font-medium motion-safe:transition-colors duration-150 group relative focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring active:bg-muted/60",
                   active
-                    ? cn("shadow-md font-extrabold", item.activeBg)
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/70 hover:translate-x-0.5"
+                    ? "bg-secondary/70 dark:bg-muted/70 text-foreground border border-border/80 shadow-2xs"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/40 border border-transparent"
                 )}
               >
-                <div className="flex items-center gap-3">
+                {active && (
+                  <span
+                    className="absolute left-0 top-1.5 bottom-1.5 w-0.5 rounded-r bg-foreground/80 dark:bg-primary"
+                    aria-hidden="true"
+                  />
+                )}
+                <div className="flex items-center gap-2.5 min-w-0">
                   <Icon
                     className={cn(
-                      "w-5 h-5 transition-transform duration-200 group-hover:scale-110",
+                      "w-4 h-4 shrink-0 motion-safe:transition-colors",
                       active
-                        ? "text-inherit"
-                        : cn("text-muted-foreground group-hover:", item.accent)
+                        ? "text-foreground"
+                        : "text-muted-foreground group-hover:text-foreground"
                     )}
-                    strokeWidth={active ? 2.5 : 2}
+                    strokeWidth={active ? 2 : 1.75}
                   />
-                  <span className="tracking-tight">{t(item.labelKey)}</span>
+                  <span className="truncate">{t(item.labelKey)}</span>
                 </div>
-
-                {item.badge && (
-                  <span
-                    className={cn(
-                      "font-mono-tech text-[9px] uppercase tracking-wider font-black px-1.5 py-0.5 rounded-md",
-                      active
-                        ? "bg-amber-400 text-neutral-950 dark:bg-amber-400 dark:text-neutral-950"
-                        : "bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30"
-                    )}
-                  >
-                    {item.badge}
-                  </span>
-                )}
-
-                {active && !item.badge && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-current opacity-80" />
-                )}
               </Link>
             );
           })}
         </nav>
       </div>
 
-      <div className="space-y-3 border-t border-border/70 pt-3">
+      <div className="space-y-2.5 border-t border-border/60 pt-3">
         {/* Theme and Language controls */}
-        <div className="flex items-center gap-2 px-1">
+        <div className="flex items-center gap-1.5">
           <button
             onClick={toggleTheme}
-            className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-border/80 bg-card hover:bg-muted/70 text-xs font-bold text-foreground transition-all active:scale-95 shadow-2xs"
+            aria-label={theme === "dark" ? t("lightMode") : t("darkMode")}
+            className="flex-1 inline-flex items-center justify-center gap-1.5 h-8 px-2 rounded-md border border-border/70 bg-card hover:bg-muted/60 text-xs font-medium text-foreground motion-safe:transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring active:bg-muted disabled:opacity-50 disabled:pointer-events-none shadow-2xs"
           >
             {theme === "dark" ? (
               <>
-                <Sun className="w-4 h-4 text-amber-400" />
-                <span>{t("lightMode")}</span>
+                <Sun className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 shrink-0" />
+                <span className="truncate">{t("lightMode")}</span>
               </>
             ) : (
               <>
-                <Moon className="w-4 h-4 text-zinc-600" />
-                <span>{t("darkMode")}</span>
+                <Moon className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                <span className="truncate">{t("darkMode")}</span>
               </>
             )}
           </button>
 
           <button
             onClick={() => setLanguage(language === "ru" ? "en" : "ru")}
-            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border border-border/80 bg-card hover:bg-muted/70 text-xs font-black font-mono-tech text-foreground transition-all active:scale-95 shadow-2xs"
+            aria-label="Toggle language"
+            className="inline-flex items-center justify-center gap-1 h-8 px-2.5 rounded-md border border-border/70 bg-card hover:bg-muted/60 text-xs font-semibold font-mono-tech text-foreground motion-safe:transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring active:bg-muted disabled:opacity-50 disabled:pointer-events-none shadow-2xs"
           >
-            <Languages className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+            <Languages className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
             <span>{language.toUpperCase()}</span>
           </button>
         </div>
 
         {/* User info card */}
         {profile && (
-          <div className="px-2 py-2 rounded-2xl bg-muted/40 border border-border/60 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 text-neutral-950 flex items-center justify-center text-xs font-black shadow-xs shrink-0">
-              {profile.nickname?.[0]?.toUpperCase() || profile.display_name?.[0]?.toUpperCase() || "U"}
+          <div className="px-2.5 py-2 rounded-md bg-muted/30 border border-border/60 flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-md bg-secondary text-secondary-foreground border border-border/70 flex items-center justify-center text-xs font-mono-tech font-semibold shrink-0">
+              {profile.nickname?.[0]?.toUpperCase() ||
+                profile.display_name?.[0]?.toUpperCase() ||
+                "U"}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-black truncate text-foreground">
+              <p className="text-xs font-medium truncate text-foreground leading-tight">
                 {profile.nickname || profile.display_name || t("learner")}
               </p>
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                <p className="text-[10px] text-muted-foreground truncate font-mono-tech font-semibold">
-                  {profile.is_admin ? t("administrator") : t("student")}
-                </p>
-              </div>
+              <p className="text-[10px] text-muted-foreground truncate font-mono-tech leading-tight mt-0.5">
+                {profile.is_admin ? t("administrator") : t("student")}
+              </p>
             </div>
           </div>
         )}

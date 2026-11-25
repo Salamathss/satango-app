@@ -1,6 +1,7 @@
 // src/components/bluebook/BluebookReferenceSheet.tsx
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { X } from "lucide-react";
+import { MathText } from "@/components/MathText";
 
 interface BluebookReferenceSheetProps {
   isOpen: boolean;
@@ -51,8 +52,8 @@ export const BluebookReferenceSheet = ({
                   <text x="66" y="44" fontSize="12" fill="currentColor" stroke="none" fontFamily="serif" fontStyle="italic">r</text>
                   <circle cx="50" cy="50" r="2" fill="currentColor" />
                 </svg>
-                <span className="font-serif font-bold text-xs mt-1">A = πr²</span>
-                <span className="font-serif text-xs text-slate-600">C = 2πr</span>
+                <span className="font-semibold text-xs mt-1 text-slate-900"><MathText text="$A = \pi r^2$" /></span>
+                <span className="text-xs text-slate-600"><MathText text="$C = 2\pi r$" /></span>
               </div>
 
               {/* Rectangle */}
@@ -62,7 +63,7 @@ export const BluebookReferenceSheet = ({
                   <text x="48" y="24" fontSize="12" fill="currentColor" stroke="none" fontFamily="serif" fontStyle="italic">l</text>
                   <text x="89" y="54" fontSize="12" fill="currentColor" stroke="none" fontFamily="serif" fontStyle="italic">w</text>
                 </svg>
-                <span className="font-serif font-bold text-xs mt-1">A = lw</span>
+                <span className="font-semibold text-xs mt-1 text-slate-900"><MathText text="$A = lw$" /></span>
               </div>
 
               {/* Triangle */}
@@ -73,7 +74,7 @@ export const BluebookReferenceSheet = ({
                   <text x="48" y="88" fontSize="12" fill="currentColor" stroke="none" fontFamily="serif" fontStyle="italic">b</text>
                   <text x="64" y="55" fontSize="12" fill="currentColor" stroke="none" fontFamily="serif" fontStyle="italic">h</text>
                 </svg>
-                <span className="font-serif font-bold text-xs mt-1">A = ½bh</span>
+                <span className="font-semibold text-xs mt-1 text-slate-900"><MathText text="$A = \frac{1}{2}bh$" /></span>
               </div>
 
               {/* Pythagorean theorem */}
@@ -85,7 +86,7 @@ export const BluebookReferenceSheet = ({
                   <text x="12" y="55" fontSize="12" fill="currentColor" stroke="none" fontFamily="serif" fontStyle="italic">b</text>
                   <text x="56" y="46" fontSize="12" fill="currentColor" stroke="none" fontFamily="serif" fontStyle="italic">c</text>
                 </svg>
-                <span className="font-serif font-bold text-xs mt-1">c² = a² + b²</span>
+                <span className="font-semibold text-xs mt-1 text-slate-900"><MathText text="$c^2 = a^2 + b^2$" /></span>
               </div>
             </div>
           </div>
@@ -101,9 +102,9 @@ export const BluebookReferenceSheet = ({
               <div className="p-4 border border-neutral-200 rounded-md bg-neutral-50/50 flex items-center justify-between">
                 <div>
                   <h5 className="font-bold text-xs text-slate-900 mb-1">30°-60°-90° Triangle</h5>
-                  <p className="text-xs text-slate-600 font-serif">Short leg = x</p>
-                  <p className="text-xs text-slate-600 font-serif">Long leg = x√3</p>
-                  <p className="text-xs text-slate-600 font-serif">Hypotenuse = 2x</p>
+                  <p className="text-xs text-slate-600"><MathText text="$\text{Short leg} = x$" /></p>
+                  <p className="text-xs text-slate-600"><MathText text="$\text{Long leg} = x\sqrt{3}$" /></p>
+                  <p className="text-xs text-slate-600"><MathText text="$\text{Hypotenuse} = 2x$" /></p>
                 </div>
                 <svg aria-hidden="true" className="w-24 h-20 text-slate-700 shrink-0" viewBox="0 0 120 100" fill="none" stroke="currentColor" strokeWidth="2">
                   <polygon points="20,80 100,80 20,20" />
@@ -120,9 +121,9 @@ export const BluebookReferenceSheet = ({
               <div className="p-4 border border-neutral-200 rounded-md bg-neutral-50/50 flex items-center justify-between">
                 <div>
                   <h5 className="font-bold text-xs text-slate-900 mb-1">45°-45°-90° Triangle</h5>
-                  <p className="text-xs text-slate-600 font-serif">Leg = s</p>
-                  <p className="text-xs text-slate-600 font-serif">Leg = s</p>
-                  <p className="text-xs text-slate-600 font-serif">Hypotenuse = s√2</p>
+                  <p className="text-xs text-slate-600"><MathText text="$\text{Leg} = s$" /></p>
+                  <p className="text-xs text-slate-600"><MathText text="$\text{Leg} = s$" /></p>
+                  <p className="text-xs text-slate-600"><MathText text="$\text{Hypotenuse} = s\sqrt{2}$" /></p>
                 </div>
                 <svg aria-hidden="true" className="w-24 h-20 text-slate-700 shrink-0" viewBox="0 0 120 100" fill="none" stroke="currentColor" strokeWidth="2">
                   <polygon points="25,80 85,80 25,20" />
@@ -147,31 +148,31 @@ export const BluebookReferenceSheet = ({
               {/* Rectangular prism */}
               <div className="p-2.5 border border-neutral-200 rounded-md bg-neutral-50/50 flex flex-col items-center">
                 <span className="text-[11px] font-bold text-slate-700 mb-1">Rectangular Prism</span>
-                <span className="font-serif font-bold text-xs mt-auto">V = lwh</span>
+                <span className="font-semibold text-xs mt-auto text-slate-900"><MathText text="$V = lwh$" /></span>
               </div>
 
               {/* Cylinder */}
               <div className="p-2.5 border border-neutral-200 rounded-md bg-neutral-50/50 flex flex-col items-center">
                 <span className="text-[11px] font-bold text-slate-700 mb-1">Right Cylinder</span>
-                <span className="font-serif font-bold text-xs mt-auto">V = πr²h</span>
+                <span className="font-semibold text-xs mt-auto text-slate-900"><MathText text="$V = \pi r^2 h$" /></span>
               </div>
 
               {/* Sphere */}
               <div className="p-2.5 border border-neutral-200 rounded-md bg-neutral-50/50 flex flex-col items-center">
                 <span className="text-[11px] font-bold text-slate-700 mb-1">Sphere</span>
-                <span className="font-serif font-bold text-xs mt-auto">V = ⁴⁄₃πr³</span>
+                <span className="font-semibold text-xs mt-auto text-slate-900"><MathText text="$V = \frac{4}{3}\pi r^3$" /></span>
               </div>
 
               {/* Cone */}
               <div className="p-2.5 border border-neutral-200 rounded-md bg-neutral-50/50 flex flex-col items-center">
                 <span className="text-[11px] font-bold text-slate-700 mb-1">Right Cone</span>
-                <span className="font-serif font-bold text-xs mt-auto">V = ⅓πr²h</span>
+                <span className="font-semibold text-xs mt-auto text-slate-900"><MathText text="$V = \frac{1}{3}\pi r^2 h$" /></span>
               </div>
 
               {/* Pyramid */}
               <div className="p-2.5 border border-neutral-200 rounded-md bg-neutral-50/50 flex flex-col items-center col-span-2 sm:col-span-1">
                 <span className="text-[11px] font-bold text-slate-700 mb-1">Pyramid</span>
-                <span className="font-serif font-bold text-xs mt-auto">V = ⅓lwh</span>
+                <span className="font-semibold text-xs mt-auto text-slate-900"><MathText text="$V = \frac{1}{3}lwh$" /></span>
               </div>
             </div>
           </div>
@@ -179,7 +180,7 @@ export const BluebookReferenceSheet = ({
           {/* Section 4: Key Angular Facts */}
           <div className="p-3.5 bg-neutral-50 rounded-md border border-neutral-200 text-xs text-slate-700 space-y-1 font-sans">
             <p>• The number of degrees of arc in a circle is <strong>360</strong>.</p>
-            <p>• The number of radians of arc in a circle is <strong>2π</strong>.</p>
+            <p>• The number of radians of arc in a circle is <strong><MathText text="$2\pi$" /></strong>.</p>
             <p>• The sum of the measures in degrees of the angles of a triangle is <strong>180</strong>.</p>
           </div>
         </div>

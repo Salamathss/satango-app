@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { MathText } from "@/components/MathText";
 
 declare global {
   interface Window {
@@ -489,15 +490,15 @@ export const DesmosLab = () => {
                   </span>
                 </div>
 
-                <p className="text-sm font-medium text-foreground leading-relaxed">
-                  {currentLesson.problem.question}
-                </p>
+                <div className="text-sm font-medium text-foreground leading-relaxed">
+                  <MathText text={currentLesson.problem.question} />
+                </div>
 
                 {currentLesson.problem.equationsText && (
                   <div className="space-y-1 p-2.5 rounded-md bg-muted/30 border border-border/60 font-mono-tech text-xs text-foreground">
                     {currentLesson.problem.equationsText.map((eq, i) => (
                       <div key={i} className="flex items-center justify-between">
-                        <span>{eq}</span>
+                        <span><MathText text={eq} /></span>
                         <button
                           type="button"
                           onClick={() => handleInsertEquation(eq)}
@@ -548,7 +549,7 @@ export const DesmosLab = () => {
                           <span className="w-5 h-5 rounded flex items-center justify-center bg-muted/60 text-[11px] font-bold shrink-0">
                             {opt.key}
                           </span>
-                          <span>{opt.text}</span>
+                          <span><MathText text={opt.text} /></span>
                         </div>
 
                         {isAnswerChecked &&
@@ -600,9 +601,9 @@ export const DesmosLab = () => {
                           Сбросить
                         </button>
                       </div>
-                      <p className="text-muted-foreground leading-relaxed font-sans">
-                        {currentLesson.problem.explanation}
-                      </p>
+                      <div className="text-muted-foreground leading-relaxed font-sans">
+                        <MathText text={currentLesson.problem.explanation} />
+                      </div>
                     </div>
                   )}
                 </div>
@@ -636,13 +637,13 @@ export const DesmosLab = () => {
                         </button>
                       )}
                     </div>
-                    <p className="text-xs text-muted-foreground leading-relaxed font-sans">
-                      {step.description}
-                    </p>
+                    <div className="text-xs text-muted-foreground leading-relaxed font-sans">
+                      <MathText text={step.description} />
+                    </div>
                     {step.note && (
-                      <span className="inline-block font-mono-tech text-[11px] text-foreground font-semibold bg-muted/60 px-2 py-0.5 rounded border border-border/50">
-                        {step.note}
-                      </span>
+                      <div className="inline-block font-mono-tech text-[11px] text-foreground font-semibold bg-muted/60 px-2 py-0.5 rounded border border-border/50">
+                        <MathText text={step.note} />
+                      </div>
                     )}
                   </div>
                 ))}

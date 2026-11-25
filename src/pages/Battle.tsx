@@ -23,6 +23,7 @@ import {
 import { toast } from "sonner";
 import confetti from "canvas-confetti";
 import { getFallbackQuestions } from "@/data/mockSatQuestions";
+import { MathText } from "@/components/MathText";
 import {
   playClickSound,
   playSuccessSound,
@@ -997,7 +998,7 @@ export const Battle = () => {
               SAT Rapid Question
             </span>
             <h2 className="text-base sm:text-lg font-bold text-foreground leading-relaxed">
-              {question.question_text}
+              <MathText text={question.question_text} />
             </h2>
           </div>
 
@@ -1032,7 +1033,7 @@ export const Battle = () => {
                     <span className="w-7 h-7 rounded-lg bg-muted border border-border/60 flex items-center justify-center text-xs font-bold text-foreground shrink-0">
                       {String.fromCharCode(65 + i)}
                     </span>
-                    <span className="leading-snug">{option}</span>
+                    <span className="leading-snug"><MathText text={option} /></span>
                   </div>
                   {showResult && isCorrect && <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />}
                   {showResult && isSelected && !isCorrect && <XCircle className="w-4 h-4 text-rose-400 shrink-0" />}
@@ -1044,7 +1045,8 @@ export const Battle = () => {
           {/* Explanation if answered */}
           {showResult && question.explanation && (
             <div className="p-3.5 rounded-xl bg-muted/40 border border-border/70 text-xs text-muted-foreground leading-relaxed">
-              <strong className="text-foreground">{isRu ? "Объяснение:" : "Explanation:"}</strong> {question.explanation}
+              <strong className="text-foreground">{isRu ? "Объяснение: " : "Explanation: "}</strong>
+              <MathText text={question.explanation} />
             </div>
           )}
 

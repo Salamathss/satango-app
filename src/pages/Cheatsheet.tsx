@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { playClickSound, playSuccessSound, playErrorSound } from "@/utils/audio";
+import { MathText } from "@/components/MathText";
 
 interface DesmosHack {
   id: string;
@@ -441,9 +442,9 @@ export const Cheatsheet = () => {
                       <h3 className="font-bold text-base text-foreground tracking-tight">
                         {hack.title}
                       </h3>
-                      <p className="text-xs text-muted-foreground leading-relaxed">
-                        {hack.description}
-                      </p>
+                      <div className="text-xs text-muted-foreground leading-relaxed">
+                        <MathText text={hack.description} />
+                      </div>
                     </div>
 
                     <div className="space-y-2.5 pt-1">
@@ -452,13 +453,14 @@ export const Cheatsheet = () => {
                         <code>{hack.snippet}</code>
                       </div>
 
-                      <p className="text-xs text-neutral-600 dark:text-neutral-400 font-sans leading-relaxed flex items-start gap-1">
+                      <div className="text-xs text-neutral-600 dark:text-neutral-400 font-sans leading-relaxed flex items-start gap-1">
                         <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5" />
-                        <span><strong>Как применять:</strong> {hack.explanation}</span>
-                      </p>
+                        <div><strong>Как применять: </strong><MathText text={hack.explanation} /></div>
+                      </div>
 
                       <div className="p-2.5 rounded-xl bg-amber-500/5 border border-amber-500/20 text-xs text-muted-foreground">
-                        <strong className="text-foreground">Пример задачи:</strong> {hack.example}
+                        <strong className="text-foreground">Пример задачи: </strong>
+                        <MathText text={hack.example} />
                       </div>
                     </div>
                   </div>
@@ -593,13 +595,13 @@ export const Cheatsheet = () => {
                     </h3>
 
                     {/* Formula Math Box */}
-                    <div className="p-3 rounded-xl bg-muted/60 border border-border/70 font-mono-tech text-sm text-foreground font-bold text-center tracking-wide">
-                      {formula.formula}
+                    <div className="p-3 rounded-xl bg-muted/60 border border-border/70 text-sm text-foreground font-bold text-center tracking-wide overflow-x-auto">
+                      <MathText math={formula.formula} display />
                     </div>
 
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {formula.description}
-                    </p>
+                    <div className="text-xs text-muted-foreground leading-relaxed">
+                      <MathText text={formula.description} />
+                    </div>
                   </div>
 
                   {/* Secret Exam Hack */}
@@ -608,9 +610,9 @@ export const Cheatsheet = () => {
                       <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                       <span>Секретный хак на тесте:</span>
                     </div>
-                    <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed font-sans">
-                      {formula.secretHack}
-                    </p>
+                    <div className="text-neutral-700 dark:text-neutral-300 leading-relaxed font-sans">
+                      <MathText text={formula.secretHack} />
+                    </div>
                   </div>
                 </div>
               ))}

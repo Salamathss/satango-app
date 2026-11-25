@@ -25,6 +25,7 @@ import UnitMasteryModal from "@/components/UnitMasteryModal";
 import { useUserErrors } from "@/hooks/useUserErrors";
 import { getFallbackQuestions } from "@/data/mockSatQuestions";
 import { DesmosCalculator } from "@/components/DesmosCalculator";
+import { MathText } from "@/components/MathText";
 
 type Difficulty = "easy" | "medium" | "hard";
 const DIFFICULTY_MAP: Record<number, Difficulty> = { 1: "easy", 2: "medium", 3: "hard" };
@@ -234,8 +235,8 @@ const Quiz = () => {
   };
 
   const renderQuestionText = (text: string) => {
-    if (!text) return "Practice Question";
-    if (highlights.length === 0) return text;
+    if (!text) return <MathText text="Practice Question" />;
+    if (highlights.length === 0) return <MathText text={text} />;
 
     let result = text;
     const sortedHighlights = [...highlights].sort((a, b) => b.length - a.length);
@@ -771,7 +772,7 @@ const Quiz = () => {
                 Review Your Mistakes ({bossReviewIndex + 1}/{bossWrongAnswers.length})
               </p>
               <p className="text-xs text-muted-foreground text-left">
-                {bossWrongAnswers[bossReviewIndex]?.question.question_text}
+                <MathText text={bossWrongAnswers[bossReviewIndex]?.question.question_text} />
               </p>
               <div className="flex gap-2">
                 <Button
@@ -974,7 +975,7 @@ const Quiz = () => {
                     <span className="w-9 h-9 rounded-2xl bg-muted flex items-center justify-center text-sm font-extrabold shrink-0">
                       {String.fromCharCode(65 + i)}
                     </span>
-                    <span className="flex-1">{option}</span>
+                    <span className="flex-1"><MathText text={option} /></span>
                     
                     {!showResult && (
                       <button
@@ -1016,7 +1017,11 @@ const Quiz = () => {
                     <p className="text-xs text-muted-foreground">Explanations available after the test.</p>
                   ) : (
                     <>
-                      {question?.explanation && <p className="text-sm text-muted-foreground">{question.explanation}</p>}
+                      {question?.explanation && (
+                        <div className="text-sm text-muted-foreground leading-relaxed">
+                          <MathText text={question.explanation} />
+                        </div>
+                      )}
                       <div className="flex gap-2">
                         <Button
                           variant="outline"

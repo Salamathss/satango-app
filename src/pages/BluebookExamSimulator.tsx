@@ -8,6 +8,7 @@ import {
 import { BluebookReferenceSheet } from "@/components/bluebook/BluebookReferenceSheet";
 import { DesmosCalculator } from "@/components/DesmosCalculator";
 import { BluebookScoreReport } from "@/components/bluebook/BluebookScoreReport";
+import { MathText } from "@/components/MathText";
 import {
   Clock,
   Bookmark,
@@ -682,7 +683,7 @@ export const BluebookExamSimulator = () => {
               <div className="max-w-prose space-y-4">
                 {currentQuestion.passage ? (
                   <p className="whitespace-pre-line leading-relaxed font-serif text-slate-900">
-                    {currentQuestion.passage}
+                    <MathText text={currentQuestion.passage} />
                   </p>
                 ) : (
                   <p className="italic text-slate-500 font-sans text-xs">
@@ -741,9 +742,9 @@ export const BluebookExamSimulator = () => {
                 </div>
 
                 {/* Question Prompt */}
-                <p className="text-sm font-medium text-slate-900 leading-normal">
-                  {currentQuestion.question_text}
-                </p>
+                <div className="text-sm font-medium text-slate-900 leading-normal">
+                  <MathText text={currentQuestion.question_text} />
+                </div>
 
                 {/* Multiple Choices */}
                 <div className="space-y-2.5 pt-2">
@@ -781,7 +782,9 @@ export const BluebookExamSimulator = () => {
                         >
                           {letter}
                         </div>
-                        <span className="flex-1 leading-relaxed">{opt}</span>
+                        <span className="flex-1 leading-relaxed">
+                          <MathText text={opt} />
+                        </span>
 
                         {/* Strikethrough manual button */}
                         <button
@@ -852,7 +855,7 @@ export const BluebookExamSimulator = () => {
 
               {/* Math Question Text */}
               <div className="text-base font-medium text-slate-900 leading-relaxed font-sans">
-                {currentQuestion.question_text}
+                <MathText text={currentQuestion.question_text} />
               </div>
 
               {/* Multiple Choice Options or Student-Produced Response */}
@@ -892,7 +895,9 @@ export const BluebookExamSimulator = () => {
                         >
                           {letter}
                         </div>
-                        <span className="flex-1 leading-relaxed">{opt}</span>
+                        <span className="flex-1 leading-relaxed">
+                          <MathText text={opt} />
+                        </span>
                       </div>
                     );
                   })}

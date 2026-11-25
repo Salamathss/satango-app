@@ -23,6 +23,7 @@ import { DIAGNOSTIC_98_QUESTIONS } from "@/data/diagnosticMock98";
 import { getLocalMistakes } from "@/services/mistakeVaultService";
 import { toast } from "sonner";
 import confetti from "canvas-confetti";
+import { MathText } from "@/components/MathText";
 
 /**
  * ErrorReview — "Mistake Vault / Карцер" Pro review zone.
@@ -314,7 +315,7 @@ export const ErrorReviewInner = () => {
 
         <div className="space-y-5">
           <h2 className="text-lg sm:text-xl font-black leading-snug tracking-tight text-foreground whitespace-pre-line">
-            {question.question_text}
+            <MathText text={question.question_text} />
           </h2>
 
           <div className="space-y-2.5">
@@ -338,7 +339,7 @@ export const ErrorReviewInner = () => {
                     <span className="w-8 h-8 rounded-xl bg-muted/90 flex items-center justify-center font-mono-tech text-xs font-black shrink-0">
                       {String.fromCharCode(65 + i)}
                     </span>
-                    <span className="flex-1">{option}</span>
+                    <span className="flex-1"><MathText text={option} /></span>
                     {showResult && isCorrect && <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />}
                     {showResult && isSelected && !isCorrect && <XCircle className="w-5 h-5 text-red-500 shrink-0" />}
                   </div>
@@ -373,7 +374,7 @@ export const ErrorReviewInner = () => {
               {question.explanation && (
                 <div className="p-4 rounded-2xl bg-muted/50 border border-border/70 text-xs text-muted-foreground leading-relaxed">
                   <span className="font-bold text-foreground block mb-1">Explanation:</span>
-                  {question.explanation}
+                  <MathText text={question.explanation} />
                 </div>
               )}
             </div>

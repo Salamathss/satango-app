@@ -434,3 +434,29 @@
 .tap-feedback:active {
   animation: tap-pulse 0.18s ease-out;
 }
+
+/* ===== KaTeX Math Typography Refinements ===== */
+.katex {
+  color: inherit;
+  font-size: 1.05em;
+  text-rendering: auto;
+}
+
+.katex-display {
+  margin: 0.6em 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  padding: 0.25rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.katex-display::-webkit-scrollbar {
+  height: 4px;
+}
+
+.katex-display::-webkit-scrollbar-thumb {
+  background: currentColor;
+  opacity: 0.2;
+  border-radius: 2px;
+}

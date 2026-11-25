@@ -6,6 +6,7 @@ import { CheckCircle2, XCircle, Terminal, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import confetti from "canvas-confetti";
 import { playSuccessSound, playErrorSound } from "@/utils/audio";
+import { MathText } from "@/components/MathText";
 
 interface SolveSimilarDialogProps {
   open: boolean;
@@ -102,7 +103,7 @@ export const SolveSimilarDialog = ({
                 Practice Mode
               </span>
               <h3 className="text-base font-bold leading-snug tracking-tight text-foreground">
-                {question.question_text}
+                <MathText text={question.question_text} />
               </h3>
             </div>
 
@@ -127,7 +128,7 @@ export const SolveSimilarDialog = ({
                       <span className="w-7 h-7 rounded-xl bg-muted flex items-center justify-center text-xs font-extrabold shrink-0">
                         {String.fromCharCode(65 + i)}
                       </span>
-                      <span className="flex-1">{option}</span>
+                      <span className="flex-1"><MathText text={option} /></span>
                       {showResult && isCorrect && <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />}
                       {showResult && isSelected && !isCorrect && <XCircle className="w-4 h-4 text-destructive shrink-0" />}
                     </div>
@@ -141,9 +142,9 @@ export const SolveSimilarDialog = ({
                 <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">
                   Explanation
                 </p>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  {question.explanation}
-                </p>
+                <div className="text-xs text-muted-foreground leading-relaxed">
+                  <MathText text={question.explanation} />
+                </div>
                 <Button
                   onClick={() => onOpenChange(false)}
                   className="w-full h-10 rounded-xl text-xs font-bold mt-2"

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Terminal } from "lucide-react";
 import { fetchAITutorExplanation, buildFallbackExplanation } from "@/services/aiTutor";
 import ReactMarkdown from "react-markdown";
+import { MathText } from "@/components/MathText";
 import { useAITutorLimit } from "@/hooks/useAITutorLimit";
 import { useAuth } from "@/hooks/useAuth";
 import PremiumUpgradeModal from "@/components/PremiumUpgradeModal";
@@ -118,7 +119,9 @@ const AITutorDialog = ({ open, onOpenChange, question, userSelectedAnswer, userL
           <div className="space-y-4 pt-4">
             <div className="border border-divider rounded-md p-3.5 text-sm bg-card">
               <p className="tech-label mb-1.5">Question</p>
-              <p className="text-foreground leading-relaxed">{question?.question_text}</p>
+              <div className="text-foreground leading-relaxed">
+                <MathText text={question?.question_text} />
+              </div>
             </div>
 
             {userSelectedAnswer !== null && userSelectedAnswer !== undefined && question && (
@@ -137,7 +140,24 @@ const AITutorDialog = ({ open, onOpenChange, question, userSelectedAnswer, userL
             ) : (
               <div className="surface-card p-4">
                 <div className="prose prose-sm max-w-none text-foreground/90 leading-relaxed prose-headings:font-bold prose-headings:tracking-tight prose-code:font-mono-tech prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-sm prose-code:text-foreground prose-code:before:content-none prose-code:after:content-none">
-                  <ReactMarkdown>{explanation}</ReactMarkdown>
+                  <ReactMarkdown
+                    components={{
+                      p: ({ children }) => {
+                        if (typeof children === "string") {
+                          return <p className="mb-2.5 last:mb-0 leading-relaxed"><MathText text={children} /></p>;
+                        }
+                        return <p className="mb-2.5 last:mb-0 leading-relaxed">{children}</p>;
+                      },
+                      li: ({ children }) => {
+                        if (typeof children === "string") {
+                          return <li className="leading-relaxed"><MathText text={children} /></li>;
+                        }
+                        return <li className="leading-relaxed">{children}</li>;
+                      },
+                    }}
+                  >
+                    {explanation}
+                  </ReactMarkdown>
                 </div>
               </div>
             )}

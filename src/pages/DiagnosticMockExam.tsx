@@ -14,6 +14,7 @@ import {
   DiagnosticProgressState,
 } from "@/services/personalPlanService";
 import { DesmosCalculator } from "@/components/DesmosCalculator";
+import { MathText } from "@/components/MathText";
 import {
   ArrowLeft,
   ArrowRight,
@@ -515,11 +516,11 @@ export default function DiagnosticMockExam() {
 
           {currentQ.passage ? (
             <div className="text-sm sm:text-base text-neutral-200 leading-relaxed font-serif whitespace-pre-line">
-              {currentQ.passage}
+              <MathText text={currentQ.passage} />
             </div>
           ) : (
             <div className="text-sm sm:text-base text-neutral-200 leading-relaxed font-sans">
-              {currentQ.question_text}
+              <MathText text={currentQ.question_text} />
             </div>
           )}
         </div>
@@ -528,7 +529,7 @@ export default function DiagnosticMockExam() {
         <div className="bg-[#171615] border border-white/10 rounded-2xl p-5 sm:p-6 space-y-5 shadow-md">
           {currentQ.passage && (
             <div className="text-sm font-semibold text-white border-b border-white/10 pb-3 leading-snug">
-              {currentQ.question_text}
+              <MathText text={currentQ.question_text} />
             </div>
           )}
 
@@ -559,7 +560,7 @@ export default function DiagnosticMockExam() {
                     >
                       {letter}
                     </div>
-                    <span className="text-xs sm:text-sm leading-snug">{opt}</span>
+                    <span className="text-xs sm:text-sm leading-snug"><MathText text={opt} /></span>
                   </div>
 
                   {/* Option Strikethrough elimination button */}
